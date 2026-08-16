@@ -62,7 +62,7 @@ class LikedPGsScreen extends StatelessWidget {
           : ListView.separated(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
               itemCount: liked.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final pg = liked[index];
                 return PGPreviewCard(

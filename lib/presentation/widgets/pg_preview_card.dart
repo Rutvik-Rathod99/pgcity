@@ -44,7 +44,7 @@ class PGPreviewCard extends StatelessWidget {
                     width: 76,
                     height: 76,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
+                    errorBuilder: (_, _, _) => Container(
                       width: 76,
                       height: 76,
                       decoration: BoxDecoration(

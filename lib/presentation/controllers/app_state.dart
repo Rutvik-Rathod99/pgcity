@@ -31,12 +31,10 @@ class AppState extends ChangeNotifier {
   final EnrollmentRepository _enrollmentRepository;
 
   AppState({
-    required PGRepository pgRepository,
-    required UserRepository userRepository,
-    required EnrollmentRepository enrollmentRepository,
-  })  : _pgRepository = pgRepository,
-        _userRepository = userRepository,
-        _enrollmentRepository = enrollmentRepository {
+    required this._pgRepository,
+    required this._userRepository,
+    required this._enrollmentRepository,
+  }) {
     _init();
   }
 

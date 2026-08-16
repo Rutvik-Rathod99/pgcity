@@ -22,7 +22,7 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
   late int _currentSceneIndex;
   double _horizontalOffset = 0.0;
   double _verticalOffset = 0.0;
-  double _zoomScale = 1.0;
+  final double _zoomScale = 1.0;
   bool _showControls = true;
 
   @override
@@ -69,7 +69,7 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(_horizontalOffset)
                       ..rotateX(_verticalOffset)
-                      ..scale(_zoomScale),
+                      ..scaleByDouble(_zoomScale),
                     alignment: Alignment.center,
                     child: Container(
                       decoration: BoxDecoration(
@@ -236,7 +236,7 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: scenes.length,
-                        separatorBuilder: (_, __) => const SizedBox(width: 10),
+                        separatorBuilder: (_, _) => const SizedBox(width: 10),
                         itemBuilder: (context, index) {
                           final sc = scenes[index];
                           final isSelected = index == _currentSceneIndex;

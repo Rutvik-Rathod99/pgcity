@@ -84,7 +84,7 @@ class NotificationSheet extends StatelessWidget {
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: notifications.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   final notif = notifications[index];
                   return InkWell(

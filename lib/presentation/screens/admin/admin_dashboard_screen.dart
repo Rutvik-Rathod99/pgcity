@@ -232,7 +232,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: pgs.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, _) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final pg = pgs[index];
         return Container(
@@ -255,7 +255,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
+                      errorBuilder: (_, _, _) => Container(
                         width: 60,
                         height: 60,
                         color: AppColors.cream,
@@ -364,7 +364,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: leads.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, _) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final lead = leads[index];
         return Container(

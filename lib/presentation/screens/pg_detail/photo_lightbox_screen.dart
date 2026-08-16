@@ -77,7 +77,7 @@ class _PhotoLightboxScreenState extends State<PhotoLightboxScreen> {
                         child: CircularProgressIndicator(color: AppColors.marigold),
                       );
                     },
-                    errorBuilder: (_, __, ___) => const Center(
+                    errorBuilder: (_, _, _) => const Center(
                       child: Icon(Icons.broken_image_rounded, color: Colors.white38, size: 48),
                     ),
                   ),
@@ -95,7 +95,7 @@ class _PhotoLightboxScreenState extends State<PhotoLightboxScreen> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: widget.photos.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
                 final isSelected = index == _currentIndex;
                 return GestureDetector(
