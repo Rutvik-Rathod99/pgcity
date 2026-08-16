@@ -103,6 +103,8 @@ class _InteractivePGMapState extends State<InteractivePGMap>
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
     final isDark = context.isDark;
 
     return Stack(
