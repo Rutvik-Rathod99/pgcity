@@ -14,7 +14,10 @@ class BiometricAuthService {
   Future<void> initialize() async {
     final prefs = await SharedPreferences.getInstance();
     _isBiometricEnabled = prefs.getBool(_prefBiometricKey) ?? false;
-    AppLogger.i('BiometricAuthService initialized: enabled=$_isBiometricEnabled', tag: 'SECURITY');
+    AppLogger.i(
+      'BiometricAuthService initialized: enabled=$_isBiometricEnabled',
+      tag: 'SECURITY',
+    );
   }
 
   Future<void> setBiometricEnabled(bool enabled) async {
@@ -24,9 +27,14 @@ class BiometricAuthService {
     AppLogger.i('Biometric preference updated to: $enabled', tag: 'SECURITY');
   }
 
-  Future<bool> authenticate({String reason = 'Authenticate to access PGCity'}) async {
+  Future<bool> authenticate({
+    String reason = 'Authenticate to access PGCity',
+  }) async {
     // Simulates biometric fingerprint / Face ID prompt
-    AppLogger.i('Biometric authentication prompt triggered: $reason', tag: 'SECURITY');
+    AppLogger.i(
+      'Biometric authentication prompt triggered: $reason',
+      tag: 'SECURITY',
+    );
     await Future.delayed(const Duration(milliseconds: 350));
     return true;
   }

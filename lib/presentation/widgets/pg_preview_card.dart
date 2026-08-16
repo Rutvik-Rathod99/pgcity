@@ -145,7 +145,9 @@ class PGPreviewCard extends StatelessWidget {
                               size: 20,
                               color: isCompared
                                   ? AppColors.teal
-                                  : (isDark ? Colors.white38 : AppColors.inkSoft),
+                                  : (isDark
+                                        ? Colors.white38
+                                        : AppColors.inkSoft),
                             ),
                           ),
                         ),
@@ -190,13 +192,17 @@ class PGPreviewCard extends StatelessWidget {
                             TextSpan(
                               text: CurrencyFormatter.format(pg.monthlyRent),
                               style: AppTypography.monoPrice(
-                                color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                                color: isDark
+                                    ? const Color(0xFF38BDF8)
+                                    : AppColors.teal,
                               ).copyWith(fontSize: 14),
                             ),
                             TextSpan(
                               text: '/mo',
                               style: AppTypography.bodySmall(
-                                color: isDark ? Colors.white60 : AppColors.inkSoft,
+                                color: isDark
+                                    ? Colors.white60
+                                    : AppColors.inkSoft,
                               ),
                             ),
                           ],
@@ -219,7 +225,9 @@ class PGPreviewCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,
-                                color: isDark ? AppColors.marigold : AppColors.marigoldDark,
+                                color: isDark
+                                    ? AppColors.marigold
+                                    : AppColors.marigoldDark,
                                 fontFamily: 'Inter',
                               ),
                             ),
@@ -227,7 +235,9 @@ class PGPreviewCard extends StatelessWidget {
                             Icon(
                               Icons.arrow_forward_ios_rounded,
                               size: 10,
-                              color: isDark ? AppColors.marigold : AppColors.marigoldDark,
+                              color: isDark
+                                  ? AppColors.marigold
+                                  : AppColors.marigoldDark,
                             ),
                           ],
                         ),

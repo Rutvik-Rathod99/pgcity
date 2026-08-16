@@ -123,9 +123,7 @@ class _InteractivePGMapState extends State<InteractivePGMap>
               children: [
                 // Custom Vector Painted City Map
                 Positioned.fill(
-                  child: CustomPaint(
-                    painter: _CityMapPainter(isDark: isDark),
-                  ),
+                  child: CustomPaint(painter: _CityMapPainter(isDark: isDark)),
                 ),
 
                 // User Location Live Pulse

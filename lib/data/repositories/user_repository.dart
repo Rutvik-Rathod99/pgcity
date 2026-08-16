@@ -13,7 +13,8 @@ class UserRepository {
   UserRepository(this._prefs);
 
   bool isLoggedIn() {
-    return _prefs.getBool(_isLoggedInKey) ?? true; // Default true for initial demo session
+    return _prefs.getBool(_isLoggedInKey) ??
+        true; // Default true for initial demo session
   }
 
   UserModel? getCurrentUser() {
@@ -57,10 +58,12 @@ class UserRepository {
   // 1. Mobile Number + OTP Login
   Future<UserModel> loginWithPhoneOtp(String phone, String otp) async {
     final existing = _findRegisteredUser(phone: phone);
-    final user = existing ??
+    final user =
+        existing ??
         UserModel(
           id: 'usr_${DateTime.now().millisecondsSinceEpoch}',
-          fullName: 'Student User (${phone.substring(phone.length > 4 ? phone.length - 4 : 0)})',
+          fullName:
+              'Student User (${phone.substring(phone.length > 4 ? phone.length - 4 : 0)})',
           mobileNumber: phone.startsWith('+') ? phone : '+91 $phone',
           email: 'user_${phone.replaceAll(RegExp(r'\D'), '')}@pgcity.in',
           gender: UserGender.male,
@@ -76,9 +79,13 @@ class UserRepository {
   }
 
   // 2. Mobile Number + Password Login
-  Future<UserModel> loginWithPhonePassword(String phone, String password) async {
+  Future<UserModel> loginWithPhonePassword(
+    String phone,
+    String password,
+  ) async {
     final existing = _findRegisteredUser(phone: phone);
-    final user = existing ??
+    final user =
+        existing ??
         UserModel(
           id: 'usr_${DateTime.now().millisecondsSinceEpoch}',
           fullName: 'Student Resident',
@@ -97,9 +104,13 @@ class UserRepository {
   }
 
   // 3. Email + Password Login
-  Future<UserModel> loginWithEmailPassword(String email, String password) async {
+  Future<UserModel> loginWithEmailPassword(
+    String email,
+    String password,
+  ) async {
     final existing = _findRegisteredUser(email: email);
-    final user = existing ??
+    final user =
+        existing ??
         UserModel(
           id: 'usr_${DateTime.now().millisecondsSinceEpoch}',
           fullName: email.split('@').first.toUpperCase(),
@@ -227,15 +238,17 @@ class UserRepository {
       if (phone != null) {
         final cleanPhone = phone.replaceAll(RegExp(r'\D'), '');
         return list.cast<UserModel?>().firstWhere(
-              (u) => u!.mobileNumber.replaceAll(RegExp(r'\D'), '').contains(cleanPhone),
-              orElse: () => null,
-            );
+          (u) => u!.mobileNumber
+              .replaceAll(RegExp(r'\D'), '')
+              .contains(cleanPhone),
+          orElse: () => null,
+        );
       }
       if (email != null) {
         return list.cast<UserModel?>().firstWhere(
-              (u) => u!.email.toLowerCase() == email.trim().toLowerCase(),
-              orElse: () => null,
-            );
+          (u) => u!.email.toLowerCase() == email.trim().toLowerCase(),
+          orElse: () => null,
+        );
       }
     } catch (_) {
       return null;
@@ -248,12 +261,17 @@ class UserRepository {
       final raw = _prefs.getString(_registeredUsersKey);
       final list = raw != null
           ? (jsonDecode(raw) as List<dynamic>)
-              .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
-              .toList()
+                .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
+                .toList()
           : <UserModel>[];
-      list.removeWhere((u) => u.id == user.id || u.mobileNumber == user.mobileNumber);
+      list.removeWhere(
+        (u) => u.id == user.id || u.mobileNumber == user.mobileNumber,
+      );
       list.add(user);
-      _prefs.setString(_registeredUsersKey, jsonEncode(list.map((u) => u.toJson()).toList()));
+      _prefs.setString(
+        _registeredUsersKey,
+        jsonEncode(list.map((u) => u.toJson()).toList()),
+      );
     } catch (_) {}
   }
 }

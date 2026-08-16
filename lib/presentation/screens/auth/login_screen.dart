@@ -25,21 +25,34 @@ class _LoginScreenState extends State<LoginScreen> {
   int _authModeIndex = 0; // 0: Phone+OTP, 1: Phone+Password, 2: Email+Password
 
   // Controllers for Phone + OTP
-  final TextEditingController _otpPhoneController = TextEditingController(text: '9876543210');
-  final List<TextEditingController> _otpDigitControllers = List.generate(6, (_) => TextEditingController());
+  final TextEditingController _otpPhoneController = TextEditingController(
+    text: '9876543210',
+  );
+  final List<TextEditingController> _otpDigitControllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _otpFocusNodes = List.generate(6, (_) => FocusNode());
   bool _otpSent = false;
   int _countdown = 30;
   Timer? _timer;
 
   // Controllers for Phone + Password
-  final TextEditingController _passPhoneController = TextEditingController(text: '9876543210');
-  final TextEditingController _passController = TextEditingController(text: 'pgcity123');
+  final TextEditingController _passPhoneController = TextEditingController(
+    text: '9876543210',
+  );
+  final TextEditingController _passController = TextEditingController(
+    text: 'pgcity123',
+  );
   bool _obscurePhonePass = true;
 
   // Controllers for Email + Password
-  final TextEditingController _emailController = TextEditingController(text: 'yuvraj.mehta@gmail.com');
-  final TextEditingController _emailPassController = TextEditingController(text: 'pgcity123');
+  final TextEditingController _emailController = TextEditingController(
+    text: 'yuvraj.mehta@gmail.com',
+  );
+  final TextEditingController _emailPassController = TextEditingController(
+    text: 'pgcity123',
+  );
   bool _obscureEmailPass = true;
 
   bool _isLoading = false;
@@ -171,7 +184,9 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = false);
 
     if (mounted) {
-      _showToast('Signed in with Google as ${widget.appState.currentUser?.fullName}');
+      _showToast(
+        'Signed in with Google as ${widget.appState.currentUser?.fullName}',
+      );
       Navigator.pop(context);
     }
   }
@@ -182,7 +197,9 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = false);
 
     if (mounted) {
-      _showToast('Signed in with Apple ID as ${widget.appState.currentUser?.fullName}');
+      _showToast(
+        'Signed in with Apple ID as ${widget.appState.currentUser?.fullName}',
+      );
       Navigator.pop(context);
     }
   }
@@ -274,7 +291,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Text(
                           'PGCity Ahmedabad',
-                          style: AppTypography.displaySmall(color: Colors.white),
+                          style: AppTypography.displaySmall(
+                            color: Colors.white,
+                          ),
                         ),
                         const SizedBox(height: 3),
                         Text(
@@ -331,7 +350,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     'OR CONTINUE WITH',
-                    style: AppTypography.monoBadge(color: AppColors.inkSoft).copyWith(fontSize: 10),
+                    style: AppTypography.monoBadge(
+                      color: AppColors.inkSoft,
+                    ).copyWith(fontSize: 10),
                   ),
                 ),
                 const Expanded(child: Divider(color: AppColors.line)),
@@ -345,7 +366,9 @@ class _LoginScreenState extends State<LoginScreen> {
               style: OutlinedButton.styleFrom(
                 backgroundColor: AppColors.paper,
                 side: const BorderSide(color: AppColors.line, width: 1.2),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               child: Row(
@@ -386,14 +409,20 @@ class _LoginScreenState extends State<LoginScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 elevation: 0,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.apple_rounded, color: Colors.white, size: 22),
+                  const Icon(
+                    Icons.apple_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'Sign in with Apple',
@@ -416,7 +445,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: _openSignUpSheet,
                   child: Text(
                     'Create Account',
-                    style: AppTypography.titleSmall(color: AppColors.marigoldDark),
+                    style: AppTypography.titleSmall(
+                      color: AppColors.marigoldDark,
+                    ),
                   ),
                 ),
               ],
@@ -453,9 +484,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     'Terms & Conditions',
-                    style: AppTypography.monoLabel(
-                      color: AppColors.inkSoft,
-                    ).copyWith(fontSize: 11, decoration: TextDecoration.underline),
+                    style: AppTypography.monoLabel(color: AppColors.inkSoft)
+                        .copyWith(
+                          fontSize: 11,
+                          decoration: TextDecoration.underline,
+                        ),
                   ),
                 ),
                 Text(
@@ -473,9 +506,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     'Privacy Policy',
-                    style: AppTypography.monoLabel(
-                      color: AppColors.inkSoft,
-                    ).copyWith(fontSize: 11, decoration: TextDecoration.underline),
+                    style: AppTypography.monoLabel(color: AppColors.inkSoft)
+                        .copyWith(
+                          fontSize: 11,
+                          decoration: TextDecoration.underline,
+                        ),
                   ),
                 ),
               ],
@@ -485,7 +520,10 @@ class _LoginScreenState extends State<LoginScreen> {
             // App Version on Login Screen
             Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.paper,
                   borderRadius: BorderRadius.circular(8),
@@ -633,7 +671,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   maxLength: 1,
-                  style: AppTypography.titleMedium(color: AppColors.navy).copyWith(fontSize: 18),
+                  style: AppTypography.titleMedium(
+                    color: AppColors.navy,
+                  ).copyWith(fontSize: 18),
                   decoration: InputDecoration(
                     counterText: '',
                     contentPadding: EdgeInsets.zero,
@@ -660,7 +700,11 @@ class _LoginScreenState extends State<LoginScreen> {
           Center(
             child: TextButton.icon(
               onPressed: _autoFillDemoOTP,
-              icon: const Icon(Icons.bolt_rounded, size: 16, color: AppColors.marigoldDark),
+              icon: const Icon(
+                Icons.bolt_rounded,
+                size: 16,
+                color: AppColors.marigoldDark,
+              ),
               label: Text(
                 'Auto-fill Demo Code (482100)',
                 style: AppTypography.monoBadge(color: AppColors.marigoldDark),
@@ -679,13 +723,18 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: AppColors.marigold,
               foregroundColor: AppColors.navy,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: _isLoading
                 ? const SizedBox(
                     width: 20,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.navy),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.navy,
+                    ),
                   )
                 : Text(
                     _otpSent ? 'Verify OTP & Sign In' : 'Send OTP Code',
@@ -751,14 +800,21 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: _obscurePhonePass,
           decoration: InputDecoration(
             hintText: 'Enter account password',
-            prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20, color: AppColors.inkSoft),
+            prefixIcon: const Icon(
+              Icons.lock_outline_rounded,
+              size: 20,
+              color: AppColors.inkSoft,
+            ),
             suffixIcon: IconButton(
               icon: Icon(
-                _obscurePhonePass ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                _obscurePhonePass
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
                 size: 20,
                 color: AppColors.inkSoft,
               ),
-              onPressed: () => setState(() => _obscurePhonePass = !_obscurePhonePass),
+              onPressed: () =>
+                  setState(() => _obscurePhonePass = !_obscurePhonePass),
             ),
           ),
         ),
@@ -772,13 +828,18 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: AppColors.marigold,
               foregroundColor: AppColors.navy,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: _isLoading
                 ? const SizedBox(
                     width: 20,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.navy),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.navy,
+                    ),
                   )
                 : Text(
                     'Sign In with Password',
@@ -813,7 +874,11 @@ class _LoginScreenState extends State<LoginScreen> {
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             hintText: 'student@example.com',
-            prefixIcon: Icon(Icons.email_outlined, size: 20, color: AppColors.inkSoft),
+            prefixIcon: Icon(
+              Icons.email_outlined,
+              size: 20,
+              color: AppColors.inkSoft,
+            ),
           ),
         ),
         const SizedBox(height: 12),
@@ -824,14 +889,21 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: _obscureEmailPass,
           decoration: InputDecoration(
             hintText: 'Enter password',
-            prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20, color: AppColors.inkSoft),
+            prefixIcon: const Icon(
+              Icons.lock_outline_rounded,
+              size: 20,
+              color: AppColors.inkSoft,
+            ),
             suffixIcon: IconButton(
               icon: Icon(
-                _obscureEmailPass ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                _obscureEmailPass
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
                 size: 20,
                 color: AppColors.inkSoft,
               ),
-              onPressed: () => setState(() => _obscureEmailPass = !_obscureEmailPass),
+              onPressed: () =>
+                  setState(() => _obscureEmailPass = !_obscureEmailPass),
             ),
           ),
         ),
@@ -840,7 +912,8 @@ class _LoginScreenState extends State<LoginScreen> {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: () => _showToast('Demo reset link sent to ${_emailController.text}'),
+            onPressed: () =>
+                _showToast('Demo reset link sent to ${_emailController.text}'),
             child: Text(
               'Forgot Password?',
               style: AppTypography.bodySmall(color: AppColors.marigoldDark),
@@ -857,13 +930,18 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: AppColors.marigold,
               foregroundColor: AppColors.navy,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: _isLoading
                 ? const SizedBox(
                     width: 20,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.navy),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.navy,
+                    ),
                   )
                 : Text(
                     'Sign In with Email',
@@ -892,7 +970,9 @@ class _SignUpSheetState extends State<_SignUpSheet> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
-  final _occupationController = TextEditingController(text: 'Ahmedabad University');
+  final _occupationController = TextEditingController(
+    text: 'Ahmedabad University',
+  );
   UserGender _gender = UserGender.male;
   bool _isLoading = false;
 
@@ -1035,13 +1115,18 @@ class _SignUpSheetState extends State<_SignUpSheet> {
                 backgroundColor: AppColors.marigold,
                 foregroundColor: AppColors.navy,
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               child: _isLoading
                   ? const SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.navy),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppColors.navy,
+                      ),
                     )
                   : Text(
                       'Create Account & Sign In',

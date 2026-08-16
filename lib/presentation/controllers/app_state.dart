@@ -339,7 +339,10 @@ class AppState extends ChangeNotifier {
 
   Future<void> loginWithPhoneOtp(String phone, String otp) async {
     _currentUser = await userRepository.loginWithPhoneOtp(phone, otp);
-    AppLogger.i('User signed in with Phone OTP: ${_currentUser?.mobileNumber}', tag: 'AUTH');
+    AppLogger.i(
+      'User signed in with Phone OTP: ${_currentUser?.mobileNumber}',
+      tag: 'AUTH',
+    );
     if (_currentUser != null) {
       CrashlyticsService.instance.setUserId(_currentUser!.id);
     }
@@ -347,9 +350,11 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> loginWithPhonePassword(String phone, String password) async {
-    _currentUser =
-        await userRepository.loginWithPhonePassword(phone, password);
-    AppLogger.i('User signed in with Phone & Password: ${_currentUser?.mobileNumber}', tag: 'AUTH');
+    _currentUser = await userRepository.loginWithPhonePassword(phone, password);
+    AppLogger.i(
+      'User signed in with Phone & Password: ${_currentUser?.mobileNumber}',
+      tag: 'AUTH',
+    );
     if (_currentUser != null) {
       CrashlyticsService.instance.setUserId(_currentUser!.id);
     }
@@ -357,9 +362,11 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> loginWithEmailPassword(String email, String password) async {
-    _currentUser =
-        await userRepository.loginWithEmailPassword(email, password);
-    AppLogger.i('User signed in with Email & Password: ${_currentUser?.email}', tag: 'AUTH');
+    _currentUser = await userRepository.loginWithEmailPassword(email, password);
+    AppLogger.i(
+      'User signed in with Email & Password: ${_currentUser?.email}',
+      tag: 'AUTH',
+    );
     if (_currentUser != null) {
       CrashlyticsService.instance.setUserId(_currentUser!.id);
     }
@@ -367,9 +374,14 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> loginWithGoogle({String? name, String? email}) async {
-    _currentUser =
-        await userRepository.loginWithGoogle(name: name, email: email);
-    AppLogger.i('User signed in with Google: ${_currentUser?.email}', tag: 'AUTH');
+    _currentUser = await userRepository.loginWithGoogle(
+      name: name,
+      email: email,
+    );
+    AppLogger.i(
+      'User signed in with Google: ${_currentUser?.email}',
+      tag: 'AUTH',
+    );
     if (_currentUser != null) {
       CrashlyticsService.instance.setUserId(_currentUser!.id);
     }
@@ -377,8 +389,10 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> loginWithApple({String? appleId, String? email}) async {
-    _currentUser =
-        await userRepository.loginWithApple(appleId: appleId, email: email);
+    _currentUser = await userRepository.loginWithApple(
+      appleId: appleId,
+      email: email,
+    );
     AppLogger.i('User signed in with Apple ID (Guideline 5.1.1v)', tag: 'AUTH');
     if (_currentUser != null) {
       CrashlyticsService.instance.setUserId(_currentUser!.id);
@@ -402,7 +416,10 @@ class AppState extends ChangeNotifier {
       gender: gender,
       authProvider: authProvider,
     );
-    AppLogger.i('New resident registered: ${_currentUser?.fullName}', tag: 'AUTH');
+    AppLogger.i(
+      'New resident registered: ${_currentUser?.fullName}',
+      tag: 'AUTH',
+    );
     if (_currentUser != null) {
       CrashlyticsService.instance.setUserId(_currentUser!.id);
     }
@@ -418,7 +435,10 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> deleteAppleAccount() async {
-    AppLogger.w('Apple Account deleted & tokens revoked under Guideline 5.1.1(v)', tag: 'AUTH');
+    AppLogger.w(
+      'Apple Account deleted & tokens revoked under Guideline 5.1.1(v)',
+      tag: 'AUTH',
+    );
     await userRepository.deleteAppleAccount();
     _currentUser = null;
     await enrollmentRepository.clearAll();
@@ -590,16 +610,25 @@ class AppState extends ChangeNotifier {
   bool toggleCompare(String pgId) {
     if (_comparePGIds.contains(pgId)) {
       _comparePGIds.remove(pgId);
-      AppLogger.i('Removed PG $pgId from comparison. Count=${_comparePGIds.length}', tag: 'COMPARE');
+      AppLogger.i(
+        'Removed PG $pgId from comparison. Count=${_comparePGIds.length}',
+        tag: 'COMPARE',
+      );
       notifyListeners();
       return true;
     } else {
       if (_comparePGIds.length >= 3) {
-        AppLogger.w('Cannot add PG $pgId to comparison: Limit of 3 reached.', tag: 'COMPARE');
+        AppLogger.w(
+          'Cannot add PG $pgId to comparison: Limit of 3 reached.',
+          tag: 'COMPARE',
+        );
         return false;
       }
       _comparePGIds.add(pgId);
-      AppLogger.i('Added PG $pgId to comparison. Count=${_comparePGIds.length}', tag: 'COMPARE');
+      AppLogger.i(
+        'Added PG $pgId to comparison. Count=${_comparePGIds.length}',
+        tag: 'COMPARE',
+      );
       notifyListeners();
       return true;
     }
@@ -627,10 +656,12 @@ class AppState extends ChangeNotifier {
       sleepHabit: SleepHabit.nightOwl,
       isSmokingAllowed: false,
       isAlcoholAllowed: false,
-      bio: 'Final year Architecture student. Quiet, focused on thesis, clean habits. Looking for a neat 2-sharing room.',
+      bio:
+          'Final year Architecture student. Quiet, focused on thesis, clean habits. Looking for a neat 2-sharing room.',
       contactNumber: '+91 98250 11223',
       isVerifiedStudent: true,
-      avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80',
+      avatarUrl:
+          'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80',
       postedAt: DateTime.now().subtract(const Duration(days: 2)),
     ),
     RoommateModel(
@@ -645,10 +676,12 @@ class AppState extends ChangeNotifier {
       sleepHabit: SleepHabit.earlyBird,
       isSmokingAllowed: false,
       isAlcoholAllowed: false,
-      bio: 'MBA student at Nirma. Early riser, prepares Jain food, loves a peaceful environment and hygienic space.',
+      bio:
+          'MBA student at Nirma. Early riser, prepares Jain food, loves a peaceful environment and hygienic space.',
       contactNumber: '+91 97240 44556',
       isVerifiedStudent: true,
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+      avatarUrl:
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
       postedAt: DateTime.now().subtract(const Duration(days: 4)),
     ),
     RoommateModel(
@@ -663,10 +696,12 @@ class AppState extends ChangeNotifier {
       sleepHabit: SleepHabit.flexible,
       isSmokingAllowed: false,
       isAlcoholAllowed: false,
-      bio: 'Software engineer at TCS. Work from home 3 days/week. Looking for a flatmate who values cleanliness and good Wi-Fi.',
+      bio:
+          'Software engineer at TCS. Work from home 3 days/week. Looking for a flatmate who values cleanliness and good Wi-Fi.',
       contactNumber: '+91 99099 77889',
       isVerifiedStudent: true,
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+      avatarUrl:
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
       postedAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
     RoommateModel(
@@ -681,10 +716,12 @@ class AppState extends ChangeNotifier {
       sleepHabit: SleepHabit.earlyBird,
       isSmokingAllowed: false,
       isAlcoholAllowed: false,
-      bio: 'B.Com student. Friendly, studious, non-smoker. Looking for a budget friendly PG roommate near college.',
+      bio:
+          'B.Com student. Friendly, studious, non-smoker. Looking for a budget friendly PG roommate near college.',
       contactNumber: '+91 98980 33445',
       isVerifiedStudent: true,
-      avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+      avatarUrl:
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
       postedAt: DateTime.now().subtract(const Duration(hours: 12)),
     ),
   ];
@@ -693,7 +730,10 @@ class AppState extends ChangeNotifier {
 
   void addRoommateProfile(RoommateModel profile) {
     _roommates.insert(0, profile);
-    AppLogger.i('Added new roommate profile for: ${profile.fullName}', tag: 'ROOMMATE');
+    AppLogger.i(
+      'Added new roommate profile for: ${profile.fullName}',
+      tag: 'ROOMMATE',
+    );
     notifyListeners();
   }
 
@@ -708,7 +748,8 @@ class AppState extends ChangeNotifier {
         ChatMessageModel(
           id: 'msg_${DateTime.now().millisecondsSinceEpoch}_0',
           pgId: pgId,
-          text: 'Hello! I am the property manager for $pgName. How can I help with your room inquiry today?',
+          text:
+              'Hello! I am the property manager for $pgName. How can I help with your room inquiry today?',
           sender: MessageSender.landlord,
           timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
         ),
@@ -738,16 +779,29 @@ class AppState extends ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 700), () {
       String response;
       final lower = messageText.toLowerCase();
-      if (lower.contains('visit') || lower.contains('schedule') || lower.contains('time')) {
-        response = 'Sure! We would love to show you around. You can visit anytime between 10:00 AM and 7:00 PM. Would tomorrow at 4:00 PM work for you?';
-      } else if (lower.contains('sharing') || lower.contains('vacan') || lower.contains('room')) {
-        response = 'Yes, we currently have 1 triple-sharing and 2 twin-sharing AC rooms available with immediate move-in.';
-      } else if (lower.contains('food') || lower.contains('jain') || lower.contains('meal')) {
-        response = 'We serve 100% hygienic vegetarian meals (Breakfast, Lunch, Dinner). Jain food options are prepared separately on request.';
-      } else if (lower.contains('bike') || lower.contains('parking') || lower.contains('car')) {
-        response = 'Dedicated covered two-wheeler parking with CCTV surveillance is included free of cost for all residents.';
+      if (lower.contains('visit') ||
+          lower.contains('schedule') ||
+          lower.contains('time')) {
+        response =
+            'Sure! We would love to show you around. You can visit anytime between 10:00 AM and 7:00 PM. Would tomorrow at 4:00 PM work for you?';
+      } else if (lower.contains('sharing') ||
+          lower.contains('vacan') ||
+          lower.contains('room')) {
+        response =
+            'Yes, we currently have 1 triple-sharing and 2 twin-sharing AC rooms available with immediate move-in.';
+      } else if (lower.contains('food') ||
+          lower.contains('jain') ||
+          lower.contains('meal')) {
+        response =
+            'We serve 100% hygienic vegetarian meals (Breakfast, Lunch, Dinner). Jain food options are prepared separately on request.';
+      } else if (lower.contains('bike') ||
+          lower.contains('parking') ||
+          lower.contains('car')) {
+        response =
+            'Dedicated covered two-wheeler parking with CCTV surveillance is included free of cost for all residents.';
       } else {
-        response = 'Thank you for your message! Our property supervisor will reach out shortly, or you can call us directly via the Call button.';
+        response =
+            'Thank you for your message! Our property supervisor will reach out shortly, or you can call us directly via the Call button.';
       }
 
       final managerMsg = ChatMessageModel(
@@ -767,45 +821,46 @@ class AppState extends ChangeNotifier {
   // 4. DIGITAL MOVE-IN AGREEMENT & RENT RECEIPTS
   // -------------------------------------------------------------
   List<RentReceiptModel> get rentReceipts => [
-        RentReceiptModel(
-          invoiceId: 'INV-2026-0801',
-          monthYear: 'August 2026',
-          pgName: 'Sunrise Luxury PG for Girls',
-          amount: 8500,
-          electricityCharges: 620,
-          maintenanceCharges: 350,
-          transactionReference: 'UPI-AXIS-9928172648',
-          paidDate: DateTime(2026, 8, 1),
-          status: ReceiptPaymentStatus.paid,
-        ),
-        RentReceiptModel(
-          invoiceId: 'INV-2026-0701',
-          monthYear: 'July 2026',
-          pgName: 'Sunrise Luxury PG for Girls',
-          amount: 8500,
-          electricityCharges: 780,
-          maintenanceCharges: 350,
-          transactionReference: 'UPI-HDFC-1102938475',
-          paidDate: DateTime(2026, 7, 1),
-          status: ReceiptPaymentStatus.paid,
-        ),
-        RentReceiptModel(
-          invoiceId: 'INV-2026-0601',
-          monthYear: 'June 2026',
-          pgName: 'Sunrise Luxury PG for Girls',
-          amount: 8500,
-          electricityCharges: 540,
-          maintenanceCharges: 350,
-          transactionReference: 'UPI-ICICI-8849201948',
-          paidDate: DateTime(2026, 6, 1),
-          status: ReceiptPaymentStatus.paid,
-        ),
-      ];
+    RentReceiptModel(
+      invoiceId: 'INV-2026-0801',
+      monthYear: 'August 2026',
+      pgName: 'Sunrise Luxury PG for Girls',
+      amount: 8500,
+      electricityCharges: 620,
+      maintenanceCharges: 350,
+      transactionReference: 'UPI-AXIS-9928172648',
+      paidDate: DateTime(2026, 8, 1),
+      status: ReceiptPaymentStatus.paid,
+    ),
+    RentReceiptModel(
+      invoiceId: 'INV-2026-0701',
+      monthYear: 'July 2026',
+      pgName: 'Sunrise Luxury PG for Girls',
+      amount: 8500,
+      electricityCharges: 780,
+      maintenanceCharges: 350,
+      transactionReference: 'UPI-HDFC-1102938475',
+      paidDate: DateTime(2026, 7, 1),
+      status: ReceiptPaymentStatus.paid,
+    ),
+    RentReceiptModel(
+      invoiceId: 'INV-2026-0601',
+      monthYear: 'June 2026',
+      pgName: 'Sunrise Luxury PG for Girls',
+      amount: 8500,
+      electricityCharges: 540,
+      maintenanceCharges: 350,
+      transactionReference: 'UPI-ICICI-8849201948',
+      paidDate: DateTime(2026, 6, 1),
+      status: ReceiptPaymentStatus.paid,
+    ),
+  ];
 
   // -------------------------------------------------------------
   // 5. BIOMETRIC QUICK UNLOCK
   // -------------------------------------------------------------
-  bool get isBiometricEnabled => BiometricAuthService.instance.isBiometricEnabled;
+  bool get isBiometricEnabled =>
+      BiometricAuthService.instance.isBiometricEnabled;
 
   Future<void> setBiometricEnabled(bool enabled) async {
     await BiometricAuthService.instance.setBiometricEnabled(enabled);

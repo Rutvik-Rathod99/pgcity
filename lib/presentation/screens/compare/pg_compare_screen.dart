@@ -43,7 +43,9 @@ class PGCompareScreen extends StatelessWidget {
               },
               child: Text(
                 'Clear All',
-                style: AppTypography.button(color: AppColors.error).copyWith(fontSize: 12),
+                style: AppTypography.button(
+                  color: AppColors.error,
+                ).copyWith(fontSize: 12),
               ),
             ),
         ],
@@ -57,10 +59,15 @@ class PGCompareScreen extends StatelessWidget {
                 children: [
                   // Top Info Banner
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
                     margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
+                      color: isDark
+                          ? const Color(0xFF0F3934)
+                          : AppColors.tealLight,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: AppColors.teal.withAlpha(isDark ? 90 : 60),
@@ -68,13 +75,19 @@ class PGCompareScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.compare_arrows_rounded, color: AppColors.teal, size: 20),
+                        const Icon(
+                          Icons.compare_arrows_rounded,
+                          color: AppColors.teal,
+                          size: 20,
+                        ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             'Comparing ${pgs.length} shortlisted accommodations in Ahmedabad.',
                             style: AppTypography.bodySmall(
-                              color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                              color: isDark
+                                  ? const Color(0xFF38BDF8)
+                                  : AppColors.teal,
                             ).copyWith(fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -93,7 +106,8 @@ class PGCompareScreen extends StatelessWidget {
                         defaultColumnWidth: FixedColumnWidth(
                           pgs.length == 1
                               ? (MediaQuery.of(context).size.width - 32)
-                              : (MediaQuery.of(context).size.width - 32) / pgs.length,
+                              : (MediaQuery.of(context).size.width - 32) /
+                                    pgs.length,
                         ),
                         border: TableBorder.all(
                           color: context.appBorder,
@@ -106,87 +120,188 @@ class PGCompareScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: context.appSurface,
                             ),
-                            children: pgs.map((pg) => _buildHeaderCell(context, pg, isDark)).toList(),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildHeaderCell(context, pg, isDark),
+                                )
+                                .toList(),
                           ),
 
                           // 2. Monthly Rent Row
-                          _buildSectionHeaderRow('PRICING & DEPOSIT', pgs.length, isDark),
-                          TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildDataCell(
-                                  label: 'Monthly Rent',
-                                  value: CurrencyFormatter.format(pg.monthlyRent),
-                                  isHighlighted: true,
-                                  isDark: isDark,
-                                )).toList(),
+                          _buildSectionHeaderRow(
+                            'PRICING & DEPOSIT',
+                            pgs.length,
+                            isDark,
                           ),
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildDataCell(
-                                  label: 'Security Deposit',
-                                  value: CurrencyFormatter.format(pg.securityDeposit),
-                                  isDark: isDark,
-                                )).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildDataCell(
+                                    label: 'Monthly Rent',
+                                    value: CurrencyFormatter.format(
+                                      pg.monthlyRent,
+                                    ),
+                                    isHighlighted: true,
+                                    isDark: isDark,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          TableRow(
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildDataCell(
+                                    label: 'Security Deposit',
+                                    value: CurrencyFormatter.format(
+                                      pg.securityDeposit,
+                                    ),
+                                    isDark: isDark,
+                                  ),
+                                )
+                                .toList(),
                           ),
 
                           // 3. Accommodation Specs
-                          _buildSectionHeaderRow('ROOM & AMENITIES', pgs.length, isDark),
-                          TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildDataCell(
-                                  label: 'Sharing Types',
-                                  value: pg.sharingType,
-                                  isDark: isDark,
-                                )).toList(),
+                          _buildSectionHeaderRow(
+                            'ROOM & AMENITIES',
+                            pgs.length,
+                            isDark,
                           ),
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildDataCell(
-                                  label: 'Food Plan',
-                                  value: pg.foodOption,
-                                  isDark: isDark,
-                                )).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildDataCell(
+                                    label: 'Sharing Types',
+                                    value: pg.sharingType,
+                                    isDark: isDark,
+                                  ),
+                                )
+                                .toList(),
                           ),
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildDataCell(
-                                  label: 'Electricity',
-                                  value: pg.electricityOption,
-                                  isDark: isDark,
-                                )).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildDataCell(
+                                    label: 'Food Plan',
+                                    value: pg.foodOption,
+                                    isDark: isDark,
+                                  ),
+                                )
+                                .toList(),
                           ),
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildDataCell(
-                                  label: 'Minimum Stay',
-                                  value: pg.minimumStay,
-                                  isDark: isDark,
-                                )).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildDataCell(
+                                    label: 'Electricity',
+                                    value: pg.electricityOption,
+                                    isDark: isDark,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          TableRow(
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildDataCell(
+                                    label: 'Minimum Stay',
+                                    value: pg.minimumStay,
+                                    isDark: isDark,
+                                  ),
+                                )
+                                .toList(),
                           ),
 
                           // 4. Amenities Checklist
-                          _buildSectionHeaderRow('ESSENTIALS CHECKLIST', pgs.length, isDark),
-                          TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildChecklistCell('Wi-Fi', pg.amenities.contains('Wi-Fi'), isDark)).toList(),
+                          _buildSectionHeaderRow(
+                            'ESSENTIALS CHECKLIST',
+                            pgs.length,
+                            isDark,
                           ),
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildChecklistCell('Air Conditioning', pg.amenities.contains('AC'), isDark)).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildChecklistCell(
+                                    'Wi-Fi',
+                                    pg.amenities.contains('Wi-Fi'),
+                                    isDark,
+                                  ),
+                                )
+                                .toList(),
                           ),
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildChecklistCell('24/7 Security & CCTV', pg.amenities.contains('24/7 security') || pg.amenities.contains('CCTV'), isDark)).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildChecklistCell(
+                                    'Air Conditioning',
+                                    pg.amenities.contains('AC'),
+                                    isDark,
+                                  ),
+                                )
+                                .toList(),
                           ),
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildChecklistCell('Washing Machine', pg.amenities.contains('Washing machine'), isDark)).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildChecklistCell(
+                                    '24/7 Security & CCTV',
+                                    pg.amenities.contains('24/7 security') ||
+                                        pg.amenities.contains('CCTV'),
+                                    isDark,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          TableRow(
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map(
+                                  (pg) => _buildChecklistCell(
+                                    'Washing Machine',
+                                    pg.amenities.contains('Washing machine'),
+                                    isDark,
+                                  ),
+                                )
+                                .toList(),
                           ),
 
                           // 5. Direct View Action
                           TableRow(
-                            decoration: BoxDecoration(color: context.appSurface),
-                            children: pgs.map((pg) => _buildActionCell(context, pg)).toList(),
+                            decoration: BoxDecoration(
+                              color: context.appSurface,
+                            ),
+                            children: pgs
+                                .map((pg) => _buildActionCell(context, pg))
+                                .toList(),
                           ),
                         ],
                       ),
@@ -267,7 +382,11 @@ class PGCompareScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () => appState.toggleCompare(pg.id),
-                child: const Icon(Icons.close_rounded, size: 18, color: AppColors.error),
+                child: const Icon(
+                  Icons.close_rounded,
+                  size: 18,
+                  color: AppColors.error,
+                ),
               ),
             ],
           ),
@@ -371,7 +490,9 @@ class PGCompareScreen extends StatelessWidget {
           Icon(
             hasFeature ? Icons.check_circle_rounded : Icons.cancel_rounded,
             size: 16,
-            color: hasFeature ? AppColors.teal : (isDark ? Colors.white24 : AppColors.line),
+            color: hasFeature
+                ? AppColors.teal
+                : (isDark ? Colors.white24 : AppColors.line),
           ),
           const SizedBox(width: 6),
           Expanded(

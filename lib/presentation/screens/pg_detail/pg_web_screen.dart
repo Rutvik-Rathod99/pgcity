@@ -14,6 +14,9 @@ import 'package:pgcity/presentation/screens/compare/pg_compare_screen.dart';
 import 'package:pgcity/presentation/screens/chat/pg_landlord_chat_screen.dart';
 import 'package:pgcity/presentation/widgets/rent_calculator_modal.dart';
 import 'package:pgcity/presentation/widgets/pg_brochure_modal.dart';
+import 'package:pgcity/presentation/screens/ai_assistant/pg_ai_assistant_screen.dart';
+import 'package:pgcity/presentation/screens/food/tiffin_menu_screen.dart';
+import 'package:pgcity/presentation/screens/community/community_qa_modal.dart';
 
 class PGWebScreen extends StatelessWidget {
   final PGModel pg;
@@ -112,9 +115,41 @@ class PGWebScreen extends StatelessWidget {
     appState.toggleCompare(pg.id);
     Navigator.push(
       context,
+      MaterialPageRoute(builder: (_) => PGCompareScreen(appState: appState)),
+    );
+  }
+
+  void _askAiAboutThisPG(BuildContext context) {
+    Navigator.push(
+      context,
       MaterialPageRoute(
-        builder: (_) => PGCompareScreen(appState: appState),
+        builder: (_) => PGAiAssistantScreen(
+          appState: appState,
+          initialPrompt:
+              'Tell me everything about ${pg.name} in ${pg.locality}. What is the rent, food menu, security deposit, and rules?',
+        ),
       ),
+    );
+  }
+
+  void _openPGTiffinMenu(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TiffinMenuScreen(
+          appState: appState,
+          pgName: '${pg.name} (${pg.foodOption})',
+        ),
+      ),
+    );
+  }
+
+  void _openPGCommunityQA(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => CommunityQAModal(appState: appState, pgName: pg.name),
     );
   }
 
@@ -332,8 +367,37 @@ class PGWebScreen extends StatelessWidget {
                             children: [
                               _buildToolPill(
                                 context,
+                                icon: Icons.auto_awesome_rounded,
+                                label: 'Ask AI about PG',
+                                color: const Color(0xFFA855F7),
+                                onTap: () => _askAiAboutThisPG(context),
+                                isDark: isDark,
+                              ),
+                              const SizedBox(width: 8),
+                              _buildToolPill(
+                                context,
+                                icon: Icons.restaurant_menu_rounded,
+                                label: 'Food Menu',
+                                color: const Color(0xFFE2A63B),
+                                onTap: () => _openPGTiffinMenu(context),
+                                isDark: isDark,
+                              ),
+                              const SizedBox(width: 8),
+                              _buildToolPill(
+                                context,
+                                icon: Icons.forum_rounded,
+                                label: 'Resident Q&A',
+                                color: AppColors.teal,
+                                onTap: () => _openPGCommunityQA(context),
+                                isDark: isDark,
+                              ),
+                              const SizedBox(width: 8),
+                              _buildToolPill(
+                                context,
                                 icon: Icons.compare_arrows_rounded,
-                                label: appState.isCompared(pg.id) ? 'In Compare (View)' : 'Compare PG',
+                                label: appState.isCompared(pg.id)
+                                    ? 'In Compare (View)'
+                                    : 'Compare PG',
                                 color: AppColors.teal,
                                 onTap: () => _toggleCompareAndOpen(context),
                                 isDark: isDark,
@@ -378,9 +442,13 @@ class PGWebScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(18),
                           margin: const EdgeInsets.only(bottom: 12),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF1E293B) : AppColors.navy,
+                            color: isDark
+                                ? const Color(0xFF1E293B)
+                                : AppColors.navy,
                             borderRadius: BorderRadius.circular(16),
-                            border: isDark ? Border.all(color: context.appBorder) : null,
+                            border: isDark
+                                ? Border.all(color: context.appBorder)
+                                : null,
                             boxShadow: const [AppColors.softShadow],
                           ),
                           child: Stack(
@@ -406,7 +474,9 @@ class PGWebScreen extends StatelessWidget {
                                         ),
                                         decoration: BoxDecoration(
                                           color: AppColors.marigold,
-                                          borderRadius: BorderRadius.circular(6),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
                                         ),
                                         child: Text(
                                           'INTERACTIVE 360°',
@@ -456,7 +526,9 @@ class PGWebScreen extends StatelessWidget {
                                 width: 44,
                                 height: 44,
                                 decoration: BoxDecoration(
-                                  color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
+                                  color: isDark
+                                      ? const Color(0xFF0F3934)
+                                      : AppColors.tealLight,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: const Icon(
@@ -473,14 +545,18 @@ class PGWebScreen extends StatelessWidget {
                                     Text(
                                       'Take a Video Tour',
                                       style: AppTypography.titleSmall(
-                                        color: isDark ? Colors.white : AppColors.ink,
+                                        color: isDark
+                                            ? Colors.white
+                                            : AppColors.ink,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       pg.youtubeVideoTitle,
                                       style: AppTypography.bodySmall(
-                                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                                        color: isDark
+                                            ? Colors.white60
+                                            : AppColors.inkSoft,
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -491,7 +567,9 @@ class PGWebScreen extends StatelessWidget {
                               Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 14,
-                                color: isDark ? Colors.white60 : AppColors.inkSoft,
+                                color: isDark
+                                    ? Colors.white60
+                                    : AppColors.inkSoft,
                               ),
                             ],
                           ),
@@ -604,7 +682,9 @@ class PGWebScreen extends StatelessWidget {
                                 Text(
                                   amenity,
                                   style: AppTypography.titleSmall(
-                                    color: isDark ? Colors.white : AppColors.ink,
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppColors.ink,
                                   ).copyWith(fontSize: 12),
                                 ),
                               ],
@@ -646,7 +726,9 @@ class PGWebScreen extends StatelessWidget {
                                     child: Text(
                                       rule,
                                       style: AppTypography.bodyMedium(
-                                        color: isDark ? Colors.white : AppColors.ink,
+                                        color: isDark
+                                            ? Colors.white
+                                            : AppColors.ink,
                                       ),
                                     ),
                                   ),
@@ -706,7 +788,9 @@ class PGWebScreen extends StatelessWidget {
                             Text(
                               appState.tr('near_landmarks'),
                               style: AppTypography.monoLabel(
-                                color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                                color: isDark
+                                    ? const Color(0xFF38BDF8)
+                                    : AppColors.teal,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -725,14 +809,18 @@ class PGWebScreen extends StatelessWidget {
                                           Icon(
                                             Icons.place_outlined,
                                             size: 14,
-                                            color: isDark ? Colors.white60 : AppColors.inkSoft,
+                                            color: isDark
+                                                ? Colors.white60
+                                                : AppColors.inkSoft,
                                           ),
                                           const SizedBox(width: 6),
                                           Expanded(
                                             child: Text(
                                               l.name,
                                               style: AppTypography.titleSmall(
-                                                color: isDark ? Colors.white : AppColors.ink,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : AppColors.ink,
                                               ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -744,7 +832,9 @@ class PGWebScreen extends StatelessWidget {
                                     Text(
                                       l.distance,
                                       style: AppTypography.monoPrice(
-                                        color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                                        color: isDark
+                                            ? const Color(0xFF38BDF8)
+                                            : AppColors.teal,
                                       ).copyWith(fontSize: 12),
                                     ),
                                   ],
@@ -823,14 +913,18 @@ class PGWebScreen extends StatelessWidget {
                                     : Icons.favorite_border_rounded,
                                 color: isLiked
                                     ? AppColors.likedRed
-                                    : (isDark ? Colors.white60 : AppColors.inkSoft),
+                                    : (isDark
+                                          ? Colors.white60
+                                          : AppColors.inkSoft),
                                 size: 18,
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 '${pg.likesCount} seekers liked this property',
                                 style: AppTypography.bodySmall(
-                                  color: isDark ? Colors.white60 : AppColors.inkSoft,
+                                  color: isDark
+                                      ? Colors.white60
+                                      : AppColors.inkSoft,
                                 ),
                               ),
                             ],

@@ -26,13 +26,18 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
     return widget.pg.monthlyRent;
   }
 
-  double get _electricityCost => (_electricityUnits * _unitRate) / _selectedSharing;
+  double get _electricityCost =>
+      (_electricityUnits * _unitRate) / _selectedSharing;
   double get _laundryCost => _includeLaundry ? 450 : 0;
   double get _totalMonthlyPerPerson =>
-      _baseRent + _electricityCost + _laundryCost + (_maintenanceFee / _selectedSharing);
+      _baseRent +
+      _electricityCost +
+      _laundryCost +
+      (_maintenanceFee / _selectedSharing);
 
   double get _depositPerPerson =>
-      widget.pg.securityDeposit * (_selectedSharing == 1 ? 1.3 : (_selectedSharing == 3 ? 0.85 : 1.0));
+      widget.pg.securityDeposit *
+      (_selectedSharing == 1 ? 1.3 : (_selectedSharing == 3 ? 0.85 : 1.0));
 
   double get _upfrontMoveInCost => _totalMonthlyPerPerson + _depositPerPerson;
 
@@ -100,7 +105,9 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
+                    color: isDark
+                        ? const Color(0xFF0F3934)
+                        : AppColors.tealLight,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: AppColors.teal.withAlpha(isDark ? 100 : 75),
@@ -111,7 +118,9 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
                       Text(
                         'TOTAL ESTIMATED MONTHLY OUTFLOW',
                         style: AppTypography.monoBadge(
-                          color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                          color: isDark
+                              ? const Color(0xFF38BDF8)
+                              : AppColors.teal,
                         ).copyWith(fontSize: 10),
                       ),
                       const SizedBox(height: 4),
@@ -136,7 +145,9 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
                 // 1. Sharing Selection
                 Text(
                   '1. Select Room Sharing Type',
-                  style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink),
+                  style: AppTypography.titleSmall(
+                    color: isDark ? Colors.white : AppColors.ink,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -148,7 +159,8 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
                         child: ChoiceChip(
                           label: Center(child: Text('$s Sharing')),
                           selected: isSel,
-                          onSelected: (_) => setState(() => _selectedSharing = s),
+                          onSelected: (_) =>
+                              setState(() => _selectedSharing = s),
                         ),
                       ),
                     );
@@ -162,11 +174,17 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
                   children: [
                     Text(
                       '2. Estimated AC & Room Units',
-                      style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink),
+                      style: AppTypography.titleSmall(
+                        color: isDark ? Colors.white : AppColors.ink,
+                      ),
                     ),
                     Text(
                       '${_electricityUnits.toInt()} Units (${CurrencyFormatter.format(_electricityCost)}/person)',
-                      style: AppTypography.monoPrice(color: isDark ? const Color(0xFF38BDF8) : AppColors.teal).copyWith(fontSize: 12),
+                      style: AppTypography.monoPrice(
+                        color: isDark
+                            ? const Color(0xFF38BDF8)
+                            : AppColors.teal,
+                      ).copyWith(fontSize: 12),
                     ),
                   ],
                 ),
@@ -184,11 +202,15 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
                 SwitchListTile(
                   title: Text(
                     'Doorstep Laundry & Ironing (+₹450/mo)',
-                    style: AppTypography.bodyMedium(color: isDark ? Colors.white : AppColors.ink),
+                    style: AppTypography.bodyMedium(
+                      color: isDark ? Colors.white : AppColors.ink,
+                    ),
                   ),
                   subtitle: Text(
                     'Twice-a-week wash & iron service',
-                    style: AppTypography.bodySmall(color: isDark ? Colors.white60 : AppColors.inkSoft),
+                    style: AppTypography.bodySmall(
+                      color: isDark ? Colors.white60 : AppColors.inkSoft,
+                    ),
                   ),
                   value: _includeLaundry,
                   activeTrackColor: AppColors.teal,
@@ -210,14 +232,33 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
                     children: [
                       Text(
                         'Upfront Move-In Cost Breakdown',
-                        style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink),
+                        style: AppTypography.titleSmall(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ),
                       ),
                       const SizedBox(height: 8),
-                      _buildRow('1st Month Rent & Utilities', CurrencyFormatter.format(_totalMonthlyPerPerson), isDark),
-                      _buildRow('Refundable Security Deposit', CurrencyFormatter.format(_depositPerPerson), isDark),
-                      _buildRow('PGCity Booking Token (Deducted)', '₹1,000', isDark),
+                      _buildRow(
+                        '1st Month Rent & Utilities',
+                        CurrencyFormatter.format(_totalMonthlyPerPerson),
+                        isDark,
+                      ),
+                      _buildRow(
+                        'Refundable Security Deposit',
+                        CurrencyFormatter.format(_depositPerPerson),
+                        isDark,
+                      ),
+                      _buildRow(
+                        'PGCity Booking Token (Deducted)',
+                        '₹1,000',
+                        isDark,
+                      ),
                       const Divider(),
-                      _buildRow('Total Upfront Cash Needed', CurrencyFormatter.format(_upfrontMoveInCost), isDark, isBold: true),
+                      _buildRow(
+                        'Total Upfront Cash Needed',
+                        CurrencyFormatter.format(_upfrontMoveInCost),
+                        isDark,
+                        isBold: true,
+                      ),
                     ],
                   ),
                 ),
@@ -230,7 +271,9 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+              ),
               child: const Text('Close Calculator'),
             ),
           ),
@@ -239,7 +282,12 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
     );
   }
 
-  Widget _buildRow(String label, String value, bool isDark, {bool isBold = false}) {
+  Widget _buildRow(
+    String label,
+    String value,
+    bool isDark, {
+    bool isBold = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
@@ -258,7 +306,9 @@ class _RentCalculatorModalState extends State<RentCalculatorModal> {
             style: TextStyle(
               fontSize: 12,
               fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
-              color: isBold ? (isDark ? const Color(0xFF38BDF8) : AppColors.teal) : (isDark ? Colors.white : AppColors.ink),
+              color: isBold
+                  ? (isDark ? const Color(0xFF38BDF8) : AppColors.teal)
+                  : (isDark ? Colors.white : AppColors.ink),
             ),
           ),
         ],

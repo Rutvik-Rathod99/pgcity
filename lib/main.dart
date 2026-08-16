@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/crashlytics_service.dart';
 import 'core/services/biometric_auth_service.dart';
+import 'core/config/env_config.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/app_logger.dart';
 import 'data/repositories/pg_repository.dart';
@@ -14,7 +15,8 @@ import 'presentation/screens/main_navigation_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 1. Initialize Firebase Crashlytics & Biometrics
+  // 1. Initialize Environment Config, Firebase Crashlytics & Biometrics
+  await EnvConfig.initialize();
   CrashlyticsService.instance.initialize();
   await BiometricAuthService.instance.initialize();
   AppLogger.i('PGCity Ahmedabad application launching...', tag: 'STARTUP');

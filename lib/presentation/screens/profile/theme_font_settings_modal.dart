@@ -108,12 +108,16 @@ class _ThemeFontSettingsModalState extends State<ThemeFontSettingsModal> {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.navy
-                          : (isDark ? const Color(0xFF0F172A) : AppColors.cream),
+                          : (isDark
+                                ? const Color(0xFF0F172A)
+                                : AppColors.cream),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isSelected
                             ? AppColors.marigold
-                            : (isDark ? const Color(0xFF334155) : AppColors.line),
+                            : (isDark
+                                  ? const Color(0xFF334155)
+                                  : AppColors.line),
                       ),
                     ),
                     child: Column(
@@ -124,7 +128,9 @@ class _ThemeFontSettingsModalState extends State<ThemeFontSettingsModal> {
                           lang.label,
                           style: TextStyle(
                             fontSize: 11,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.w500,
                             color: isSelected
                                 ? Colors.white
                                 : (isDark ? Colors.white70 : AppColors.ink),
@@ -160,8 +166,12 @@ class _ThemeFontSettingsModalState extends State<ThemeFontSettingsModal> {
                     Text(
                       f.label,
                       style: TextStyle(
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                        color: isSelected ? Colors.white : (isDark ? Colors.white70 : AppColors.ink),
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.w600,
+                        color: isSelected
+                            ? Colors.white
+                            : (isDark ? Colors.white70 : AppColors.ink),
                         fontSize: 12,
                       ),
                     ),
@@ -169,14 +179,18 @@ class _ThemeFontSettingsModalState extends State<ThemeFontSettingsModal> {
                       f.subtitle,
                       style: TextStyle(
                         fontSize: 9,
-                        color: isSelected ? Colors.white70 : (isDark ? Colors.white38 : AppColors.inkSoft),
+                        color: isSelected
+                            ? Colors.white70
+                            : (isDark ? Colors.white38 : AppColors.inkSoft),
                       ),
                     ),
                   ],
                 ),
                 selected: isSelected,
                 selectedColor: AppColors.navy,
-                backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.cream,
+                backgroundColor: isDark
+                    ? const Color(0xFF0F172A)
+                    : AppColors.cream,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                   side: BorderSide(

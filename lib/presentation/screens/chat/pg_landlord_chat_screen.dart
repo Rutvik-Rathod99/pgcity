@@ -68,7 +68,10 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
         backgroundColor: context.appSurface,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: isDark ? Colors.white : AppColors.ink),
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Row(
@@ -80,7 +83,11 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
                 color: AppColors.navy,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.person_rounded, color: AppColors.marigold, size: 20),
+              child: const Icon(
+                Icons.person_rounded,
+                color: AppColors.marigold,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -89,7 +96,9 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
                 children: [
                   Text(
                     '${widget.pg.name} Manager',
-                    style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink),
+                    style: AppTypography.titleSmall(
+                      color: isDark ? Colors.white : AppColors.ink,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Row(
@@ -105,7 +114,9 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
                       const SizedBox(width: 4),
                       Text(
                         'Verified Landlord · Online',
-                        style: AppTypography.bodySmall(color: isDark ? Colors.white60 : AppColors.inkSoft).copyWith(fontSize: 10),
+                        style: AppTypography.bodySmall(
+                          color: isDark ? Colors.white60 : AppColors.inkSoft,
+                        ).copyWith(fontSize: 10),
                       ),
                     ],
                   ),
@@ -121,7 +132,9 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Calling Property Manager at ${widget.pg.contactNumber}'),
+                  content: Text(
+                    'Calling Property Manager at ${widget.pg.contactNumber}',
+                  ),
                   backgroundColor: AppColors.teal,
                 ),
               );
@@ -172,29 +185,39 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
                 final isUser = msg.sender == MessageSender.user;
 
                 return Align(
-                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  alignment: isUser
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.78,
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       color: isUser
                           ? AppColors.teal
-                          : (isDark ? const Color(0xFF1E293B) : AppColors.paper),
+                          : (isDark
+                                ? const Color(0xFF1E293B)
+                                : AppColors.paper),
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(16),
                         topRight: const Radius.circular(16),
                         bottomLeft: Radius.circular(isUser ? 16 : 4),
                         bottomRight: Radius.circular(isUser ? 4 : 16),
                       ),
-                      border: isUser ? null : Border.all(color: context.appBorder),
+                      border: isUser
+                          ? null
+                          : Border.all(color: context.appBorder),
                       boxShadow: const [AppColors.softShadow],
                     ),
                     child: Column(
-                      crossAxisAlignment:
-                          isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                      crossAxisAlignment: isUser
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
                       children: [
                         Text(
                           msg.text,
@@ -247,11 +270,17 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
                     ),
                     child: TextField(
                       controller: _msgController,
-                      style: TextStyle(fontSize: 13, color: isDark ? Colors.white : AppColors.ink),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: isDark ? Colors.white : AppColors.ink,
+                      ),
                       decoration: const InputDecoration(
                         hintText: 'Type an inquiry message...',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
                       ),
                       onSubmitted: (_) => _sendMessage(),
                     ),
@@ -264,7 +293,11 @@ class _PGLandlordChatScreenState extends State<PGLandlordChatScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.send_rounded, color: Colors.white, size: 18),
+                    icon: const Icon(
+                      Icons.send_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                     onPressed: () => _sendMessage(),
                   ),
                 ),

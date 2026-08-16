@@ -105,11 +105,17 @@ class NotificationSheet extends StatelessWidget {
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: notif.isRead
-                            ? (isDark ? const Color(0xFF1E293B) : AppColors.paper)
-                            : (isDark ? const Color(0xFF0F3934) : AppColors.tealLight.withAlpha(120)),
+                            ? (isDark
+                                  ? const Color(0xFF1E293B)
+                                  : AppColors.paper)
+                            : (isDark
+                                  ? const Color(0xFF0F3934)
+                                  : AppColors.tealLight.withAlpha(120)),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: notif.isRead ? context.appBorder : AppColors.teal,
+                          color: notif.isRead
+                              ? context.appBorder
+                              : AppColors.teal,
                           width: notif.isRead ? 1 : 1.2,
                         ),
                       ),
@@ -120,7 +126,9 @@ class NotificationSheet extends StatelessWidget {
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: notif.isRead
-                                  ? (isDark ? const Color(0xFF334155) : AppColors.cream)
+                                  ? (isDark
+                                        ? const Color(0xFF334155)
+                                        : AppColors.cream)
                                   : AppColors.teal,
                               shape: BoxShape.circle,
                             ),
@@ -140,21 +148,27 @@ class NotificationSheet extends StatelessWidget {
                                 Text(
                                   notif.title,
                                   style: AppTypography.titleSmall(
-                                    color: isDark ? Colors.white : AppColors.ink,
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppColors.ink,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   notif.message,
                                   style: AppTypography.bodySmall(
-                                    color: isDark ? Colors.white70 : AppColors.inkSoft,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : AppColors.inkSoft,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   _formatTimeAgo(notif.createdAt),
                                   style: AppTypography.monoLabel(
-                                    color: isDark ? Colors.white38 : AppColors.inkSoft,
+                                    color: isDark
+                                        ? Colors.white38
+                                        : AppColors.inkSoft,
                                   ).copyWith(fontSize: 9),
                                 ),
                               ],

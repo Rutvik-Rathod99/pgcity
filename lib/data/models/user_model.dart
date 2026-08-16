@@ -26,7 +26,8 @@ class UserModel {
   final String email;
   final UserGender gender;
   final int age;
-  final String occupation; // e.g. "XYZ College of Engineering" or "Software Engineer"
+  final String
+  occupation; // e.g. "XYZ College of Engineering" or "Software Engineer"
   final String? profilePhoto;
   final bool isVerified;
   final DateTime? moveInDate;

@@ -23,17 +23,26 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
 
   List<RoommateModel> get _filteredRoommates {
     return widget.appState.roommates.where((rm) {
-      if (_selectedGender != 'All' && rm.gender != _selectedGender) return false;
-      if (_selectedFoodHabit != null && rm.foodHabit != _selectedFoodHabit) return false;
-      if (_selectedSleepHabit != null && rm.sleepHabit != _selectedSleepHabit) return false;
+      if (_selectedGender != 'All' && rm.gender != _selectedGender) {
+        return false;
+      }
+      if (_selectedFoodHabit != null && rm.foodHabit != _selectedFoodHabit) {
+        return false;
+      }
+      if (_selectedSleepHabit != null && rm.sleepHabit != _selectedSleepHabit) {
+        return false;
+      }
 
       if (_searchQuery.isNotEmpty) {
         final q = _searchQuery.toLowerCase();
-        final match = rm.fullName.toLowerCase().contains(q) ||
+        final match =
+            rm.fullName.toLowerCase().contains(q) ||
             rm.collegeOrCompany.toLowerCase().contains(q) ||
             rm.targetLocality.toLowerCase().contains(q) ||
             rm.bio.toLowerCase().contains(q);
-        if (!match) return false;
+        if (!match) {
+          return false;
+        }
       }
       return true;
     }).toList();
@@ -102,12 +111,21 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                 const SizedBox(height: 16),
 
                 // Full Name
-                Text('Your Full Name', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                Text(
+                  'Your Full Name',
+                  style: AppTypography.monoLabel(
+                    color: isDark ? Colors.white70 : AppColors.inkSoft,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 TextField(
                   controller: nameCtrl,
-                  style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
-                  decoration: const InputDecoration(hintText: 'e.g. Shreyas Patel'),
+                  style: TextStyle(
+                    color: isDark ? Colors.white : AppColors.ink,
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: 'e.g. Shreyas Patel',
+                  ),
                 ),
                 const SizedBox(height: 12),
 
@@ -118,7 +136,14 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Gender', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                          Text(
+                            'Gender',
+                            style: AppTypography.monoLabel(
+                              color: isDark
+                                  ? Colors.white70
+                                  : AppColors.inkSoft,
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           Wrap(
                             spacing: 6,
@@ -140,12 +165,21 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Age', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                          Text(
+                            'Age',
+                            style: AppTypography.monoLabel(
+                              color: isDark
+                                  ? Colors.white70
+                                  : AppColors.inkSoft,
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           TextField(
                             controller: ageCtrl,
                             keyboardType: TextInputType.number,
-                            style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
+                            style: TextStyle(
+                              color: isDark ? Colors.white : AppColors.ink,
+                            ),
                           ),
                         ],
                       ),
@@ -155,12 +189,21 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                 const SizedBox(height: 12),
 
                 // College or Workplace
-                Text('College / Workplace', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                Text(
+                  'College / Workplace',
+                  style: AppTypography.monoLabel(
+                    color: isDark ? Colors.white70 : AppColors.inkSoft,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 TextField(
                   controller: collegeCtrl,
-                  style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
-                  decoration: const InputDecoration(hintText: 'e.g. CEPT University, Nirma, TCS'),
+                  style: TextStyle(
+                    color: isDark ? Colors.white : AppColors.ink,
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: 'e.g. CEPT University, Nirma, TCS',
+                  ),
                 ),
                 const SizedBox(height: 12),
 
@@ -171,12 +214,23 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Target Area', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                          Text(
+                            'Target Area',
+                            style: AppTypography.monoLabel(
+                              color: isDark
+                                  ? Colors.white70
+                                  : AppColors.inkSoft,
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           TextField(
                             controller: localityCtrl,
-                            style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
-                            decoration: const InputDecoration(hintText: 'Navrangpura'),
+                            style: TextStyle(
+                              color: isDark ? Colors.white : AppColors.ink,
+                            ),
+                            decoration: const InputDecoration(
+                              hintText: 'Navrangpura',
+                            ),
                           ),
                         ],
                       ),
@@ -186,12 +240,21 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Max Budget (₹/mo)', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                          Text(
+                            'Max Budget (₹/mo)',
+                            style: AppTypography.monoLabel(
+                              color: isDark
+                                  ? Colors.white70
+                                  : AppColors.inkSoft,
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           TextField(
                             controller: budgetCtrl,
                             keyboardType: TextInputType.number,
-                            style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
+                            style: TextStyle(
+                              color: isDark ? Colors.white : AppColors.ink,
+                            ),
                           ),
                         ],
                       ),
@@ -201,14 +264,27 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                 const SizedBox(height: 12),
 
                 // Food Habit
-                Text('Food Preference', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                Text(
+                  'Food Preference',
+                  style: AppTypography.monoLabel(
+                    color: isDark ? Colors.white70 : AppColors.inkSoft,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
                   children: FoodHabit.values.map((f) {
                     return ChoiceChip(
-                      label: Text(f.name == 'pureVeg' ? 'Pure Veg' : (f.name == 'jain' ? 'Jain' : (f.name == 'vegEgg' ? 'Veg+Egg' : 'Non-Veg'))),
+                      label: Text(
+                        f.name == 'pureVeg'
+                            ? 'Pure Veg'
+                            : (f.name == 'jain'
+                                  ? 'Jain'
+                                  : (f.name == 'vegEgg'
+                                        ? 'Veg+Egg'
+                                        : 'Non-Veg')),
+                      ),
                       selected: food == f,
                       onSelected: (val) {
                         if (val) setSheetState(() => food = f);
@@ -219,23 +295,40 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                 const SizedBox(height: 12),
 
                 // Bio
-                Text('About You (Habits, Preferences)', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                Text(
+                  'About You (Habits, Preferences)',
+                  style: AppTypography.monoLabel(
+                    color: isDark ? Colors.white70 : AppColors.inkSoft,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 TextField(
                   controller: bioCtrl,
                   maxLines: 2,
-                  style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
-                  decoration: const InputDecoration(hintText: 'e.g. Studying for exams, looking for clean flatmate.'),
+                  style: TextStyle(
+                    color: isDark ? Colors.white : AppColors.ink,
+                  ),
+                  decoration: const InputDecoration(
+                    hintText:
+                        'e.g. Studying for exams, looking for clean flatmate.',
+                  ),
                 ),
                 const SizedBox(height: 12),
 
                 // Contact
-                Text('WhatsApp Contact', style: AppTypography.monoLabel(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                Text(
+                  'WhatsApp Contact',
+                  style: AppTypography.monoLabel(
+                    color: isDark ? Colors.white70 : AppColors.inkSoft,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 TextField(
                   controller: contactCtrl,
                   keyboardType: TextInputType.phone,
-                  style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
+                  style: TextStyle(
+                    color: isDark ? Colors.white : AppColors.ink,
+                  ),
                 ),
                 const SizedBox(height: 20),
 
@@ -250,14 +343,21 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                         fullName: nameCtrl.text.trim(),
                         gender: gender,
                         age: int.tryParse(ageCtrl.text) ?? 21,
-                        collegeOrCompany: collegeCtrl.text.trim().isNotEmpty ? collegeCtrl.text.trim() : 'Ahmedabad University',
-                        targetLocality: localityCtrl.text.trim().isNotEmpty ? localityCtrl.text.trim() : 'Navrangpura',
+                        collegeOrCompany: collegeCtrl.text.trim().isNotEmpty
+                            ? collegeCtrl.text.trim()
+                            : 'Ahmedabad University',
+                        targetLocality: localityCtrl.text.trim().isNotEmpty
+                            ? localityCtrl.text.trim()
+                            : 'Navrangpura',
                         budgetMax: double.tryParse(budgetCtrl.text) ?? 10000,
                         foodHabit: food,
                         sleepHabit: sleep,
-                        bio: bioCtrl.text.trim().isNotEmpty ? bioCtrl.text.trim() : 'Looking for friendly roommate.',
+                        bio: bioCtrl.text.trim().isNotEmpty
+                            ? bioCtrl.text.trim()
+                            : 'Looking for friendly roommate.',
                         contactNumber: contactCtrl.text.trim(),
-                        avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80',
+                        avatarUrl:
+                            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80',
                         postedAt: DateTime.now(),
                       );
 
@@ -265,12 +365,16 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                       Navigator.pop(ctx);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Roommate profile posted successfully!'),
+                          content: Text(
+                            'Roommate profile posted successfully!',
+                          ),
                           backgroundColor: AppColors.teal,
                         ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
                     child: const Text('Post Profile'),
                   ),
                 ),
@@ -293,16 +397,24 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
         backgroundColor: context.appBg,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: isDark ? Colors.white : AppColors.ink),
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Roommate Matcher',
-          style: AppTypography.titleMedium(color: isDark ? Colors.white : AppColors.ink),
+          style: AppTypography.titleMedium(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person_add_alt_1_rounded, color: AppColors.teal),
+            icon: const Icon(
+              Icons.person_add_alt_1_rounded,
+              color: AppColors.teal,
+            ),
             tooltip: 'Post Profile',
             onPressed: _openPostProfileSheet,
           ),
@@ -325,11 +437,20 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                   ),
                   child: TextField(
                     onChanged: (v) => setState(() => _searchQuery = v),
-                    style: TextStyle(fontSize: 13, color: isDark ? Colors.white : AppColors.ink),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: isDark ? Colors.white : AppColors.ink,
+                    ),
                     decoration: InputDecoration(
                       hintText: 'Search college, locality or name...',
-                      hintStyle: AppTypography.bodySmall(color: isDark ? Colors.white38 : AppColors.inkSoft),
-                      prefixIcon: Icon(Icons.search_rounded, size: 18, color: isDark ? Colors.white60 : AppColors.inkSoft),
+                      hintStyle: AppTypography.bodySmall(
+                        color: isDark ? Colors.white38 : AppColors.inkSoft,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search_rounded,
+                        size: 18,
+                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                      ),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(vertical: 11),
                     ),
@@ -360,10 +481,20 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                         Padding(
                           padding: const EdgeInsets.only(right: 6),
                           child: FilterChip(
-                            label: Text(f.name == 'pureVeg' ? 'Pure Veg' : (f.name == 'jain' ? 'Jain' : (f.name == 'vegEgg' ? 'Veg+Egg' : 'Non-Veg'))),
+                            label: Text(
+                              f.name == 'pureVeg'
+                                  ? 'Pure Veg'
+                                  : (f.name == 'jain'
+                                        ? 'Jain'
+                                        : (f.name == 'vegEgg'
+                                              ? 'Veg+Egg'
+                                              : 'Non-Veg')),
+                            ),
                             selected: _selectedFoodHabit == f,
                             onSelected: (val) {
-                              setState(() => _selectedFoodHabit = val ? f : null);
+                              setState(
+                                () => _selectedFoodHabit = val ? f : null,
+                              );
                             },
                           ),
                         ),
@@ -381,11 +512,25 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.people_outline_rounded, size: 48, color: AppColors.inkSoft),
+                        const Icon(
+                          Icons.people_outline_rounded,
+                          size: 48,
+                          color: AppColors.inkSoft,
+                        ),
                         const SizedBox(height: 12),
-                        Text('No matching roommates found', style: AppTypography.titleSmall(color: isDark ? Colors.white70 : AppColors.inkSoft)),
+                        Text(
+                          'No matching roommates found',
+                          style: AppTypography.titleSmall(
+                            color: isDark ? Colors.white70 : AppColors.inkSoft,
+                          ),
+                        ),
                         const SizedBox(height: 4),
-                        Text('Try adjusting your search filter or budget.', style: AppTypography.bodySmall(color: isDark ? Colors.white38 : AppColors.inkSoft)),
+                        Text(
+                          'Try adjusting your search filter or budget.',
+                          style: AppTypography.bodySmall(
+                            color: isDark ? Colors.white38 : AppColors.inkSoft,
+                          ),
+                        ),
                       ],
                     ),
                   )
@@ -411,7 +556,11 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
     );
   }
 
-  Widget _buildRoommateCard(BuildContext context, RoommateModel rm, bool isDark) {
+  Widget _buildRoommateCard(
+    BuildContext context,
+    RoommateModel rm,
+    bool isDark,
+  ) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -436,7 +585,10 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                     width: 54,
                     height: 54,
                     color: AppColors.marigold.withAlpha(50),
-                    child: const Icon(Icons.person_rounded, color: AppColors.navy),
+                    child: const Icon(
+                      Icons.person_rounded,
+                      color: AppColors.navy,
+                    ),
                   ),
                 ),
               ),
@@ -450,24 +602,36 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                         Flexible(
                           child: Text(
                             '${rm.fullName}, ${rm.age}',
-                            style: AppTypography.titleMedium(color: isDark ? Colors.white : AppColors.ink),
+                            style: AppTypography.titleMedium(
+                              color: isDark ? Colors.white : AppColors.ink,
+                            ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         if (rm.isVerifiedStudent) ...[
                           const SizedBox(width: 6),
-                          const Icon(Icons.verified_rounded, size: 16, color: AppColors.teal),
+                          const Icon(
+                            Icons.verified_rounded,
+                            size: 16,
+                            color: AppColors.teal,
+                          ),
                         ],
                       ],
                     ),
                     Text(
                       rm.collegeOrCompany,
-                      style: AppTypography.bodySmall(color: isDark ? Colors.white70 : AppColors.inkSoft),
+                      style: AppTypography.bodySmall(
+                        color: isDark ? Colors.white70 : AppColors.inkSoft,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       'Seeking PG in ${rm.targetLocality}',
-                      style: AppTypography.monoBadge(color: isDark ? const Color(0xFF38BDF8) : AppColors.teal).copyWith(fontSize: 9),
+                      style: AppTypography.monoBadge(
+                        color: isDark
+                            ? const Color(0xFF38BDF8)
+                            : AppColors.teal,
+                      ).copyWith(fontSize: 9),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -478,9 +642,16 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                 children: [
                   Text(
                     CurrencyFormatter.format(rm.budgetMax),
-                    style: AppTypography.monoPrice(color: isDark ? const Color(0xFF38BDF8) : AppColors.teal).copyWith(fontSize: 13),
+                    style: AppTypography.monoPrice(
+                      color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                    ).copyWith(fontSize: 13),
                   ),
-                  Text('max/mo', style: AppTypography.bodySmall(color: isDark ? Colors.white38 : AppColors.inkSoft).copyWith(fontSize: 9)),
+                  Text(
+                    'max/mo',
+                    style: AppTypography.bodySmall(
+                      color: isDark ? Colors.white38 : AppColors.inkSoft,
+                    ).copyWith(fontSize: 9),
+                  ),
                 ],
               ),
             ],
@@ -501,7 +672,9 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
 
           Text(
             rm.bio,
-            style: AppTypography.bodySmall(color: isDark ? Colors.white70 : AppColors.ink),
+            style: AppTypography.bodySmall(
+              color: isDark ? Colors.white70 : AppColors.ink,
+            ),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
           ),
@@ -514,7 +687,9 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
             children: [
               Text(
                 'Posted ${DateFormat('dd MMM').format(rm.postedAt)}',
-                style: AppTypography.monoLabel(color: isDark ? Colors.white38 : AppColors.inkSoft).copyWith(fontSize: 9),
+                style: AppTypography.monoLabel(
+                  color: isDark ? Colors.white38 : AppColors.inkSoft,
+                ).copyWith(fontSize: 9),
               ),
               Row(
                 children: [
@@ -522,16 +697,27 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Connecting to ${rm.fullName} via WhatsApp (${rm.contactNumber})'),
+                          content: Text(
+                            'Connecting to ${rm.fullName} via WhatsApp (${rm.contactNumber})',
+                          ),
                           backgroundColor: const Color(0xFF25D366),
                         ),
                       );
                     },
-                    icon: const Icon(Icons.chat_bubble_outline_rounded, size: 14),
+                    icon: const Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      size: 14,
+                    ),
                     label: const Text('Connect'),
                     style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ],
@@ -553,7 +739,11 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 10, color: isDark ? Colors.white70 : AppColors.inkSoft),
+          Icon(
+            icon,
+            size: 10,
+            color: isDark ? Colors.white70 : AppColors.inkSoft,
+          ),
           const SizedBox(width: 4),
           Text(
             text,

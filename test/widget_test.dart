@@ -11,6 +11,8 @@ import 'package:pgcity/data/models/enrollment_model.dart';
 import 'package:pgcity/data/models/roommate_model.dart';
 import 'package:pgcity/data/models/chat_message_model.dart';
 import 'package:pgcity/core/services/pg_share_service.dart';
+import 'package:pgcity/core/services/groq_ai_service.dart';
+import 'package:pgcity/core/config/env_config.dart';
 import 'package:pgcity/data/repositories/pg_repository.dart';
 import 'package:pgcity/data/repositories/user_repository.dart';
 import 'package:pgcity/data/repositories/enrollment_repository.dart';
@@ -27,6 +29,7 @@ void main() {
     late AppState appState;
 
     setUp(() async {
+      await EnvConfig.initialize();
       SharedPreferences.setMockInitialValues({});
       prefs = await SharedPreferences.getInstance();
       pgRepo = PGRepository(prefs);
@@ -180,24 +183,33 @@ void main() {
     });
 
     test('Authentication: Google Sign-In simulation', () async {
-      await appState.loginWithGoogle(name: 'Google Student', email: 'student@gmail.com');
+      await appState.loginWithGoogle(
+        name: 'Google Student',
+        email: 'student@gmail.com',
+      );
       expect(appState.isLoggedIn, true);
       expect(appState.currentUser?.fullName, 'Google Student');
       expect(appState.currentUser?.isGoogleUser, true);
       expect(appState.currentUser?.authProvider, AuthProvider.google);
     });
 
-    test('Authentication: Apple Sign-In simulation and Apple account deletion', () async {
-      await appState.loginWithApple(appleId: 'apple_sub_12345', email: 'apple.user@icloud.com');
-      expect(appState.isLoggedIn, true);
-      expect(appState.currentUser?.isAppleUser, true);
-      expect(appState.currentUser?.authProvider, AuthProvider.apple);
+    test(
+      'Authentication: Apple Sign-In simulation and Apple account deletion',
+      () async {
+        await appState.loginWithApple(
+          appleId: 'apple_sub_12345',
+          email: 'apple.user@icloud.com',
+        );
+        expect(appState.isLoggedIn, true);
+        expect(appState.currentUser?.isAppleUser, true);
+        expect(appState.currentUser?.authProvider, AuthProvider.apple);
 
-      // Test Apple-Specific account deletion (Apple Guideline 5.1.1(v))
-      await appState.deleteAppleAccount();
-      expect(appState.isLoggedIn, false);
-      expect(appState.currentUser, null);
-    });
+        // Test Apple-Specific account deletion (Apple Guideline 5.1.1(v))
+        await appState.deleteAppleAccount();
+        expect(appState.isLoggedIn, false);
+        expect(appState.currentUser, null);
+      },
+    );
 
     test('Authentication: Logout resets session to guest state', () async {
       await appState.loginWithGoogle();
@@ -253,7 +265,10 @@ void main() {
 
       expect(appState.userAppRating, 5);
       expect(prefs.getInt('pgcity_user_rating'), 5);
-      expect(prefs.getString('pgcity_user_feedback'), 'Super clean PG photos and rapid landlord responses!');
+      expect(
+        prefs.getString('pgcity_user_feedback'),
+        'Super clean PG photos and rapid landlord responses!',
+      );
     });
 
     test('App Version & Build Number Display', () {
@@ -269,7 +284,11 @@ void main() {
       AppLogger.d('Debug level test message', tag: 'TEST');
       AppLogger.i('Info level test message', tag: 'TEST');
       AppLogger.w('Warning level test message', tag: 'TEST');
-      AppLogger.e('Error level test message', tag: 'TEST', error: 'Sample Error');
+      AppLogger.e(
+        'Error level test message',
+        tag: 'TEST',
+        error: 'Sample Error',
+      );
 
       expect(AppLogger.logs.length, 4);
       expect(AppLogger.logs.any((l) => l.level == AppLogLevel.error), true);
@@ -288,39 +307,45 @@ void main() {
 
       expect(crashlytics.currentUserId, 'usr_test_99');
       expect(crashlytics.recordedReports.isNotEmpty, true);
-      expect(crashlytics.breadcrumbs.any((b) => b.contains('Test Breadcrumb')), true);
+      expect(
+        crashlytics.breadcrumbs.any((b) => b.contains('Test Breadcrumb')),
+        true,
+      );
     });
 
-    test('PG Comparison Suite: Toggle compare, max 3 limit, and clear', () async {
-      final pgs = await pgRepo.getAllPGs();
-      expect(appState.comparePGIds.isEmpty, true);
+    test(
+      'PG Comparison Suite: Toggle compare, max 3 limit, and clear',
+      () async {
+        final pgs = await pgRepo.getAllPGs();
+        expect(appState.comparePGIds.isEmpty, true);
 
-      // Add 1st PG
-      expect(appState.toggleCompare(pgs[0].id), true);
-      expect(appState.isCompared(pgs[0].id), true);
-      expect(appState.comparePGIds.length, 1);
+        // Add 1st PG
+        expect(appState.toggleCompare(pgs[0].id), true);
+        expect(appState.isCompared(pgs[0].id), true);
+        expect(appState.comparePGIds.length, 1);
 
-      // Add 2nd and 3rd PG
-      expect(appState.toggleCompare(pgs[1].id), true);
-      expect(appState.toggleCompare(pgs[2].id), true);
-      expect(appState.comparePGIds.length, 3);
-      expect(appState.comparedPGs.length, 3);
-
-      // Attempt 4th PG (should fail limit of 3)
-      if (pgs.length > 3) {
-        expect(appState.toggleCompare(pgs[3].id), false);
+        // Add 2nd and 3rd PG
+        expect(appState.toggleCompare(pgs[1].id), true);
+        expect(appState.toggleCompare(pgs[2].id), true);
         expect(appState.comparePGIds.length, 3);
-      }
+        expect(appState.comparedPGs.length, 3);
 
-      // Remove 1st PG
-      expect(appState.toggleCompare(pgs[0].id), true);
-      expect(appState.isCompared(pgs[0].id), false);
-      expect(appState.comparePGIds.length, 2);
+        // Attempt 4th PG (should fail limit of 3)
+        if (pgs.length > 3) {
+          expect(appState.toggleCompare(pgs[3].id), false);
+          expect(appState.comparePGIds.length, 3);
+        }
 
-      // Clear compare
-      appState.clearCompare();
-      expect(appState.comparePGIds.isEmpty, true);
-    });
+        // Remove 1st PG
+        expect(appState.toggleCompare(pgs[0].id), true);
+        expect(appState.isCompared(pgs[0].id), false);
+        expect(appState.comparePGIds.length, 2);
+
+        // Clear compare
+        appState.clearCompare();
+        expect(appState.comparePGIds.isEmpty, true);
+      },
+    );
 
     test('Roommate Matcher Suite: Sample roommates and add profile', () {
       expect(appState.roommates.isNotEmpty, true);
@@ -338,7 +363,8 @@ void main() {
         sleepHabit: SleepHabit.nightOwl,
         bio: 'M.Tech student seeking neat roommate.',
         contactNumber: '+91 98000 11111',
-        avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
         postedAt: DateTime.now(),
       );
 
@@ -347,24 +373,34 @@ void main() {
       expect(appState.roommates.first.fullName, 'Karan Shah');
     });
 
-    test('In-App Landlord Chat Suite: Send message and receive auto-response', () async {
-      final pgs = await pgRepo.getAllPGs();
-      final testPG = pgs.first;
+    test(
+      'In-App Landlord Chat Suite: Send message and receive auto-response',
+      () async {
+        final pgs = await pgRepo.getAllPGs();
+        final testPG = pgs.first;
 
-      final chat = appState.getChatForPG(testPG.id, testPG.name);
-      expect(chat.isNotEmpty, true);
-      expect(chat.first.sender, MessageSender.landlord);
+        final chat = appState.getChatForPG(testPG.id, testPG.name);
+        expect(chat.isNotEmpty, true);
+        expect(chat.first.sender, MessageSender.landlord);
 
-      appState.sendChatMessage(testPG.id, 'Can I schedule a visit tomorrow?', testPG.name);
-      final updatedChat = appState.getChatForPG(testPG.id, testPG.name);
-      expect(updatedChat.any((m) => m.text == 'Can I schedule a visit tomorrow?'), true);
+        appState.sendChatMessage(
+          testPG.id,
+          'Can I schedule a visit tomorrow?',
+          testPG.name,
+        );
+        final updatedChat = appState.getChatForPG(testPG.id, testPG.name);
+        expect(
+          updatedChat.any((m) => m.text == 'Can I schedule a visit tomorrow?'),
+          true,
+        );
 
-      // Wait for simulated manager reply
-      await Future.delayed(const Duration(milliseconds: 800));
-      final afterReply = appState.getChatForPG(testPG.id, testPG.name);
-      expect(afterReply.length >= 3, true);
-      expect(afterReply.last.sender, MessageSender.landlord);
-    });
+        // Wait for simulated manager reply
+        await Future.delayed(const Duration(milliseconds: 800));
+        final afterReply = appState.getChatForPG(testPG.id, testPG.name);
+        expect(afterReply.length >= 3, true);
+        expect(afterReply.last.sender, MessageSender.landlord);
+      },
+    );
 
     test('Biometric Quick Unlock Suite: Toggle preference', () async {
       expect(appState.isBiometricEnabled, false);
@@ -386,6 +422,21 @@ void main() {
       expect(shareText.contains('Monthly Rent:'), true);
       expect(shareText.contains('Google Maps Location:'), true);
       expect(shareText.contains('PGCity App'), true);
+    });
+
+    test('Groq AI Assistant: Message processing and PG matching', () async {
+      final pgs = await pgRepo.getAllPGs();
+      final aiService = GroqAiService.instance;
+
+      final response = await aiService.sendMessage(
+        userMessage: 'Show me girls PGs in Navrangpura',
+        conversationHistory: [],
+        availablePGs: pgs,
+      );
+
+      expect(response.text.isNotEmpty, true);
+      expect(response.isUser, false);
+      expect(response.id.isNotEmpty, true);
     });
   });
 }

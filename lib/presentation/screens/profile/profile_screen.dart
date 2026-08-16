@@ -14,10 +14,13 @@ import 'terms_conditions_modal.dart';
 import 'in_app_rating_modal.dart';
 import 'theme_font_settings_modal.dart';
 import 'package:pgcity/presentation/screens/admin/admin_dashboard_screen.dart';
-import 'package:pgcity/presentation/screens/admin/app_logger_screen.dart';
 import 'package:pgcity/presentation/screens/roommates/roommate_finder_screen.dart';
 import 'package:pgcity/presentation/screens/profile/rent_receipts_screen.dart';
 import 'package:pgcity/presentation/screens/compare/pg_compare_screen.dart';
+import 'package:pgcity/presentation/screens/ai_assistant/pg_ai_assistant_screen.dart';
+import 'package:pgcity/presentation/screens/food/tiffin_menu_screen.dart';
+import 'package:pgcity/presentation/screens/safety/safety_center_modal.dart';
+import 'package:pgcity/presentation/screens/community/community_qa_modal.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AppState appState;
@@ -44,6 +47,40 @@ class ProfileScreen extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (_) => EditProfileSheet(appState: appState),
+    );
+  }
+
+  void _openAiAssistant(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PGAiAssistantScreen(appState: appState),
+      ),
+    );
+  }
+
+  void _openTiffinMenu(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => TiffinMenuScreen(appState: appState)),
+    );
+  }
+
+  void _openSafetyCenter(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => SafetyCenterModal(appState: appState),
+    );
+  }
+
+  void _openCommunityQA(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => CommunityQAModal(appState: appState),
     );
   }
 
@@ -194,7 +231,9 @@ class ProfileScreen extends StatelessWidget {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Apple ID account & tokens permanently deleted.'),
+                    content: Text(
+                      'Apple ID account & tokens permanently deleted.',
+                    ),
                     backgroundColor: AppColors.error,
                   ),
                 );
@@ -268,7 +307,8 @@ class ProfileScreen extends StatelessWidget {
         ? 'System Auto'
         : (appState.themeMode == ThemeMode.dark ? 'Dark Mode' : 'Light Mode');
     final fontLabel = appState.appFont.label;
-    final langLabel = '${appState.appLanguage.flag} ${appState.appLanguage.label}';
+    final langLabel =
+        '${appState.appLanguage.flag} ${appState.appLanguage.label}';
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.cream,
@@ -336,11 +376,15 @@ class ProfileScreen extends StatelessWidget {
                           children: [
                             Text(
                               appState.tr('guest_user'),
-                              style: AppTypography.titleMedium(color: Colors.white),
+                              style: AppTypography.titleMedium(
+                                color: Colors.white,
+                              ),
                             ),
                             Text(
                               appState.tr('sign_in_desc'),
-                              style: AppTypography.bodySmall(color: Colors.white70),
+                              style: AppTypography.bodySmall(
+                                color: Colors.white70,
+                              ),
                             ),
                           ],
                         ),
@@ -408,7 +452,9 @@ class ProfileScreen extends StatelessWidget {
                                   child: Text(
                                     user?.fullName ?? 'Resident',
                                     style: AppTypography.titleMedium(
-                                      color: isDark ? Colors.white : AppColors.ink,
+                                      color: isDark
+                                          ? Colors.white
+                                          : AppColors.ink,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -429,7 +475,9 @@ class ProfileScreen extends StatelessWidget {
                                   ? user!.mobileNumber
                                   : (user?.email ?? 'No contact saved'),
                               style: AppTypography.bodySmall(
-                                color: isDark ? Colors.white70 : AppColors.inkSoft,
+                                color: isDark
+                                    ? Colors.white70
+                                    : AppColors.inkSoft,
                               ),
                             ),
                             Text(
@@ -455,7 +503,9 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: 10),
 
                   // Auth Provider Tag Chip
-                  _buildAuthProviderBadge(user?.authProvider ?? AuthProvider.phoneOtp),
+                  _buildAuthProviderBadge(
+                    user?.authProvider ?? AuthProvider.phoneOtp,
+                  ),
                 ],
               ),
             ),
@@ -529,14 +579,18 @@ class ProfileScreen extends StatelessWidget {
                                 Text(
                                   enr.pgName,
                                   style: AppTypography.titleMedium(
-                                    color: isDark ? Colors.white : AppColors.ink,
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppColors.ink,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   'Submitted ${DateFormat('dd MMM yyyy').format(enr.submittedAt)} · ${enr.sharingType}',
                                   style: AppTypography.bodySmall(
-                                    color: isDark ? Colors.white70 : AppColors.inkSoft,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : AppColors.inkSoft,
                                   ),
                                 ),
                               ],
@@ -552,7 +606,9 @@ class ProfileScreen extends StatelessWidget {
                           Text(
                             'Move-in: ${DateFormat('dd MMM yyyy').format(enr.moveInDate)}',
                             style: AppTypography.monoBadge(
-                              color: isDark ? Colors.white70 : AppColors.inkSoft,
+                              color: isDark
+                                  ? Colors.white70
+                                  : AppColors.inkSoft,
                             ).copyWith(fontSize: 10),
                           ),
                           Text(
@@ -589,18 +645,34 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
+                // Groq AI PG Assistant
+                _buildAccountTile(
+                  icon: Icons.auto_awesome_rounded,
+                  title: 'Groq AI PG Assistant',
+                  subtitle: '24x7 intelligent PG finder & local city guide',
+                  iconColor: const Color(0xFFA855F7),
+                  isDark: isDark,
+                  onTap: () => _openAiAssistant(context),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
                 // Roommate Matcher Hub
                 _buildAccountTile(
                   icon: Icons.people_alt_rounded,
                   title: 'Roommate Matcher Hub',
-                  subtitle: 'Find compatible flatmates by college, diet & habits',
+                  subtitle:
+                      'Find compatible flatmates by college, diet & habits',
                   iconColor: AppColors.teal,
                   isDark: isDark,
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => RoommateFinderScreen(appState: appState),
+                        builder: (_) =>
+                            RoommateFinderScreen(appState: appState),
                       ),
                     );
                   },
@@ -614,7 +686,8 @@ class ProfileScreen extends StatelessWidget {
                 _buildAccountTile(
                   icon: Icons.compare_arrows_rounded,
                   title: 'PG Comparison Matrix',
-                  subtitle: '${appState.comparePGIds.length} properties selected for comparison',
+                  subtitle:
+                      '${appState.comparePGIds.length} properties selected for comparison',
                   iconColor: AppColors.marigold,
                   isDark: isDark,
                   onTap: () {
@@ -625,6 +698,49 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     );
                   },
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Weekly Tiffin & Food Menu
+                _buildAccountTile(
+                  icon: Icons.restaurant_menu_rounded,
+                  title: 'Weekly Tiffin & Meal Menu',
+                  subtitle: '7-day breakfast, lunch & dinner with Jain options',
+                  iconColor: const Color(0xFFE2A63B),
+                  isDark: isDark,
+                  onTap: () => _openTiffinMenu(context),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Safety & SOS Center
+                _buildAccountTile(
+                  icon: Icons.shield_rounded,
+                  title: 'Safety & Emergency SOS',
+                  subtitle:
+                      '1-tap GPS dispatch, 1091 helpline & police directory',
+                  iconColor: AppColors.error,
+                  isDark: isDark,
+                  onTap: () => _openSafetyCenter(context),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Resident Community Q&A
+                _buildAccountTile(
+                  icon: Icons.forum_rounded,
+                  title: 'Resident Community Q&A',
+                  subtitle: 'Real questions & answers from verified residents',
+                  iconColor: AppColors.teal,
+                  isDark: isDark,
+                  onTap: () => _openCommunityQA(context),
                 ),
                 Divider(
                   height: 1,
@@ -705,7 +821,11 @@ class ProfileScreen extends StatelessWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(val ? 'Biometric authentication enabled.' : 'Biometric authentication disabled.'),
+                            content: Text(
+                              val
+                                  ? 'Biometric authentication enabled.'
+                                  : 'Biometric authentication disabled.',
+                            ),
                             backgroundColor: AppColors.teal,
                           ),
                         );
@@ -799,26 +919,6 @@ class ProfileScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) =>
                             AdminDashboardScreen(appState: appState),
-                      ),
-                    );
-                  },
-                ),
-                Divider(
-                  height: 1,
-                  color: isDark ? const Color(0xFF334155) : AppColors.line,
-                ),
-
-                // App Logger & Crashlytics Diagnostics
-                _buildAccountTile(
-                  icon: Icons.bug_report_outlined,
-                  title: 'App Logger & Crashlytics',
-                  subtitle: 'Live logs buffer & Firebase error pipeline',
-                  isDark: isDark,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const AppLoggerScreen(),
                       ),
                     );
                   },

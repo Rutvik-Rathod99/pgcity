@@ -21,12 +21,17 @@ class RentReceiptsScreen extends StatelessWidget {
         backgroundColor: context.appBg,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: isDark ? Colors.white : AppColors.ink),
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Rental Agreement & Receipts',
-          style: AppTypography.titleMedium(color: isDark ? Colors.white : AppColors.ink),
+          style: AppTypography.titleMedium(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
       ),
       body: ListView(
@@ -55,7 +60,11 @@ class RentReceiptsScreen extends StatelessWidget {
                             color: AppColors.teal.withAlpha(40),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(Icons.verified_user_rounded, color: AppColors.teal, size: 20),
+                          child: const Icon(
+                            Icons.verified_user_rounded,
+                            color: AppColors.teal,
+                            size: 20,
+                          ),
                         ),
                         const SizedBox(width: 10),
                         Column(
@@ -63,23 +72,39 @@ class RentReceiptsScreen extends StatelessWidget {
                           children: [
                             Text(
                               'Active Tenancy Agreement',
-                              style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink),
+                              style: AppTypography.titleSmall(
+                                color: isDark ? Colors.white : AppColors.ink,
+                              ),
                             ),
                             Text(
                               'Valid through May 2027 (11-Month Lock-in)',
-                              style: AppTypography.bodySmall(color: isDark ? Colors.white60 : AppColors.inkSoft).copyWith(fontSize: 10),
+                              style: AppTypography.bodySmall(
+                                color: isDark
+                                    ? Colors.white60
+                                    : AppColors.inkSoft,
+                              ).copyWith(fontSize: 10),
                             ),
                           ],
                         ),
                       ],
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.teal,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: const Text('ACTIVE', style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'ACTIVE',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -87,11 +112,27 @@ class RentReceiptsScreen extends StatelessWidget {
                 Divider(color: context.appBorder),
                 const SizedBox(height: 8),
 
-                _buildAgreementRow('Property', 'Sunrise Luxury PG for Girls, Navrangpura', isDark),
+                _buildAgreementRow(
+                  'Property',
+                  'Sunrise Luxury PG for Girls, Navrangpura',
+                  isDark,
+                ),
                 _buildAgreementRow('Monthly Rent', '₹8,500 / month', isDark),
-                _buildAgreementRow('Security Deposit', '₹10,000 (Refundable in Escrow)', isDark),
-                _buildAgreementRow('Notice Period', '30 Days Mandatory', isDark),
-                _buildAgreementRow('Digital Signature', 'Verified by PGCity Operations', isDark),
+                _buildAgreementRow(
+                  'Security Deposit',
+                  '₹10,000 (Refundable in Escrow)',
+                  isDark,
+                ),
+                _buildAgreementRow(
+                  'Notice Period',
+                  '30 Days Mandatory',
+                  isDark,
+                ),
+                _buildAgreementRow(
+                  'Digital Signature',
+                  'Verified by PGCity Operations',
+                  isDark,
+                ),
                 const SizedBox(height: 12),
 
                 SizedBox(
@@ -100,7 +141,9 @@ class RentReceiptsScreen extends StatelessWidget {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Downloading digital rental agreement PDF...'),
+                          content: Text(
+                            'Downloading digital rental agreement PDF...',
+                          ),
                           backgroundColor: AppColors.teal,
                         ),
                       );
@@ -117,12 +160,16 @@ class RentReceiptsScreen extends StatelessWidget {
           // 2. Receipts List Header
           Text(
             'Payment & Invoice History',
-            style: AppTypography.titleMedium(color: isDark ? Colors.white : AppColors.ink),
+            style: AppTypography.titleMedium(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             'Official tax and rent receipts for HRA tax exemption claims.',
-            style: AppTypography.bodySmall(color: isDark ? Colors.white60 : AppColors.inkSoft),
+            style: AppTypography.bodySmall(
+              color: isDark ? Colors.white60 : AppColors.inkSoft,
+            ),
           ),
           const SizedBox(height: 12),
 
@@ -148,16 +195,25 @@ class RentReceiptsScreen extends StatelessWidget {
                         children: [
                           Text(
                             r.monthYear,
-                            style: AppTypography.titleMedium(color: isDark ? Colors.white : AppColors.ink),
+                            style: AppTypography.titleMedium(
+                              color: isDark ? Colors.white : AppColors.ink,
+                            ),
                           ),
                           Text(
                             'Invoice: ${r.invoiceId} · ${DateFormat('dd MMM yyyy').format(r.paidDate)}',
-                            style: AppTypography.monoLabel(color: isDark ? Colors.white60 : AppColors.inkSoft).copyWith(fontSize: 10),
+                            style: AppTypography.monoLabel(
+                              color: isDark
+                                  ? Colors.white60
+                                  : AppColors.inkSoft,
+                            ).copyWith(fontSize: 10),
                           ),
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.tealLight,
                           borderRadius: BorderRadius.circular(6),
@@ -179,11 +235,28 @@ class RentReceiptsScreen extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        _buildInvoiceDetailRow('Base Rent', CurrencyFormatter.format(r.amount), isDark),
-                        _buildInvoiceDetailRow('Electricity (AC Units)', CurrencyFormatter.format(r.electricityCharges), isDark),
-                        _buildInvoiceDetailRow('Maintenance & Wi-Fi', CurrencyFormatter.format(r.maintenanceCharges), isDark),
+                        _buildInvoiceDetailRow(
+                          'Base Rent',
+                          CurrencyFormatter.format(r.amount),
+                          isDark,
+                        ),
+                        _buildInvoiceDetailRow(
+                          'Electricity (AC Units)',
+                          CurrencyFormatter.format(r.electricityCharges),
+                          isDark,
+                        ),
+                        _buildInvoiceDetailRow(
+                          'Maintenance & Wi-Fi',
+                          CurrencyFormatter.format(r.maintenanceCharges),
+                          isDark,
+                        ),
                         const Divider(),
-                        _buildInvoiceDetailRow('Total Paid', CurrencyFormatter.format(r.totalPaid), isDark, isBold: true),
+                        _buildInvoiceDetailRow(
+                          'Total Paid',
+                          CurrencyFormatter.format(r.totalPaid),
+                          isDark,
+                          isBold: true,
+                        ),
                       ],
                     ),
                   ),
@@ -194,19 +267,26 @@ class RentReceiptsScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Ref: ${r.transactionReference}',
-                        style: AppTypography.monoBadge(color: isDark ? Colors.white38 : AppColors.inkSoft).copyWith(fontSize: 9),
+                        style: AppTypography.monoBadge(
+                          color: isDark ? Colors.white38 : AppColors.inkSoft,
+                        ).copyWith(fontSize: 9),
                       ),
                       TextButton.icon(
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Downloading rent invoice ${r.invoiceId} for HRA claim.'),
+                              content: Text(
+                                'Downloading rent invoice ${r.invoiceId} for HRA claim.',
+                              ),
                               backgroundColor: AppColors.teal,
                             ),
                           );
                         },
                         icon: const Icon(Icons.receipt_long_rounded, size: 14),
-                        label: const Text('Download Receipt', style: TextStyle(fontSize: 11)),
+                        label: const Text(
+                          'Download Receipt',
+                          style: TextStyle(fontSize: 11),
+                        ),
                       ),
                     ],
                   ),
@@ -224,14 +304,29 @@ class RentReceiptsScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTypography.bodySmall(color: isDark ? Colors.white60 : AppColors.inkSoft)),
-          Text(value, style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink).copyWith(fontSize: 11)),
+          Text(
+            label,
+            style: AppTypography.bodySmall(
+              color: isDark ? Colors.white60 : AppColors.inkSoft,
+            ),
+          ),
+          Text(
+            value,
+            style: AppTypography.titleSmall(
+              color: isDark ? Colors.white : AppColors.ink,
+            ).copyWith(fontSize: 11),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInvoiceDetailRow(String label, String value, bool isDark, {bool isBold = false}) {
+  Widget _buildInvoiceDetailRow(
+    String label,
+    String value,
+    bool isDark, {
+    bool isBold = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
@@ -250,7 +345,9 @@ class RentReceiptsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               fontWeight: isBold ? FontWeight.bold : FontWeight.w600,
-              color: isBold ? (isDark ? const Color(0xFF38BDF8) : AppColors.teal) : (isDark ? Colors.white : AppColors.ink),
+              color: isBold
+                  ? (isDark ? const Color(0xFF38BDF8) : AppColors.teal)
+                  : (isDark ? Colors.white : AppColors.ink),
             ),
           ),
         ],

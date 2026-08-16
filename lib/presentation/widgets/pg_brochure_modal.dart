@@ -105,21 +105,30 @@ class PGBrochureModal extends StatelessWidget {
                             Text(
                               'PGCity Verified Listing',
                               style: AppTypography.monoBadge(
-                                color: isDark ? AppColors.marigold : AppColors.navy,
+                                color: isDark
+                                    ? AppColors.marigold
+                                    : AppColors.navy,
                               ).copyWith(fontSize: 10),
                             ),
                           ],
                         ),
                         if (pg.isVerified)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.teal,
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: const Text(
                               '100% INSPECTED',
-                              style: TextStyle(fontSize: 8, color: Colors.white, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                       ],
@@ -171,10 +180,21 @@ class PGBrochureModal extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Monthly Rent', style: AppTypography.monoLabel(color: isDark ? Colors.white38 : AppColors.inkSoft).copyWith(fontSize: 9)),
+                                Text(
+                                  'Monthly Rent',
+                                  style: AppTypography.monoLabel(
+                                    color: isDark
+                                        ? Colors.white38
+                                        : AppColors.inkSoft,
+                                  ).copyWith(fontSize: 9),
+                                ),
                                 Text(
                                   '${CurrencyFormatter.format(pg.monthlyRent)}/mo',
-                                  style: AppTypography.monoPrice(color: isDark ? const Color(0xFF38BDF8) : AppColors.teal).copyWith(fontSize: 13),
+                                  style: AppTypography.monoPrice(
+                                    color: isDark
+                                        ? const Color(0xFF38BDF8)
+                                        : AppColors.teal,
+                                  ).copyWith(fontSize: 13),
                                 ),
                               ],
                             ),
@@ -192,10 +212,21 @@ class PGBrochureModal extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Security Deposit', style: AppTypography.monoLabel(color: isDark ? Colors.white38 : AppColors.inkSoft).copyWith(fontSize: 9)),
+                                Text(
+                                  'Security Deposit',
+                                  style: AppTypography.monoLabel(
+                                    color: isDark
+                                        ? Colors.white38
+                                        : AppColors.inkSoft,
+                                  ).copyWith(fontSize: 9),
+                                ),
                                 Text(
                                   CurrencyFormatter.format(pg.securityDeposit),
-                                  style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink).copyWith(fontSize: 13),
+                                  style: AppTypography.titleSmall(
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppColors.ink,
+                                  ).copyWith(fontSize: 13),
                                 ),
                               ],
                             ),
@@ -209,7 +240,11 @@ class PGBrochureModal extends StatelessWidget {
                     _buildSpecRow('Room Sharing', pg.sharingType, isDark),
                     _buildSpecRow('Food Included', pg.foodOption, isDark),
                     _buildSpecRow('Electricity', pg.electricityOption, isDark),
-                    _buildSpecRow('Lock-in / Minimum Stay', pg.minimumStay, isDark),
+                    _buildSpecRow(
+                      'Lock-in / Minimum Stay',
+                      pg.minimumStay,
+                      isDark,
+                    ),
                     _buildSpecRow('Verified Contact', pg.contactNumber, isDark),
                     const SizedBox(height: 14),
 
@@ -226,10 +261,16 @@ class PGBrochureModal extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF334155) : AppColors.cream,
+                              color: isDark
+                                  ? const Color(0xFF334155)
+                                  : AppColors.cream,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.qr_code_2_rounded, size: 36, color: AppColors.navy),
+                            child: const Icon(
+                              Icons.qr_code_2_rounded,
+                              size: 36,
+                              color: AppColors.navy,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -239,13 +280,17 @@ class PGBrochureModal extends StatelessWidget {
                                 Text(
                                   '360° Virtual Tour & Location',
                                   style: AppTypography.titleSmall(
-                                    color: isDark ? Colors.white : AppColors.ink,
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppColors.ink,
                                   ).copyWith(fontSize: 12),
                                 ),
                                 Text(
                                   'Scan QR or click link in WhatsApp message to inspect rooms virtually.',
                                   style: AppTypography.bodySmall(
-                                    color: isDark ? Colors.white60 : AppColors.inkSoft,
+                                    color: isDark
+                                        ? Colors.white60
+                                        : AppColors.inkSoft,
                                   ).copyWith(fontSize: 10),
                                 ),
                               ],
@@ -267,13 +312,17 @@ class PGBrochureModal extends StatelessWidget {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    final shareText = PGShareService.generateParentShareText(pg);
+                    final shareText = PGShareService.generateParentShareText(
+                      pg,
+                    );
                     await PGShareService.copyToClipboard(shareText);
                     if (context.mounted) {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('WhatsApp message copied to clipboard! Ready to paste & send.'),
+                          content: Text(
+                            'WhatsApp message copied to clipboard! Ready to paste & send.',
+                          ),
                           backgroundColor: Color(0xFF25D366),
                         ),
                       );
@@ -301,8 +350,18 @@ class PGBrochureModal extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTypography.bodySmall(color: isDark ? Colors.white60 : AppColors.inkSoft)),
-          Text(value, style: AppTypography.titleSmall(color: isDark ? Colors.white : AppColors.ink)),
+          Text(
+            label,
+            style: AppTypography.bodySmall(
+              color: isDark ? Colors.white60 : AppColors.inkSoft,
+            ),
+          ),
+          Text(
+            value,
+            style: AppTypography.titleSmall(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
+          ),
         ],
       ),
     );

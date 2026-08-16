@@ -4,7 +4,11 @@ import '../constants/app_colors.dart';
 import '../constants/app_typography.dart';
 
 class AppTheme {
-  static TextTheme _getTextTheme(AppFontFamily font, Color textColor, Color subtextColor) {
+  static TextTheme _getTextTheme(
+    AppFontFamily font,
+    Color textColor,
+    Color subtextColor,
+  ) {
     TextTheme baseTheme;
     switch (font) {
       case AppFontFamily.outfit:
@@ -24,10 +28,7 @@ class AppTheme {
         break;
     }
 
-    return baseTheme.apply(
-      bodyColor: textColor,
-      displayColor: textColor,
-    );
+    return baseTheme.apply(bodyColor: textColor, displayColor: textColor);
   }
 
   static ThemeData lightTheme([AppFontFamily font = AppFontFamily.inter]) {
@@ -116,10 +117,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          textStyle: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -130,10 +128,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          textStyle: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
@@ -243,10 +238,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          textStyle: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -257,10 +249,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          textStyle: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(

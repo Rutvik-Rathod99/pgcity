@@ -23,7 +23,8 @@ class AppStrings {
 
       // Home & Search
       'app_title': 'PGCity Ahmedabad',
-      'app_subtitle': 'Curated verified PGs near CEPT, Nirma, PDPU & SG Highway',
+      'app_subtitle':
+          'Curated verified PGs near CEPT, Nirma, PDPU & SG Highway',
       'search_hint': 'Search PG name, locality (Navrangpura, Satellite...)',
       'filter_all': 'All PGs',
       'filter_girls': 'Girls PG',
@@ -37,7 +38,8 @@ class AppStrings {
       'view_list': 'List View',
       'clear_filters': 'Clear Filters',
       'no_pgs_found': 'No PGs Match Your Filters',
-      'try_adjusting_filters': 'Try resetting filters or searching another locality in Ahmedabad.',
+      'try_adjusting_filters':
+          'Try resetting filters or searching another locality in Ahmedabad.',
 
       // Card & Detail
       'monthly_rent': 'Monthly Rent',
@@ -60,13 +62,15 @@ class AppStrings {
       // Liked / Shortlisted
       'shortlisted_title': 'Shortlisted PGs',
       'no_liked_title': 'No Shortlisted PGs Yet',
-      'no_liked_subtitle': 'Tap the heart icon on any PG card to bookmark spaces for easy comparison.',
+      'no_liked_subtitle':
+          'Tap the heart icon on any PG card to bookmark spaces for easy comparison.',
 
       // Profile & Settings
       'my_profile': 'My Profile',
       'guest_user': 'Guest Explorer',
       'sign_in_cta': 'Sign In / Register',
-      'sign_in_desc': 'Sign in to shortlist PGs, unlock contacts & track enrollments.',
+      'sign_in_desc':
+          'Sign in to shortlist PGs, unlock contacts & track enrollments.',
       'my_enrollments': 'My Enrollments',
       'account_settings': 'Appearance & Preferences',
       'theme_mode': 'App Appearance (Light / Dark)',
@@ -140,7 +144,8 @@ class AppStrings {
       // Liked / Shortlisted
       'shortlisted_title': 'પસંદ કરેલા પીજી',
       'no_liked_title': 'કોઈ પીજી પસંદ કરેલ નથી',
-      'no_liked_subtitle': 'પીજી કાર્ડ પર હાર્ટ આઇકન દબાવીને તમારા મનપસંદ રૂમો સાચવો.',
+      'no_liked_subtitle':
+          'પીજી કાર્ડ પર હાર્ટ આઇકન દબાવીને તમારા મનપસંદ રૂમો સાચવો.',
 
       // Profile & Settings
       'my_profile': 'મારી પ્રોફાઇલ',
@@ -220,7 +225,8 @@ class AppStrings {
       // Liked / Shortlisted
       'shortlisted_title': 'पसंदीदा पीजी सूची',
       'no_liked_title': 'कोई पसंदीदा पीजी नहीं मिला',
-      'no_liked_subtitle': 'पीजी कार्ड पर दिल का आइकन दबाकर अपने पसंदीदा पीजी सेव करें।',
+      'no_liked_subtitle':
+          'पीजी कार्ड पर दिल का आइकन दबाकर अपने पसंदीदा पीजी सेव करें।',
 
       // Profile & Settings
       'my_profile': 'मेरी प्रोफ़ाइल',
@@ -254,7 +260,9 @@ class AppStrings {
   };
 
   static String get(String key, AppLanguage lang) {
-    final code = lang == AppLanguage.gujarati ? 'gu' : (lang == AppLanguage.hindi ? 'hi' : 'en');
+    final code = lang == AppLanguage.gujarati
+        ? 'gu'
+        : (lang == AppLanguage.hindi ? 'hi' : 'en');
     return _translations[code]?[key] ?? _translations['en']?[key] ?? key;
   }
 }

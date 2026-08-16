@@ -15,7 +15,10 @@ class InAppRatingModal extends StatefulWidget {
 class _InAppRatingModalState extends State<InAppRatingModal> {
   int _selectedRating = 5;
   final TextEditingController _feedbackController = TextEditingController();
-  final Set<String> _selectedTags = {'📸 100% Real Photos', '🔒 Safe Neighborhood'};
+  final Set<String> _selectedTags = {
+    '📸 100% Real Photos',
+    '🔒 Safe Neighborhood',
+  };
   bool _submitted = false;
 
   final List<String> _availableTags = [
@@ -121,9 +124,13 @@ class _InAppRatingModalState extends State<InAppRatingModal> {
                         duration: const Duration(milliseconds: 150),
                         scale: isFilled ? 1.15 : 1.0,
                         child: Icon(
-                          isFilled ? Icons.star_rounded : Icons.star_outline_rounded,
+                          isFilled
+                              ? Icons.star_rounded
+                              : Icons.star_outline_rounded,
                           size: 38,
-                          color: isFilled ? AppColors.marigold : (isDark ? Colors.white38 : AppColors.line),
+                          color: isFilled
+                              ? AppColors.marigold
+                              : (isDark ? Colors.white38 : AppColors.line),
                         ),
                       ),
                     ),
@@ -133,9 +140,7 @@ class _InAppRatingModalState extends State<InAppRatingModal> {
               const SizedBox(height: 8),
               Text(
                 _getRatingLabel(_selectedRating),
-                style: AppTypography.titleMedium(
-                  color: AppColors.marigoldDark,
-                ),
+                style: AppTypography.titleMedium(color: AppColors.marigoldDark),
               ),
             ],
           ),
@@ -169,15 +174,21 @@ class _InAppRatingModalState extends State<InAppRatingModal> {
               },
               selectedColor: AppColors.navy,
               labelStyle: TextStyle(
-                color: isSelected ? Colors.white : (isDark ? Colors.white70 : AppColors.ink),
+                color: isSelected
+                    ? Colors.white
+                    : (isDark ? Colors.white70 : AppColors.ink),
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
               ),
-              backgroundColor: isDark ? const Color(0xFF1E293B) : AppColors.paper,
+              backgroundColor: isDark
+                  ? const Color(0xFF1E293B)
+                  : AppColors.paper,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
                 side: BorderSide(
-                  color: isSelected ? AppColors.navy : (isDark ? Colors.white24 : AppColors.line),
+                  color: isSelected
+                      ? AppColors.navy
+                      : (isDark ? Colors.white24 : AppColors.line),
                 ),
               ),
             );
@@ -207,7 +218,9 @@ class _InAppRatingModalState extends State<InAppRatingModal> {
               backgroundColor: AppColors.marigold,
               foregroundColor: AppColors.navy,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: Text(
               'Submit Rating & Review',
@@ -261,7 +274,9 @@ class _InAppRatingModalState extends State<InAppRatingModal> {
               backgroundColor: AppColors.navy,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: const Text('Close'),
           ),

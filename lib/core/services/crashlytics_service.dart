@@ -47,7 +47,8 @@ class CrashlyticsService {
   List<String> get breadcrumbs => List.unmodifiable(_breadcrumbs);
 
   final List<CrashlyticsReport> _recordedReports = [];
-  List<CrashlyticsReport> get recordedReports => List.unmodifiable(_recordedReports);
+  List<CrashlyticsReport> get recordedReports =>
+      List.unmodifiable(_recordedReports);
 
   /// Initializes error interception for Flutter UI & Dart async errors.
   void initialize() {
@@ -58,7 +59,12 @@ class CrashlyticsService {
 
     // 2. Pass all uncaught asynchronous Dart errors that aren't handled by Flutter
     PlatformDispatcher.instance.onError = (error, stack) {
-      recordError(error, stack, reason: 'PlatformDispatcher unhandled async exception', fatal: true);
+      recordError(
+        error,
+        stack,
+        reason: 'PlatformDispatcher unhandled async exception',
+        fatal: true,
+      );
       return true;
     };
 
@@ -137,9 +143,7 @@ class CrashlyticsService {
       details.stack,
       reason: details.context?.toDescription() ?? 'Flutter Framework Error',
       fatal: fatal,
-      customKeys: {
-        'library': details.library ?? 'unknown',
-      },
+      customKeys: {'library': details.library ?? 'unknown'},
     );
   }
 

@@ -240,7 +240,9 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                       child: Text(
                         'Details pre-filled from your saved profile.',
                         style: AppTypography.bodySmall(
-                          color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                          color: isDark
+                              ? const Color(0xFF38BDF8)
+                              : AppColors.teal,
                         ).copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -364,13 +366,17 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                                   ).format(_selectedMoveInDate),
                                   style: TextStyle(
                                     fontSize: 13,
-                                    color: isDark ? Colors.white : AppColors.ink,
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppColors.ink,
                                   ),
                                 ),
                                 Icon(
                                   Icons.calendar_month_rounded,
                                   size: 18,
-                                  color: isDark ? Colors.white60 : AppColors.inkSoft,
+                                  color: isDark
+                                      ? Colors.white60
+                                      : AppColors.inkSoft,
                                 ),
                               ],
                             ),
@@ -417,7 +423,10 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               const SizedBox(height: 14),
 
               // Message (Optional)
-              _buildFieldLabel('Message for Property Manager (Optional)', isDark),
+              _buildFieldLabel(
+                'Message for Property Manager (Optional)',
+                isDark,
+              ),
               TextFormField(
                 controller: _messageController,
                 maxLines: 3,

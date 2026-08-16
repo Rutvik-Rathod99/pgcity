@@ -10,6 +10,9 @@ import 'package:pgcity/presentation/widgets/notification_sheet.dart';
 import 'package:pgcity/presentation/screens/pg_detail/pg_web_screen.dart';
 import 'package:pgcity/presentation/screens/compare/pg_compare_screen.dart';
 import 'package:pgcity/presentation/screens/roommates/roommate_finder_screen.dart';
+import 'package:pgcity/presentation/screens/ai_assistant/pg_ai_assistant_screen.dart';
+import 'package:pgcity/presentation/screens/safety/safety_center_modal.dart';
+import 'package:pgcity/presentation/screens/food/tiffin_menu_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppState appState;
@@ -83,6 +86,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: context.appBg,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PGAiAssistantScreen(appState: state),
+            ),
+          );
+        },
+        backgroundColor: const Color(0xFF6366F1),
+        icon: const Icon(
+          Icons.auto_awesome_rounded,
+          color: Colors.white,
+          size: 18,
+        ),
+        label: const Text(
+          'Ask AI',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+          ),
+        ),
+      ),
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -351,7 +378,54 @@ class _HomeScreenState extends State<HomeScreen> {
                     isDark: isDark,
                   ),
                   const SizedBox(width: 8),
-                  // Roommate Matcher Quick Action Chip
+
+                  // 1. AI PG Finder Quick Action Chip
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PGAiAssistantScreen(appState: state),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF6366F1), Color(0xFFA855F7)],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: const [AppColors.softShadow],
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.auto_awesome_rounded,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            'AI Assistant',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                              fontFamily: 'Inter',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // 2. Roommate Matcher Quick Action Chip
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -362,23 +436,126 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 7,
+                      ),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
+                        color: isDark
+                            ? const Color(0xFF0F3934)
+                            : AppColors.tealLight,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: AppColors.teal),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.people_alt_rounded, size: 14, color: AppColors.teal),
+                          const Icon(
+                            Icons.people_alt_rounded,
+                            size: 14,
+                            color: AppColors.teal,
+                          ),
                           const SizedBox(width: 4),
                           Text(
-                            'Roommate Matcher',
+                            'Roommates',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
-                              color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                              color: isDark
+                                  ? const Color(0xFF38BDF8)
+                                  : AppColors.teal,
+                              fontFamily: 'Inter',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // 3. Weekly Tiffin & Food Menu Chip
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TiffinMenuScreen(appState: state),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xFF3B2D14)
+                            : AppColors.marigold.withAlpha(40),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.marigoldDark),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.restaurant_menu_rounded,
+                            size: 14,
+                            color: AppColors.marigoldDark,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Tiffin Menu',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: isDark
+                                  ? AppColors.marigold
+                                  : AppColors.marigoldDark,
+                              fontFamily: 'Inter',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // 4. Safety SOS Chip
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (_) => SafetyCenterModal(appState: state),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.error.withAlpha(25),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.error),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.shield_rounded,
+                            size: 14,
+                            color: AppColors.error,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            'Safety SOS',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.error,
                               fontFamily: 'Inter',
                             ),
                           ),
@@ -395,7 +572,10 @@ class _HomeScreenState extends State<HomeScreen> {
             if (state.comparePGIds.isNotEmpty)
               Container(
                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: isDark ? const Color(0xFF1E293B) : AppColors.navy,
                   borderRadius: BorderRadius.circular(14),
@@ -403,12 +583,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.compare_arrows_rounded, color: AppColors.marigold, size: 20),
+                    const Icon(
+                      Icons.compare_arrows_rounded,
+                      color: AppColors.marigold,
+                      size: 20,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         '${state.comparePGIds.length}/3 PGs ready to compare',
-                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     ElevatedButton(
@@ -423,8 +611,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.marigold,
                         foregroundColor: AppColors.navy,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        textStyle: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       child: const Text('Compare Now'),
                     ),
@@ -523,7 +717,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildListView(AppState state, List<PGModel> pgs, [bool isDark = false]) {
+  Widget _buildListView(
+    AppState state,
+    List<PGModel> pgs, [
+    bool isDark = false,
+  ]) {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       itemCount: pgs.length,
@@ -543,7 +741,9 @@ class _HomeScreenState extends State<HomeScreen> {
             if (!added && !isCompared) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('You can compare a maximum of 3 PGs at a time.'),
+                  content: Text(
+                    'You can compare a maximum of 3 PGs at a time.',
+                  ),
                   backgroundColor: AppColors.error,
                 ),
               );

@@ -67,8 +67,19 @@ class AppLogger {
   }
 
   /// Debug level log
-  static void d(String message, {String tag = 'APP', dynamic error, StackTrace? stackTrace}) {
-    _log(AppLogLevel.debug, message, tag: tag, error: error, stackTrace: stackTrace);
+  static void d(
+    String message, {
+    String tag = 'APP',
+    dynamic error,
+    StackTrace? stackTrace,
+  }) {
+    _log(
+      AppLogLevel.debug,
+      message,
+      tag: tag,
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   /// Info level log
@@ -77,18 +88,51 @@ class AppLogger {
   }
 
   /// Warning level log
-  static void w(String message, {String tag = 'APP', dynamic error, StackTrace? stackTrace}) {
-    _log(AppLogLevel.warning, message, tag: tag, error: error, stackTrace: stackTrace);
+  static void w(
+    String message, {
+    String tag = 'APP',
+    dynamic error,
+    StackTrace? stackTrace,
+  }) {
+    _log(
+      AppLogLevel.warning,
+      message,
+      tag: tag,
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   /// Error level log (Automatically dispatched to Firebase Crashlytics)
-  static void e(String message, {String tag = 'APP', dynamic error, StackTrace? stackTrace}) {
-    _log(AppLogLevel.error, message, tag: tag, error: error, stackTrace: stackTrace);
+  static void e(
+    String message, {
+    String tag = 'APP',
+    dynamic error,
+    StackTrace? stackTrace,
+  }) {
+    _log(
+      AppLogLevel.error,
+      message,
+      tag: tag,
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   /// Fatal level log (Dispatched as fatal to Firebase Crashlytics)
-  static void f(String message, {String tag = 'APP', dynamic error, StackTrace? stackTrace}) {
-    _log(AppLogLevel.fatal, message, tag: tag, error: error, stackTrace: stackTrace);
+  static void f(
+    String message, {
+    String tag = 'APP',
+    dynamic error,
+    StackTrace? stackTrace,
+  }) {
+    _log(
+      AppLogLevel.fatal,
+      message,
+      tag: tag,
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   static void _log(

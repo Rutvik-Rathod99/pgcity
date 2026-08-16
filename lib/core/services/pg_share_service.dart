@@ -11,8 +11,12 @@ class PGShareService {
     buffer.writeln('📍 ${pg.address}, ${pg.locality}, ${pg.city}');
     buffer.writeln('━━━━━━━━━━━━━━━━━━━━━');
     buffer.writeln('🏷 *Type:* ${pg.type.label}');
-    buffer.writeln('💰 *Monthly Rent:* ${CurrencyFormatter.format(pg.monthlyRent)}/mo');
-    buffer.writeln('🔐 *Security Deposit:* ${CurrencyFormatter.format(pg.securityDeposit)}');
+    buffer.writeln(
+      '💰 *Monthly Rent:* ${CurrencyFormatter.format(pg.monthlyRent)}/mo',
+    );
+    buffer.writeln(
+      '🔐 *Security Deposit:* ${CurrencyFormatter.format(pg.securityDeposit)}',
+    );
     buffer.writeln('🛏 *Room Sharing:* ${pg.sharingType}');
     buffer.writeln('🍽 *Food Plan:* ${pg.foodOption}');
     buffer.writeln('⚡ *Electricity:* ${pg.electricityOption}');
@@ -30,10 +34,16 @@ class PGShareService {
       }
       buffer.writeln('');
     }
-    buffer.writeln('🛡 *PGCity Verification:* ${pg.isVerified ? "✅ 100% Ops Verified" : "Pending Inspection"}');
-    buffer.writeln('📍 *Google Maps Location:* https://maps.google.com/?q=${pg.latitude},${pg.longitude}');
+    buffer.writeln(
+      '🛡 *PGCity Verification:* ${pg.isVerified ? "✅ 100% Ops Verified" : "Pending Inspection"}',
+    );
+    buffer.writeln(
+      '📍 *Google Maps Location:* https://maps.google.com/?q=${pg.latitude},${pg.longitude}',
+    );
     buffer.writeln('━━━━━━━━━━━━━━━━━━━━━');
-    buffer.writeln('Shared via *PGCity App* — Ahmedabad’s #1 Verified Student & Co-Living Platform');
+    buffer.writeln(
+      'Shared via *PGCity App* — Ahmedabad’s #1 Verified Student & Co-Living Platform',
+    );
 
     return buffer.toString();
   }

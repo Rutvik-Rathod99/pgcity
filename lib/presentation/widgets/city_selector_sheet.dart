@@ -128,18 +128,28 @@ class CitySelectorSheet extends StatelessWidget {
                             c['name'] as String,
                             style: AppTypography.titleSmall(
                               color: currentCity == c['name']
-                                  ? (isDark ? const Color(0xFF38BDF8) : AppColors.navy)
+                                  ? (isDark
+                                        ? const Color(0xFF38BDF8)
+                                        : AppColors.navy)
                                   : (c['isAvailable'] as bool
-                                        ? (isDark ? Colors.white : AppColors.ink)
-                                        : (isDark ? Colors.white38 : AppColors.inkSoft)),
+                                        ? (isDark
+                                              ? Colors.white
+                                              : AppColors.ink)
+                                        : (isDark
+                                              ? Colors.white38
+                                              : AppColors.inkSoft)),
                             ),
                           ),
                           Text(
                             c['localityCount'] as String,
                             style: AppTypography.bodySmall(
                               color: currentCity == c['name']
-                                  ? (isDark ? const Color(0xFF38BDF8) : AppColors.teal)
-                                  : (isDark ? Colors.white60 : AppColors.inkSoft),
+                                  ? (isDark
+                                        ? const Color(0xFF38BDF8)
+                                        : AppColors.teal)
+                                  : (isDark
+                                        ? Colors.white60
+                                        : AppColors.inkSoft),
                             ),
                           ),
                         ],
@@ -158,7 +168,9 @@ class CitySelectorSheet extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF334155) : AppColors.line,
+                          color: isDark
+                              ? const Color(0xFF334155)
+                              : AppColors.line,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(

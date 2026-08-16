@@ -219,7 +219,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
               children: [
                 Expanded(child: _buildKpiItem('Total PGs', '${allPGs.length}')),
                 Expanded(child: _buildKpiItem('Total Views', '$totalViews')),
-                Expanded(child: _buildKpiItem('Contact Unlocks', '$totalUnlocks')),
+                Expanded(
+                  child: _buildKpiItem('Contact Unlocks', '$totalUnlocks'),
+                ),
                 Expanded(child: _buildKpiItem('Total Likes', '$totalLikes')),
               ],
             ),
@@ -300,7 +302,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       errorBuilder: (_, _, _) => Container(
                         width: 60,
                         height: 60,
-                        color: isDark ? const Color(0xFF334155) : AppColors.cream,
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : AppColors.cream,
                         child: const Icon(Icons.apartment_rounded),
                       ),
                     ),
@@ -344,15 +348,23 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: pg.verificationStatus == PGVerificationStatus.published
-                                    ? (isDark ? const Color(0xFF0F3934) : AppColors.tealLight)
-                                    : (isDark ? const Color(0xFF422006) : AppColors.warningLight),
+                                color:
+                                    pg.verificationStatus ==
+                                        PGVerificationStatus.published
+                                    ? (isDark
+                                          ? const Color(0xFF0F3934)
+                                          : AppColors.tealLight)
+                                    : (isDark
+                                          ? const Color(0xFF422006)
+                                          : AppColors.warningLight),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
                                 pg.verificationStatus.label.toUpperCase(),
                                 style: AppTypography.monoBadge(
-                                  color: pg.verificationStatus == PGVerificationStatus.published
+                                  color:
+                                      pg.verificationStatus ==
+                                          PGVerificationStatus.published
                                       ? AppColors.teal
                                       : AppColors.warning,
                                 ).copyWith(fontSize: 8),
@@ -362,7 +374,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                             Text(
                               CurrencyFormatter.format(pg.monthlyRent),
                               style: AppTypography.monoPrice(
-                                color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                                color: isDark
+                                    ? const Color(0xFF38BDF8)
+                                    : AppColors.teal,
                               ).copyWith(fontSize: 12),
                             ),
                           ],
@@ -497,7 +511,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Column(
                   children: [
                     _buildLeadDetailRow('Property', lead.pgName, isDark),
-                    _buildLeadDetailRow('Sharing Type', lead.sharingType, isDark),
+                    _buildLeadDetailRow(
+                      'Sharing Type',
+                      lead.sharingType,
+                      isDark,
+                    ),
                     _buildLeadDetailRow(
                       'Move-in Date',
                       DateFormat('dd MMM yyyy').format(lead.moveInDate),

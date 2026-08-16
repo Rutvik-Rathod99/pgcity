@@ -45,8 +45,7 @@ class AppColors {
   static bool isDark(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark;
 
-  static Color bg(BuildContext context) =>
-      isDark(context) ? darkBg : cream;
+  static Color bg(BuildContext context) => isDark(context) ? darkBg : cream;
 
   static Color surface(BuildContext context) =>
       isDark(context) ? darkSurface : paper;
@@ -54,8 +53,7 @@ class AppColors {
   static Color surfaceAlt(BuildContext context) =>
       isDark(context) ? darkSurfaceAlt : cream;
 
-  static Color text(BuildContext context) =>
-      isDark(context) ? darkText : ink;
+  static Color text(BuildContext context) => isDark(context) ? darkText : ink;
 
   static Color subtext(BuildContext context) =>
       isDark(context) ? darkSubtext : inkSoft;
@@ -87,7 +85,8 @@ extension AppThemeContextExtension on BuildContext {
   bool get isDark => Theme.of(this).brightness == Brightness.dark;
   Color get appBg => isDark ? AppColors.darkBg : AppColors.cream;
   Color get appSurface => isDark ? AppColors.darkSurface : AppColors.paper;
-  Color get appSurfaceAlt => isDark ? AppColors.darkSurfaceAlt : AppColors.cream;
+  Color get appSurfaceAlt =>
+      isDark ? AppColors.darkSurfaceAlt : AppColors.cream;
   Color get appBorder => isDark ? AppColors.darkBorder : AppColors.line;
   Color get appText => isDark ? AppColors.darkText : AppColors.ink;
   Color get appSubtext => isDark ? AppColors.darkSubtext : AppColors.inkSoft;
