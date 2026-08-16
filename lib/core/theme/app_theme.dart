@@ -11,6 +11,27 @@ class AppTheme {
   ) {
     TextTheme baseTheme;
     switch (font) {
+      case AppFontFamily.sfPro:
+        baseTheme = GoogleFonts.manropeTextTheme();
+        break;
+      case AppFontFamily.ubuntu:
+        baseTheme = GoogleFonts.ubuntuTextTheme();
+        break;
+      case AppFontFamily.dmSans:
+        baseTheme = GoogleFonts.dmSansTextTheme();
+        break;
+      case AppFontFamily.montserrat:
+        baseTheme = GoogleFonts.montserratTextTheme();
+        break;
+      case AppFontFamily.nunito:
+        baseTheme = GoogleFonts.nunitoTextTheme();
+        break;
+      case AppFontFamily.firaSans:
+        baseTheme = GoogleFonts.firaSansTextTheme();
+        break;
+      case AppFontFamily.jetBrainsMono:
+        baseTheme = GoogleFonts.jetBrainsMonoTextTheme();
+        break;
       case AppFontFamily.outfit:
         baseTheme = GoogleFonts.outfitTextTheme();
         break;

@@ -3,10 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 
 enum AppFontFamily {
   inter('Inter', 'Clean & Modern'),
-  outfit('Outfit', 'Geometric & Premium'),
+  sfPro('SF Pro (Apple/Mac)', 'Cupertino Elegance'),
+  ubuntu('Ubuntu', 'Canonical Ubuntu Linux'),
   plusJakartaSans('Plus Jakarta Sans', 'Tech & Bold'),
-  roboto('Roboto', 'Classic & Balanced'),
-  poppins('Poppins', 'Friendly & Rounded');
+  outfit('Outfit', 'Geometric & Premium'),
+  dmSans('DM Sans', 'Editorial & Crisp'),
+  montserrat('Montserrat', 'Modern Urban Sans'),
+  nunito('Nunito', 'Soft & Rounded'),
+  firaSans('Fira Sans', 'Mozilla Technical'),
+  roboto('Roboto', 'Google Android Classic'),
+  poppins('Poppins', 'Friendly & Geometric'),
+  jetBrainsMono('JetBrains Mono', 'Developer Monospace');
 
   final String label;
   final String subtitle;
@@ -24,6 +31,62 @@ class AppTypography {
     double? letterSpacing,
   }) {
     switch (currentFont) {
+      case AppFontFamily.sfPro:
+        return GoogleFonts.manrope(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          height: height,
+          letterSpacing: letterSpacing ?? -0.2,
+        );
+      case AppFontFamily.ubuntu:
+        return GoogleFonts.ubuntu(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          height: height,
+          letterSpacing: letterSpacing,
+        );
+      case AppFontFamily.dmSans:
+        return GoogleFonts.dmSans(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          height: height,
+          letterSpacing: letterSpacing,
+        );
+      case AppFontFamily.montserrat:
+        return GoogleFonts.montserrat(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          height: height,
+          letterSpacing: letterSpacing,
+        );
+      case AppFontFamily.nunito:
+        return GoogleFonts.nunito(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          height: height,
+          letterSpacing: letterSpacing,
+        );
+      case AppFontFamily.firaSans:
+        return GoogleFonts.firaSans(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          height: height,
+          letterSpacing: letterSpacing,
+        );
+      case AppFontFamily.jetBrainsMono:
+        return GoogleFonts.jetBrainsMono(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          height: height,
+          letterSpacing: letterSpacing,
+        );
       case AppFontFamily.outfit:
         return GoogleFonts.outfit(
           fontSize: fontSize,

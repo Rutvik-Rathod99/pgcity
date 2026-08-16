@@ -233,6 +233,14 @@ void main() {
     test('Font Selection: Switch typography styles', () async {
       expect(appState.appFont, AppFontFamily.inter);
 
+      await appState.setAppFont(AppFontFamily.ubuntu);
+      expect(appState.appFont, AppFontFamily.ubuntu);
+      expect(AppTypography.currentFont, AppFontFamily.ubuntu);
+
+      await appState.setAppFont(AppFontFamily.sfPro);
+      expect(appState.appFont, AppFontFamily.sfPro);
+      expect(AppTypography.currentFont, AppFontFamily.sfPro);
+
       await appState.setAppFont(AppFontFamily.outfit);
       expect(appState.appFont, AppFontFamily.outfit);
       expect(AppTypography.currentFont, AppFontFamily.outfit);
