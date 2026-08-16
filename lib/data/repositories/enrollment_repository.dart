@@ -102,4 +102,8 @@ class EnrollmentRepository {
     all.removeWhere((e) => e.id == id);
     await saveAllEnrollments(all);
   }
+
+  Future<void> clearAll() async {
+    await _prefs.remove(_enrollKey);
+  }
 }
