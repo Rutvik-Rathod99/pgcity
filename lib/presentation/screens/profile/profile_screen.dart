@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pgcity/core/constants/app_colors.dart';
 import 'package:pgcity/core/constants/app_typography.dart';
-import 'package:pgcity/core/utils/currency_formatter.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
 import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/presentation/controllers/app_state.dart';
@@ -16,6 +14,7 @@ import 'theme_font_settings_modal.dart';
 import 'package:pgcity/presentation/screens/admin/admin_dashboard_screen.dart';
 import 'package:pgcity/presentation/screens/roommates/roommate_finder_screen.dart';
 import 'package:pgcity/presentation/screens/profile/rent_receipts_screen.dart';
+import 'package:pgcity/presentation/screens/profile/my_enrollments_screen.dart';
 import 'package:pgcity/presentation/screens/compare/pg_compare_screen.dart';
 import 'package:pgcity/presentation/screens/ai_assistant/pg_ai_assistant_screen.dart';
 import 'package:pgcity/presentation/screens/food/tiffin_menu_screen.dart';
@@ -509,126 +508,7 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-          const SizedBox(height: 24),
-
-          // 2. My Enrollments Section
-          Text(
-            '${appState.tr('my_enrollments')} (${enrollments.length})',
-            style: AppTypography.titleLarge(
-              color: isDark ? Colors.white : AppColors.ink,
-            ),
-          ),
-          const SizedBox(height: 10),
-
-          if (enrollments.isEmpty)
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                  color: isDark ? const Color(0xFF334155) : AppColors.line,
-                ),
-              ),
-              child: Center(
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.assignment_late_outlined,
-                      color: isDark ? Colors.white38 : AppColors.inkSoft,
-                      size: 32,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'No Enrollment Requests Yet',
-                      style: AppTypography.titleSmall(
-                        color: isDark ? Colors.white : AppColors.inkSoft,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Explore PGs and tap "Enroll Now" to apply.',
-                      style: AppTypography.bodySmall(
-                        color: isDark ? Colors.white60 : AppColors.inkSoft,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          else
-            Column(
-              children: enrollments.map((enr) {
-                return Container(
-                  padding: const EdgeInsets.all(14),
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: isDark ? const Color(0xFF334155) : AppColors.line,
-                    ),
-                    boxShadow: const [AppColors.softShadow],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  enr.pgName,
-                                  style: AppTypography.titleMedium(
-                                    color: isDark
-                                        ? Colors.white
-                                        : AppColors.ink,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  'Submitted ${DateFormat('dd MMM yyyy').format(enr.submittedAt)} · ${enr.sharingType}',
-                                  style: AppTypography.bodySmall(
-                                    color: isDark
-                                        ? Colors.white70
-                                        : AppColors.inkSoft,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          _buildStatusBadge(enr.status),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Move-in: ${DateFormat('dd MMM yyyy').format(enr.moveInDate)}',
-                            style: AppTypography.monoBadge(
-                              color: isDark
-                                  ? Colors.white70
-                                  : AppColors.inkSoft,
-                            ).copyWith(fontSize: 10),
-                          ),
-                          Text(
-                            CurrencyFormatter.format(enr.pgRent),
-                            style: AppTypography.monoPrice(
-                              color: AppColors.teal,
-                            ).copyWith(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           // Resident Tools & Ecosystem Section
           Text(
@@ -649,6 +529,29 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
+                // My Applications & Enrollments
+                _buildAccountTile(
+                  icon: Icons.assignment_outlined,
+                  title: appState.tr('my_enrollments'),
+                  subtitle: enrollments.isEmpty
+                      ? 'No active applications yet'
+                      : '${enrollments.length} application${enrollments.length > 1 ? 's' : ''} (${enrollments.where((e) => e.status == EnrollmentStatus.underReview).length} in review)',
+                  iconColor: const Color(0xFF38BDF8),
+                  isDark: isDark,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MyEnrollmentsScreen(appState: appState),
+                      ),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
                 // Groq AI PG Assistant
                 _buildAccountTile(
                   icon: Icons.auto_awesome_rounded,
@@ -1162,47 +1065,6 @@ class ProfileScreen extends StatelessWidget {
         color: isDark ? Colors.white38 : AppColors.inkSoft,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-    );
-  }
-
-  Widget _buildStatusBadge(EnrollmentStatus status) {
-    Color bg;
-    Color fg;
-    switch (status) {
-      case EnrollmentStatus.underReview:
-        bg = AppColors.marigold;
-        fg = AppColors.navy;
-        break;
-      case EnrollmentStatus.accepted:
-        bg = AppColors.teal;
-        fg = Colors.white;
-        break;
-      case EnrollmentStatus.rejected:
-      case EnrollmentStatus.cancelled:
-        bg = AppColors.error;
-        fg = Colors.white;
-        break;
-      case EnrollmentStatus.submitted:
-        bg = AppColors.tealLight;
-        fg = AppColors.teal;
-        break;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        status.label,
-        style: TextStyle(
-          color: fg,
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'JetBrains Mono',
-        ),
-      ),
     );
   }
 }
