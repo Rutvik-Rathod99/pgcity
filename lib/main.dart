@@ -11,7 +11,7 @@ import 'presentation/screens/main_navigation_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set Android system overlay style (light navigation bar and dark icons)
+  // Set system overlay style
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -32,6 +32,7 @@ void main() async {
     pgRepository: pgRepository,
     userRepository: userRepository,
     enrollmentRepository: enrollmentRepository,
+    prefs: prefs,
   );
 
   runApp(PGCityApp(appState: appState));
@@ -44,11 +45,18 @@ class PGCityApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PGCity — PG Discovery & Enrollment',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: MainNavigationScreen(appState: appState),
+    return ListenableBuilder(
+      listenable: appState,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'PGCity — PG Discovery & Enrollment',
+          debugShowCheckedModeBanner: false,
+          themeMode: appState.themeMode,
+          theme: AppTheme.lightTheme(appState.appFont),
+          darkTheme: AppTheme.darkTheme(appState.appFont),
+          home: MainNavigationScreen(appState: appState),
+        );
+      },
     );
   }
 }

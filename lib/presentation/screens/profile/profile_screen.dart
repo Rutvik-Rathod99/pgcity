@@ -10,6 +10,9 @@ import 'package:pgcity/presentation/screens/auth/login_screen.dart';
 import 'edit_profile_sheet.dart';
 import 'privacy_policy_modal.dart';
 import 'help_support_modal.dart';
+import 'terms_conditions_modal.dart';
+import 'in_app_rating_modal.dart';
+import 'theme_font_settings_modal.dart';
 import 'package:pgcity/presentation/screens/admin/admin_dashboard_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -40,6 +43,34 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  void _openAppearanceSettings(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => ThemeFontSettingsModal(appState: appState),
+    );
+  }
+
+  void _openInAppRating(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).cardTheme.color ?? AppColors.paper,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => InAppRatingModal(appState: appState),
+    );
+  }
+
+  void _openTermsConditions(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const TermsConditionsModal()),
+    );
+  }
+
   void _openPrivacyPolicy(BuildContext context) {
     Navigator.push(
       context,
@@ -55,18 +86,23 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _confirmLogout(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppColors.paper,
+        backgroundColor: isDark ? const Color(0xFF1E293B) : AppColors.paper,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Log Out from PGCity?',
-          style: AppTypography.titleMedium(color: AppColors.ink),
+          style: AppTypography.titleMedium(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
         content: Text(
           'You will be signed out on this device. You can explore PGs as a guest or sign in anytime.',
-          style: AppTypography.bodySmall(),
+          style: AppTypography.bodySmall(
+            color: isDark ? Colors.white70 : AppColors.inkSoft,
+          ),
         ),
         actions: [
           TextButton(
@@ -99,14 +135,19 @@ class ProfileScreen extends StatelessWidget {
 
   // Apple-Specific Account Deletion (Apple App Store Review Guideline 5.1.1(v))
   void _confirmDeleteAppleAccount(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppColors.paper,
+        backgroundColor: isDark ? const Color(0xFF1E293B) : AppColors.paper,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Row(
           children: [
-            const Icon(Icons.apple_rounded, color: Colors.black, size: 24),
+            Icon(
+              Icons.apple_rounded,
+              color: isDark ? Colors.white : Colors.black,
+              size: 24,
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -121,15 +162,19 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Under Apple App Store Guideline 5.1.1(v) and the DPDP Act 2023:',
-              style: AppTypography.titleSmall(color: AppColors.ink),
+              'Under Apple App Store Guideline 5.1.1(v) and DPDP Act 2023:',
+              style: AppTypography.titleSmall(
+                color: isDark ? Colors.white : AppColors.ink,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               '• Your Apple Sign-In authorization token will be permanently revoked.\n'
               '• All profile information, saved bookings, unlocked owner contacts, and enrollment history will be erased from our servers immediately.\n'
               '• This action is permanent and irreversible.',
-              style: AppTypography.bodySmall(color: AppColors.inkSoft),
+              style: AppTypography.bodySmall(
+                color: isDark ? Colors.white70 : AppColors.inkSoft,
+              ),
             ),
           ],
         ),
@@ -163,10 +208,11 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _confirmDeleteAccount(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppColors.paper,
+        backgroundColor: isDark ? const Color(0xFF1E293B) : AppColors.paper,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Delete Account?',
@@ -174,7 +220,9 @@ class ProfileScreen extends StatelessWidget {
         ),
         content: Text(
           'Under the DPDP Act 2023, this will permanently erase your profile, personal details, unlocked contact history, and enrollment records from our servers. This action cannot be undone.',
-          style: AppTypography.bodySmall(),
+          style: AppTypography.bodySmall(
+            color: isDark ? Colors.white70 : AppColors.inkSoft,
+          ),
         ),
         actions: [
           TextButton(
@@ -207,18 +255,27 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = appState.currentUser;
     final isLoggedIn = appState.isLoggedIn;
     final enrollments = appState.enrollments;
 
+    final themeLabel = appState.themeMode == ThemeMode.system
+        ? 'System Auto'
+        : (appState.themeMode == ThemeMode.dark ? 'Dark Mode' : 'Light Mode');
+    final fontLabel = appState.appFont.label;
+    final langLabel = '${appState.appLanguage.flag} ${appState.appLanguage.label}';
+
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.cream,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.cream,
         elevation: 0,
         title: Text(
-          'My Profile',
-          style: AppTypography.displaySmall(color: AppColors.ink),
+          appState.tr('my_profile'),
+          style: AppTypography.displaySmall(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
         actions: [
           IconButton(
@@ -274,11 +331,11 @@ class ProfileScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Guest Account',
+                              appState.tr('guest_user'),
                               style: AppTypography.titleMedium(color: Colors.white),
                             ),
                             Text(
-                              'Sign in to save PGs and enroll',
+                              appState.tr('sign_in_desc'),
                               style: AppTypography.bodySmall(color: Colors.white70),
                             ),
                           ],
@@ -292,7 +349,7 @@ class ProfileScreen extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: () => _openLoginScreen(context),
                       icon: const Icon(Icons.login_rounded, size: 16),
-                      label: const Text('Sign In / Register with Mobile or Social ID'),
+                      label: Text(appState.tr('sign_in_cta')),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.marigold,
                         foregroundColor: AppColors.navy,
@@ -307,9 +364,11 @@ class ProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.paper,
+                color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.line),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
                 boxShadow: const [AppColors.softShadow],
               ),
               child: Column(
@@ -345,7 +404,7 @@ class ProfileScreen extends StatelessWidget {
                                   child: Text(
                                     user?.fullName ?? 'Resident',
                                     style: AppTypography.titleMedium(
-                                      color: AppColors.ink,
+                                      color: isDark ? Colors.white : AppColors.ink,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -366,7 +425,7 @@ class ProfileScreen extends StatelessWidget {
                                   ? user!.mobileNumber
                                   : (user?.email ?? 'No contact saved'),
                               style: AppTypography.bodySmall(
-                                color: AppColors.inkSoft,
+                                color: isDark ? Colors.white70 : AppColors.inkSoft,
                               ),
                             ),
                             Text(
@@ -380,10 +439,10 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () => _openEditProfile(context),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.edit_outlined,
                           size: 20,
-                          color: AppColors.navy,
+                          color: isDark ? Colors.white : AppColors.navy,
                         ),
                         tooltip: 'Edit Profile',
                       ),
@@ -400,8 +459,10 @@ class ProfileScreen extends StatelessWidget {
 
           // 2. My Enrollments Section
           Text(
-            'My Enrollments (${enrollments.length})',
-            style: AppTypography.titleLarge(color: AppColors.ink),
+            '${appState.tr('my_enrollments')} (${enrollments.length})',
+            style: AppTypography.titleLarge(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 10),
 
@@ -409,9 +470,11 @@ class ProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.paper,
+                color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.line),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
               ),
               child: Center(
                 child: Column(
@@ -442,9 +505,11 @@ class ProfileScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(14),
                   margin: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
-                    color: AppColors.paper,
+                    color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.line),
+                    border: Border.all(
+                      color: isDark ? const Color(0xFF334155) : AppColors.line,
+                    ),
                     boxShadow: const [AppColors.softShadow],
                   ),
                   child: Column(
@@ -460,14 +525,14 @@ class ProfileScreen extends StatelessWidget {
                                 Text(
                                   enr.pgName,
                                   style: AppTypography.titleMedium(
-                                    color: AppColors.ink,
+                                    color: isDark ? Colors.white : AppColors.ink,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   'Submitted ${DateFormat('dd MMM yyyy').format(enr.submittedAt)} · ${enr.sharingType}',
                                   style: AppTypography.bodySmall(
-                                    color: AppColors.inkSoft,
+                                    color: isDark ? Colors.white70 : AppColors.inkSoft,
                                   ),
                                 ),
                               ],
@@ -483,7 +548,7 @@ class ProfileScreen extends StatelessWidget {
                           Text(
                             'Move-in: ${DateFormat('dd MMM yyyy').format(enr.moveInDate)}',
                             style: AppTypography.monoBadge(
-                              color: AppColors.inkSoft,
+                              color: isDark ? Colors.white70 : AppColors.inkSoft,
                             ).copyWith(fontSize: 10),
                           ),
                           Text(
@@ -494,35 +559,6 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (enr.adminNote != null &&
-                          enr.adminNote!.isNotEmpty) ...[
-                        const SizedBox(height: 6),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: AppColors.cream,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.comment_outlined,
-                                size: 14,
-                                color: AppColors.inkSoft,
-                              ),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  'Note: ${enr.adminNote}',
-                                  style: AppTypography.bodySmall(
-                                    color: AppColors.inkSoft,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 );
@@ -530,51 +566,100 @@ class ProfileScreen extends StatelessWidget {
             ),
           const SizedBox(height: 24),
 
-          // 3. Account Settings List
+          // 3. Appearance & Preferences Section
           Text(
-            'Account & Settings',
-            style: AppTypography.titleLarge(color: AppColors.ink),
+            appState.tr('account_settings'),
+            style: AppTypography.titleLarge(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 10),
 
           Container(
             decoration: BoxDecoration(
-              color: AppColors.paper,
+              color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.line),
+              border: Border.all(
+                color: isDark ? const Color(0xFF334155) : AppColors.line,
+              ),
             ),
             child: Column(
               children: [
-                if (!isLoggedIn)
-                  _buildAccountTile(
-                    icon: Icons.login_rounded,
-                    title: 'Sign In / Register',
-                    titleColor: AppColors.marigoldDark,
-                    iconColor: AppColors.marigoldDark,
-                    onTap: () => _openLoginScreen(context),
-                  )
-                else
-                  _buildAccountTile(
-                    icon: Icons.person_outline_rounded,
-                    title: 'Edit Profile Information',
-                    onTap: () => _openEditProfile(context),
-                  ),
-                const Divider(height: 1, color: AppColors.line),
+                // Theme, Font & Language Selection
+                _buildAccountTile(
+                  icon: Icons.palette_outlined,
+                  title: 'Theme, Font & Language',
+                  subtitle: '$themeLabel · $fontLabel · $langLabel',
+                  iconColor: AppColors.marigoldDark,
+                  isDark: isDark,
+                  onTap: () => _openAppearanceSettings(context),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // In-App Rating
+                _buildAccountTile(
+                  icon: Icons.star_rate_rounded,
+                  title: appState.tr('in_app_rating'),
+                  subtitle: appState.userAppRating != null
+                      ? 'Your Rating: ${'⭐' * appState.userAppRating!}'
+                      : '5-star feedback & reviews',
+                  iconColor: AppColors.marigold,
+                  isDark: isDark,
+                  onTap: () => _openInAppRating(context),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Terms and Conditions
+                _buildAccountTile(
+                  icon: Icons.description_outlined,
+                  title: appState.tr('terms_conditions'),
+                  subtitle: '7-clause terms of service & user rules',
+                  isDark: isDark,
+                  onTap: () => _openTermsConditions(context),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Privacy Policy & DPDP
+                _buildAccountTile(
+                  icon: Icons.privacy_tip_outlined,
+                  title: appState.tr('privacy_policy'),
+                  subtitle: 'Digital Personal Data Protection Act 2023',
+                  isDark: isDark,
+                  onTap: () => _openPrivacyPolicy(context),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Help & Support
                 _buildAccountTile(
                   icon: Icons.headset_mic_outlined,
                   title: 'Help, FAQ & WhatsApp Support',
+                  subtitle: 'Direct support team in Ahmedabad',
+                  isDark: isDark,
                   onTap: () => _openHelpSupport(context),
                 ),
-                const Divider(height: 1, color: AppColors.line),
-                _buildAccountTile(
-                  icon: Icons.privacy_tip_outlined,
-                  title: 'Privacy Policy & DPDP Notice',
-                  onTap: () => _openPrivacyPolicy(context),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
                 ),
-                const Divider(height: 1, color: AppColors.line),
+
+                // Admin Portal
                 _buildAccountTile(
                   icon: Icons.admin_panel_settings_outlined,
-                  title: 'Admin Onboarding Portal',
+                  title: appState.tr('admin_portal'),
+                  subtitle: 'PG inventory management & lead review',
+                  isDark: isDark,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -588,41 +673,62 @@ class ProfileScreen extends StatelessWidget {
 
                 // Apple-Only Account Deletion (Apple App Store Guideline 5.1.1(v))
                 if (user?.isAppleUser == true) ...[
-                  const Divider(height: 1, color: AppColors.line),
+                  Divider(
+                    height: 1,
+                    color: isDark ? const Color(0xFF334155) : AppColors.line,
+                  ),
                   _buildAccountTile(
                     icon: Icons.apple_rounded,
-                    title: 'Delete Apple Account (Apple Guideline 5.1.1v)',
+                    title: appState.tr('delete_apple_account'),
+                    subtitle: 'Revoke Apple token & erase personal data',
                     titleColor: AppColors.error,
-                    iconColor: Colors.black,
+                    iconColor: isDark ? Colors.white : Colors.black,
+                    isDark: isDark,
                     onTap: () => _confirmDeleteAppleAccount(context),
                   ),
                 ] else if (isLoggedIn) ...[
-                  const Divider(height: 1, color: AppColors.line),
+                  Divider(
+                    height: 1,
+                    color: isDark ? const Color(0xFF334155) : AppColors.line,
+                  ),
                   _buildAccountTile(
                     icon: Icons.delete_outline_rounded,
-                    title: 'Delete Account (Right to Erasure)',
+                    title: appState.tr('delete_account'),
+                    subtitle: 'Right to erasure under DPDP Act 2023',
                     titleColor: AppColors.error,
                     iconColor: AppColors.error,
+                    isDark: isDark,
                     onTap: () => _confirmDeleteAccount(context),
                   ),
                 ],
 
                 // Logout Option
                 if (isLoggedIn) ...[
-                  const Divider(height: 1, color: AppColors.line),
+                  Divider(
+                    height: 1,
+                    color: isDark ? const Color(0xFF334155) : AppColors.line,
+                  ),
                   _buildAccountTile(
                     icon: Icons.logout_rounded,
-                    title: 'Log Out',
+                    title: appState.tr('log_out'),
+                    subtitle: 'Sign out of current account',
                     titleColor: AppColors.error,
                     iconColor: AppColors.error,
+                    isDark: isDark,
                     onTap: () => _confirmLogout(context),
                   ),
                 ],
 
-                const Divider(height: 1, color: AppColors.line),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
                 _buildAccountTile(
                   icon: Icons.refresh_rounded,
                   title: 'Reset All Demo Data',
+                  subtitle: 'Restore curated seed PGs & enrollments',
+                  isDark: isDark,
                   onTap: () async {
                     await appState.resetAllData();
                     if (context.mounted) {
@@ -642,15 +748,57 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // Version note
-          Center(
-            child: Text(
-              'PGCity Mobile v1.0.0 · Ahmedabad Curated Edition',
-              style: AppTypography.monoLabel(
-                color: AppColors.inkSoft,
-              ).copyWith(fontSize: 10),
+          // 4. App Version Display Card
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: isDark ? const Color(0xFF334155) : AppColors.line,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: AppColors.navy,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.verified_user_outlined,
+                      color: AppColors.marigold,
+                      size: 20,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'PGCity App Version ${appState.appVersion}',
+                        style: AppTypography.titleSmall(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ),
+                      ),
+                      Text(
+                        'Build ${appState.appBuildNumber} · Ahmedabad Curated Edition (Android & iOS)',
+                        style: AppTypography.monoLabel(
+                          color: isDark ? Colors.white60 : AppColors.inkSoft,
+                        ).copyWith(fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -724,21 +872,37 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildAccountTile({
     required IconData icon,
     required String title,
+    String? subtitle,
     required VoidCallback onTap,
     Color? titleColor,
     Color? iconColor,
+    required bool isDark,
   }) {
     return ListTile(
       onTap: onTap,
-      leading: Icon(icon, color: iconColor ?? AppColors.ink, size: 20),
+      leading: Icon(
+        icon,
+        color: iconColor ?? (isDark ? Colors.white : AppColors.ink),
+        size: 20,
+      ),
       title: Text(
         title,
-        style: AppTypography.titleSmall(color: titleColor ?? AppColors.ink),
+        style: AppTypography.titleSmall(
+          color: titleColor ?? (isDark ? Colors.white : AppColors.ink),
+        ),
       ),
-      trailing: const Icon(
+      subtitle: subtitle != null
+          ? Text(
+              subtitle,
+              style: AppTypography.bodySmall(
+                color: isDark ? Colors.white60 : AppColors.inkSoft,
+              ).copyWith(fontSize: 11),
+            )
+          : null,
+      trailing: Icon(
         Icons.chevron_right_rounded,
         size: 20,
-        color: AppColors.inkSoft,
+        color: isDark ? Colors.white38 : AppColors.inkSoft,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
     );

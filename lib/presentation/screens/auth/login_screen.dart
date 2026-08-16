@@ -4,6 +4,8 @@ import 'package:pgcity/core/constants/app_colors.dart';
 import 'package:pgcity/core/constants/app_typography.dart';
 import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/presentation/controllers/app_state.dart';
+import 'package:pgcity/presentation/screens/profile/terms_conditions_modal.dart';
+import 'package:pgcity/presentation/screens/profile/privacy_policy_modal.dart';
 
 class LoginScreen extends StatefulWidget {
   final AppState appState;
@@ -431,6 +433,73 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+
+            const SizedBox(height: 18),
+            const Divider(color: AppColors.line),
+            const SizedBox(height: 12),
+
+            // Terms & Privacy Links
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const TermsConditionsModal(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Terms & Conditions',
+                    style: AppTypography.monoLabel(
+                      color: AppColors.inkSoft,
+                    ).copyWith(fontSize: 11, decoration: TextDecoration.underline),
+                  ),
+                ),
+                Text(
+                  ' · ',
+                  style: AppTypography.monoLabel(color: AppColors.inkSoft),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const PrivacyPolicyModal(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Privacy Policy',
+                    style: AppTypography.monoLabel(
+                      color: AppColors.inkSoft,
+                    ).copyWith(fontSize: 11, decoration: TextDecoration.underline),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+
+            // App Version on Login Screen
+            Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.paper,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.line),
+                ),
+                child: Text(
+                  'PGCity ${widget.appState.appFullVersion} · Ahmedabad',
+                  style: AppTypography.monoBadge(
+                    color: AppColors.inkSoft,
+                  ).copyWith(fontSize: 10),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),

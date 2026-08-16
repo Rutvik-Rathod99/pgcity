@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pgcity/core/constants/app_typography.dart';
+import 'package:pgcity/core/localization/app_strings.dart';
 import 'package:pgcity/data/models/pg_model.dart';
 import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
@@ -28,6 +31,7 @@ void main() {
         pgRepository: pgRepo,
         userRepository: userRepo,
         enrollmentRepository: enrollRepo,
+        prefs: prefs,
       );
       // Wait for async init
       await Future.delayed(const Duration(milliseconds: 50));
@@ -197,6 +201,60 @@ void main() {
       await appState.logoutUser();
       expect(appState.isLoggedIn, false);
       expect(appState.currentUser, null);
+    });
+
+    test('Theme Mode: Switch between System, Light, and Dark mode', () async {
+      expect(appState.themeMode, ThemeMode.system);
+
+      await appState.setThemeMode(ThemeMode.dark);
+      expect(appState.themeMode, ThemeMode.dark);
+
+      await appState.setThemeMode(ThemeMode.light);
+      expect(appState.themeMode, ThemeMode.light);
+    });
+
+    test('Font Selection: Switch typography styles', () async {
+      expect(appState.appFont, AppFontFamily.inter);
+
+      await appState.setAppFont(AppFontFamily.outfit);
+      expect(appState.appFont, AppFontFamily.outfit);
+      expect(AppTypography.currentFont, AppFontFamily.outfit);
+
+      await appState.setAppFont(AppFontFamily.plusJakartaSans);
+      expect(appState.appFont, AppFontFamily.plusJakartaSans);
+    });
+
+    test('Language Selection: English, Gujarati, Hindi localization', () async {
+      expect(appState.appLanguage, AppLanguage.english);
+      expect(appState.tr('nav_explore'), 'Explore');
+
+      await appState.setAppLanguage(AppLanguage.gujarati);
+      expect(appState.appLanguage, AppLanguage.gujarati);
+      expect(appState.tr('nav_explore'), 'શોધો (Explore)');
+
+      await appState.setAppLanguage(AppLanguage.hindi);
+      expect(appState.appLanguage, AppLanguage.hindi);
+      expect(appState.tr('nav_explore'), 'खोजें (Explore)');
+    });
+
+    test('In-App Rating: Save rating, tags, and feedback review', () async {
+      expect(appState.userAppRating, null);
+
+      await appState.saveInAppRating(
+        rating: 5,
+        feedback: 'Super clean PG photos and rapid landlord responses!',
+        tags: ['📸 100% Real Photos', '🔒 Safe Neighborhood'],
+      );
+
+      expect(appState.userAppRating, 5);
+      expect(prefs.getInt('pgcity_user_rating'), 5);
+      expect(prefs.getString('pgcity_user_feedback'), 'Super clean PG photos and rapid landlord responses!');
+    });
+
+    test('App Version & Build Number Display', () {
+      expect(appState.appVersion, '1.0.0');
+      expect(appState.appBuildNumber, '100');
+      expect(appState.appFullVersion, 'v1.0.0 (Build 100)');
     });
   });
 }

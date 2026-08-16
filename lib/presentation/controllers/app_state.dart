@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pgcity/core/constants/app_typography.dart';
+import 'package:pgcity/core/localization/app_strings.dart';
 import 'package:pgcity/data/models/pg_model.dart';
 import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
@@ -26,14 +29,16 @@ enum PriceFilter {
 }
 
 class AppState extends ChangeNotifier {
-  final PGRepository _pgRepository;
-  final UserRepository _userRepository;
-  final EnrollmentRepository _enrollmentRepository;
+  final PGRepository pgRepository;
+  final UserRepository userRepository;
+  final EnrollmentRepository enrollmentRepository;
+  final SharedPreferences? prefs;
 
   AppState({
-    required this._pgRepository,
-    required this._userRepository,
-    required this._enrollmentRepository,
+    required this.pgRepository,
+    required this.userRepository,
+    required this.enrollmentRepository,
+    this.prefs,
   }) {
     _init();
   }
@@ -82,15 +87,62 @@ class AppState extends ChangeNotifier {
   bool _isMapView = true;
   bool get isMapView => _isMapView;
 
+  // Appearance, Font, Language & Version States
+  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode get themeMode => _themeMode;
+
+  AppFontFamily _appFont = AppFontFamily.inter;
+  AppFontFamily get appFont => _appFont;
+
+  AppLanguage _appLanguage = AppLanguage.english;
+  AppLanguage get appLanguage => _appLanguage;
+
+  int? _userAppRating;
+  int? get userAppRating => _userAppRating;
+
+  String get appVersion => '1.0.0';
+  String get appBuildNumber => '100';
+  String get appFullVersion => 'v1.0.0 (Build 100)';
+
+  String tr(String key) => AppStrings.get(key, _appLanguage);
+
   Future<void> _init() async {
     _isLoading = true;
     notifyListeners();
 
-    _allPGs = await _pgRepository.getAllPGs();
-    _likedPGIds = _pgRepository.getLikedPGIds();
-    _unlockedPGIds = _pgRepository.getUnlockedPGIds();
-    _currentUser = _userRepository.getCurrentUser();
-    _enrollments = _enrollmentRepository.getAllEnrollments();
+    // Load appearance & locale preferences
+    final savedTheme = prefs?.getString('pgcity_theme_mode');
+    if (savedTheme != null) {
+      _themeMode = ThemeMode.values.firstWhere(
+        (t) => t.name == savedTheme,
+        orElse: () => ThemeMode.system,
+      );
+    }
+
+    final savedFont = prefs?.getString('pgcity_font_family');
+    if (savedFont != null) {
+      _appFont = AppFontFamily.values.firstWhere(
+        (f) => f.name == savedFont,
+        orElse: () => AppFontFamily.inter,
+      );
+      AppTypography.currentFont = _appFont;
+    }
+
+    final savedLang = prefs?.getString('pgcity_language');
+    if (savedLang != null) {
+      _appLanguage = AppLanguage.values.firstWhere(
+        (l) => l.name == savedLang,
+        orElse: () => AppLanguage.english,
+      );
+    }
+
+    _userAppRating = prefs?.getInt('pgcity_user_rating');
+
+    _allPGs = await pgRepository.getAllPGs();
+    _likedPGIds = pgRepository.getLikedPGIds();
+    _unlockedPGIds = pgRepository.getUnlockedPGIds();
+    _currentUser = userRepository.getCurrentUser();
+    _enrollments = enrollmentRepository.getAllEnrollments();
 
     if (_allPGs.isNotEmpty) {
       _selectedPG = _allPGs.first;
@@ -116,6 +168,38 @@ class AppState extends ChangeNotifier {
     ];
 
     _isLoading = false;
+    notifyListeners();
+  }
+
+  // Preference Modifiers
+  Future<void> setThemeMode(ThemeMode mode) async {
+    _themeMode = mode;
+    await prefs?.setString('pgcity_theme_mode', mode.name);
+    notifyListeners();
+  }
+
+  Future<void> setAppFont(AppFontFamily font) async {
+    _appFont = font;
+    AppTypography.currentFont = font;
+    await prefs?.setString('pgcity_font_family', font.name);
+    notifyListeners();
+  }
+
+  Future<void> setAppLanguage(AppLanguage lang) async {
+    _appLanguage = lang;
+    await prefs?.setString('pgcity_language', lang.name);
+    notifyListeners();
+  }
+
+  Future<void> saveInAppRating({
+    required int rating,
+    required String feedback,
+    required List<String> tags,
+  }) async {
+    _userAppRating = rating;
+    await prefs?.setInt('pgcity_user_rating', rating);
+    await prefs?.setString('pgcity_user_feedback', feedback);
+    await prefs?.setStringList('pgcity_user_rating_tags', tags);
     notifyListeners();
   }
 
@@ -145,9 +229,9 @@ class AppState extends ChangeNotifier {
   }
 
   void clearFilters() {
-    _searchQuery = '';
     _genderFilter = GenderFilter.all;
     _priceFilter = PriceFilter.all;
+    _searchQuery = '';
     _updateSelectedAfterFilter();
     notifyListeners();
   }
@@ -157,84 +241,81 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void toggleMapView() {
+    _isMapView = !_isMapView;
+    notifyListeners();
+  }
+
   void selectPG(PGModel pg) {
     _selectedPG = pg;
     notifyListeners();
   }
 
+  void clearSelectedPG() {
+    _selectedPG = null;
+    notifyListeners();
+  }
+
   List<PGModel> get filteredPGs {
     return _allPGs.where((pg) {
-      // Must be published in regular user mode
-      if (!_isAdminMode &&
-          pg.verificationStatus != PGVerificationStatus.published) {
-        return false;
-      }
-
-      // Search Query
-      if (_searchQuery.trim().isNotEmpty) {
-        final q = _searchQuery.toLowerCase().trim();
-        final matchName = pg.name.toLowerCase().contains(q);
-        final matchLocality = pg.locality.toLowerCase().contains(q);
-        final matchAddress = pg.address.toLowerCase().contains(q);
-        final matchLandmarks = pg.nearbyLandmarks.any(
-          (l) => l.name.toLowerCase().contains(q),
-        );
-        if (!matchName && !matchLocality && !matchAddress && !matchLandmarks) {
-          return false;
-        }
-      }
-
-      // Gender Filter
       if (_genderFilter == GenderFilter.girls && pg.type != PGType.girls) {
         return false;
       }
       if (_genderFilter == GenderFilter.boys && pg.type != PGType.boys) {
         return false;
       }
-
-      // Price Filter
       if (_priceFilter == PriceFilter.under10k && pg.monthlyRent >= 10000) {
         return false;
       }
       if (_priceFilter == PriceFilter.above10k && pg.monthlyRent < 10000) {
         return false;
       }
-
+      if (_searchQuery.isNotEmpty) {
+        final query = _searchQuery.toLowerCase();
+        final matchName = pg.name.toLowerCase().contains(query);
+        final matchLocality = pg.locality.toLowerCase().contains(query);
+        final matchSharing = pg.sharingType.toLowerCase().contains(query);
+        final matchLandmark = pg.nearbyLandmarks.any(
+          (l) => l.name.toLowerCase().contains(query),
+        );
+        if (!matchName && !matchLocality && !matchLandmark && !matchSharing) {
+          return false;
+        }
+      }
       return true;
     }).toList();
   }
 
   void _updateSelectedAfterFilter() {
     final list = filteredPGs;
-    if (_selectedPG == null || !list.contains(_selectedPG)) {
+    if (_selectedPG == null || !list.any((p) => p.id == _selectedPG!.id)) {
       _selectedPG = list.isNotEmpty ? list.first : null;
     }
   }
 
-  // Liked PGs
+  // Liked / Shortlisted
   bool isPGLiked(String pgId) => _likedPGIds.contains(pgId);
 
   Future<void> toggleLike(String pgId) async {
-    await _pgRepository.toggleLike(pgId);
-    _likedPGIds = _pgRepository.getLikedPGIds();
-    _allPGs = await _pgRepository.getAllPGs();
+    await pgRepository.toggleLike(pgId);
+    _likedPGIds = pgRepository.getLikedPGIds();
+    _allPGs = await pgRepository.getAllPGs();
     if (_selectedPG?.id == pgId) {
       _selectedPG = _allPGs.firstWhere((p) => p.id == pgId);
     }
     notifyListeners();
   }
 
-  List<PGModel> get likedPGs {
-    return _allPGs.where((pg) => _likedPGIds.contains(pg.id)).toList();
-  }
+  List<PGModel> get likedPGs =>
+      _allPGs.where((pg) => _likedPGIds.contains(pg.id)).toList();
 
   // Contact Unlock
   bool isPGUnlocked(String pgId) => _unlockedPGIds.contains(pgId);
 
   Future<void> unlockPGContact(String pgId) async {
-    await _pgRepository.unlockPGContact(pgId);
-    _unlockedPGIds = _pgRepository.getUnlockedPGIds();
-    _allPGs = await _pgRepository.getAllPGs();
+    await pgRepository.unlockPGContact(pgId);
+    _unlockedPGIds = pgRepository.getUnlockedPGIds();
+    _allPGs = await pgRepository.getAllPGs();
     if (_selectedPG?.id == pgId) {
       _selectedPG = _allPGs.firstWhere((p) => p.id == pgId);
     }
@@ -243,35 +324,39 @@ class AppState extends ChangeNotifier {
 
   // User Profile
   Future<void> saveUserProfile(UserModel user) async {
-    await _userRepository.saveUser(user);
+    await userRepository.saveUser(user);
     _currentUser = user;
     notifyListeners();
   }
 
-  bool get isLoggedIn => _userRepository.isLoggedIn() && _currentUser != null;
+  bool get isLoggedIn => userRepository.isLoggedIn() && _currentUser != null;
 
   Future<void> loginWithPhoneOtp(String phone, String otp) async {
-    _currentUser = await _userRepository.loginWithPhoneOtp(phone, otp);
+    _currentUser = await userRepository.loginWithPhoneOtp(phone, otp);
     notifyListeners();
   }
 
   Future<void> loginWithPhonePassword(String phone, String password) async {
-    _currentUser = await _userRepository.loginWithPhonePassword(phone, password);
+    _currentUser =
+        await userRepository.loginWithPhonePassword(phone, password);
     notifyListeners();
   }
 
   Future<void> loginWithEmailPassword(String email, String password) async {
-    _currentUser = await _userRepository.loginWithEmailPassword(email, password);
+    _currentUser =
+        await userRepository.loginWithEmailPassword(email, password);
     notifyListeners();
   }
 
   Future<void> loginWithGoogle({String? name, String? email}) async {
-    _currentUser = await _userRepository.loginWithGoogle(name: name, email: email);
+    _currentUser =
+        await userRepository.loginWithGoogle(name: name, email: email);
     notifyListeners();
   }
 
   Future<void> loginWithApple({String? appleId, String? email}) async {
-    _currentUser = await _userRepository.loginWithApple(appleId: appleId, email: email);
+    _currentUser =
+        await userRepository.loginWithApple(appleId: appleId, email: email);
     notifyListeners();
   }
 
@@ -283,7 +368,7 @@ class AppState extends ChangeNotifier {
     required UserGender gender,
     required AuthProvider authProvider,
   }) async {
-    _currentUser = await _userRepository.registerUser(
+    _currentUser = await userRepository.registerUser(
       fullName: fullName,
       mobileNumber: mobileNumber,
       email: email,
@@ -295,34 +380,34 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> logoutUser() async {
-    await _userRepository.logout();
+    await userRepository.logout();
     _currentUser = null;
     notifyListeners();
   }
 
   Future<void> deleteAppleAccount() async {
-    await _userRepository.deleteAppleAccount();
+    await userRepository.deleteAppleAccount();
     _currentUser = null;
-    await _enrollmentRepository.clearAll();
+    await enrollmentRepository.clearAll();
     _enrollments = [];
     notifyListeners();
   }
 
   Future<void> deleteAccount() async {
-    await _userRepository.clearUser();
+    await userRepository.clearUser();
     _currentUser = null;
-    await _enrollmentRepository.clearAll();
+    await enrollmentRepository.clearAll();
     _enrollments = [];
     notifyListeners();
   }
 
   // OTP Verification Simulation
   String requestOTP(String phoneNumber) {
-    return _userRepository.generateAndStoreOTP(phoneNumber);
+    return userRepository.generateAndStoreOTP(phoneNumber);
   }
 
   bool verifyOTP(String input) {
-    final valid = _userRepository.verifyOTP(input);
+    final valid = userRepository.verifyOTP(input);
     if (valid && _currentUser != null) {
       final verifiedUser = _currentUser!.copyWith(isVerified: true);
       saveUserProfile(verifiedUser);
@@ -363,13 +448,13 @@ class AppState extends ChangeNotifier {
       submittedAt: DateTime.now(),
     );
 
-    await _enrollmentRepository.addEnrollment(newEnrollment);
-    _enrollments = _enrollmentRepository.getAllEnrollments();
+    await enrollmentRepository.addEnrollment(newEnrollment);
+    _enrollments = enrollmentRepository.getAllEnrollments();
 
     // Increment PG enrollment count in repo
     final updatedPG = pg.copyWith(enrollmentsCount: pg.enrollmentsCount + 1);
-    await _pgRepository.addOrUpdatePG(updatedPG);
-    _allPGs = await _pgRepository.getAllPGs();
+    await pgRepository.addOrUpdatePG(updatedPG);
+    _allPGs = await pgRepository.getAllPGs();
 
     // Add notification
     _notifications.insert(
@@ -412,15 +497,15 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> adminSavePG(PGModel pg) async {
-    await _pgRepository.addOrUpdatePG(pg);
-    _allPGs = await _pgRepository.getAllPGs();
+    await pgRepository.addOrUpdatePG(pg);
+    _allPGs = await pgRepository.getAllPGs();
     _updateSelectedAfterFilter();
     notifyListeners();
   }
 
   Future<void> adminDeletePG(String id) async {
-    await _pgRepository.deletePG(id);
-    _allPGs = await _pgRepository.getAllPGs();
+    await pgRepository.deletePG(id);
+    _allPGs = await pgRepository.getAllPGs();
     _updateSelectedAfterFilter();
     notifyListeners();
   }
@@ -430,12 +515,12 @@ class AppState extends ChangeNotifier {
     EnrollmentStatus newStatus, {
     String? note,
   }) async {
-    await _enrollmentRepository.updateStatus(
+    await enrollmentRepository.updateStatus(
       enrollmentId,
       newStatus,
       adminNote: note,
     );
-    _enrollments = _enrollmentRepository.getAllEnrollments();
+    _enrollments = enrollmentRepository.getAllEnrollments();
 
     final item = _enrollments.firstWhere((e) => e.id == enrollmentId);
     _notifications.insert(
@@ -457,7 +542,7 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> resetAllData() async {
-    await _pgRepository.resetToSeedData();
+    await pgRepository.resetToSeedData();
     await _init();
   }
 }
