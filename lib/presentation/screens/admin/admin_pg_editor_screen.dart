@@ -329,7 +329,7 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
               title: const Text('Verified by PGCity Ops'),
               subtitle: const Text('Displays verified green shield badge to users'),
               value: _isVerified,
-              activeColor: AppColors.teal,
+              activeTrackColor: AppColors.teal,
               onChanged: (val) => setState(() => _isVerified = val),
               contentPadding: EdgeInsets.zero,
             ),
