@@ -39,8 +39,10 @@ class OTPVerificationScreen extends StatefulWidget {
 }
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
-  final List<TextEditingController> _controllers =
-      List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> _controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
   int _resendSeconds = 28;
@@ -210,8 +212,9 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   const TextSpan(text: 'Sent to '),
                   TextSpan(
                     text: widget.phoneNumber,
-                    style: AppTypography.monoPrice(color: AppColors.navy)
-                        .copyWith(fontSize: 13),
+                    style: AppTypography.monoPrice(
+                      color: AppColors.navy,
+                    ).copyWith(fontSize: 13),
                   ),
                 ],
               ),
@@ -231,8 +234,9 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     maxLength: 1,
-                    style: AppTypography.monoPrice(color: AppColors.navy)
-                        .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: AppTypography.monoPrice(
+                      color: AppColors.navy,
+                    ).copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
                       counterText: '',
                       filled: true,
@@ -295,11 +299,16 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 else
                   TextButton.icon(
                     onPressed: _autofillDemoCode,
-                    icon: const Icon(Icons.flash_on_rounded, size: 14, color: AppColors.marigoldDark),
+                    icon: const Icon(
+                      Icons.flash_on_rounded,
+                      size: 14,
+                      color: AppColors.marigoldDark,
+                    ),
                     label: Text(
                       'Demo Fill (482100)',
-                      style: AppTypography.monoBadge(color: AppColors.marigoldDark)
-                          .copyWith(fontSize: 10),
+                      style: AppTypography.monoBadge(
+                        color: AppColors.marigoldDark,
+                      ).copyWith(fontSize: 10),
                     ),
                   ),
               ],
@@ -338,7 +347,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline_rounded, color: AppColors.teal, size: 20),
+                  const Icon(
+                    Icons.info_outline_rounded,
+                    color: AppColors.teal,
+                    size: 20,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(

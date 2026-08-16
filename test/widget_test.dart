@@ -86,7 +86,9 @@ void main() {
       await appState.toggleLike(testPG.id);
       expect(appState.isPGLiked(testPG.id), true);
 
-      final reloadedPG = (await pgRepo.getAllPGs()).firstWhere((p) => p.id == testPG.id);
+      final reloadedPG = (await pgRepo.getAllPGs()).firstWhere(
+        (p) => p.id == testPG.id,
+      );
       expect(reloadedPG.likesCount, initialLikes + 1);
 
       await appState.toggleLike(testPG.id);
@@ -103,7 +105,9 @@ void main() {
       await appState.unlockPGContact(testPG.id);
       expect(appState.isPGUnlocked(testPG.id), true);
 
-      final reloadedPG = (await pgRepo.getAllPGs()).firstWhere((p) => p.id == testPG.id);
+      final reloadedPG = (await pgRepo.getAllPGs()).firstWhere(
+        (p) => p.id == testPG.id,
+      );
       expect(reloadedPG.contactUnlocksCount, initialUnlocks + 1);
     });
 
@@ -129,8 +133,13 @@ void main() {
       expect(submitted.status, EnrollmentStatus.submitted);
 
       // Admin accepts lead
-      await appState.adminUpdateEnrollmentStatus(submitted.id, EnrollmentStatus.accepted);
-      final updated = appState.enrollments.firstWhere((e) => e.id == submitted.id);
+      await appState.adminUpdateEnrollmentStatus(
+        submitted.id,
+        EnrollmentStatus.accepted,
+      );
+      final updated = appState.enrollments.firstWhere(
+        (e) => e.id == submitted.id,
+      );
       expect(updated.status, EnrollmentStatus.accepted);
     });
 

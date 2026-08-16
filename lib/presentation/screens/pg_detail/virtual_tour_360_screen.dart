@@ -30,14 +30,19 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
     super.initState();
     _currentSceneIndex = widget.initialSceneIndex.clamp(
       0,
-      widget.pg.virtualTourScenes.isNotEmpty ? widget.pg.virtualTourScenes.length - 1 : 0,
+      widget.pg.virtualTourScenes.isNotEmpty
+          ? widget.pg.virtualTourScenes.length - 1
+          : 0,
     );
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
     setState(() {
       _horizontalOffset += details.delta.dx * 0.005;
-      _verticalOffset = (_verticalOffset + details.delta.dy * 0.003).clamp(-0.4, 0.4);
+      _verticalOffset = (_verticalOffset + details.delta.dy * 0.003).clamp(
+        -0.4,
+        0.4,
+      );
     });
   }
 
@@ -84,16 +89,24 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
 
                 // Interactive Hot-Spots Overlay
                 Positioned(
-                  left: MediaQuery.of(context).size.width * 0.35 + (_horizontalOffset * 50),
-                  top: MediaQuery.of(context).size.height * 0.5 + (_verticalOffset * 80),
+                  left:
+                      MediaQuery.of(context).size.width * 0.35 +
+                      (_horizontalOffset * 50),
+                  top:
+                      MediaQuery.of(context).size.height * 0.5 +
+                      (_verticalOffset * 80),
                   child: _buildHotspot(
                     label: 'Study Desk & LAN Port',
                     icon: Icons.desk_rounded,
                   ),
                 ),
                 Positioned(
-                  left: MediaQuery.of(context).size.width * 0.65 + (_horizontalOffset * 50),
-                  top: MediaQuery.of(context).size.height * 0.42 + (_verticalOffset * 80),
+                  left:
+                      MediaQuery.of(context).size.width * 0.65 +
+                      (_horizontalOffset * 50),
+                  top:
+                      MediaQuery.of(context).size.height * 0.42 +
+                      (_verticalOffset * 80),
                   child: _buildHotspot(
                     label: 'Split Air Conditioner',
                     icon: Icons.ac_unit_rounded,
@@ -111,7 +124,10 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
               opacity: _showControls ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 200),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.6),
                   borderRadius: BorderRadius.circular(20),
@@ -120,11 +136,17 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.explore_rounded, color: AppColors.marigold, size: 16),
+                    const Icon(
+                      Icons.explore_rounded,
+                      color: AppColors.marigold,
+                      size: 16,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       'Drag to rotate 360°',
-                      style: AppTypography.monoBadge(color: Colors.white).copyWith(fontSize: 10),
+                      style: AppTypography.monoBadge(
+                        color: Colors.white,
+                      ).copyWith(fontSize: 10),
                     ),
                   ],
                 ),
@@ -141,7 +163,12 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
               opacity: _showControls ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 200),
               child: Container(
-                padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top + 8, 16, 16),
+                padding: EdgeInsets.fromLTRB(
+                  16,
+                  MediaQuery.of(context).padding.top + 8,
+                  16,
+                  16,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -155,7 +182,11 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white, size: 20),
+                      icon: const Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 8),
@@ -166,22 +197,28 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                           Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.marigold,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
                                   '360° TOUR',
-                                  style: AppTypography.monoBadge(color: AppColors.navy)
-                                      .copyWith(fontSize: 9),
+                                  style: AppTypography.monoBadge(
+                                    color: AppColors.navy,
+                                  ).copyWith(fontSize: 9),
                                 ),
                               ),
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
                                   widget.pg.name,
-                                  style: AppTypography.titleSmall(color: Colors.white70),
+                                  style: AppTypography.titleSmall(
+                                    color: Colors.white70,
+                                  ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -190,7 +227,9 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                           const SizedBox(height: 2),
                           Text(
                             currentScene.title,
-                            style: AppTypography.titleMedium(color: Colors.white),
+                            style: AppTypography.titleMedium(
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -210,7 +249,12 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
               opacity: _showControls ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 200),
               child: Container(
-                padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).padding.bottom + 16),
+                padding: EdgeInsets.fromLTRB(
+                  16,
+                  16,
+                  16,
+                  MediaQuery.of(context).padding.bottom + 16,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
@@ -242,13 +286,16 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                           final isSelected = index == _currentSceneIndex;
 
                           return GestureDetector(
-                            onTap: () => setState(() => _currentSceneIndex = index),
+                            onTap: () =>
+                                setState(() => _currentSceneIndex = index),
                             child: Container(
                               width: 110,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: isSelected ? AppColors.marigold : Colors.white24,
+                                  color: isSelected
+                                      ? AppColors.marigold
+                                      : Colors.white24,
                                   width: isSelected ? 2 : 1,
                                 ),
                                 image: DecorationImage(
@@ -267,8 +314,12 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                                   sc.roomType,
                                   style: TextStyle(
                                     fontSize: 10,
-                                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                                    color: isSelected ? AppColors.marigold : Colors.white,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w700
+                                        : FontWeight.w500,
+                                    color: isSelected
+                                        ? AppColors.marigold
+                                        : Colors.white,
                                     fontFamily: 'Inter',
                                   ),
                                 ),

@@ -12,11 +12,7 @@ class EnrollmentSheet extends StatefulWidget {
   final PGModel pg;
   final AppState appState;
 
-  const EnrollmentSheet({
-    super.key,
-    required this.pg,
-    required this.appState,
-  });
+  const EnrollmentSheet({super.key, required this.pg, required this.appState});
 
   @override
   State<EnrollmentSheet> createState() => _EnrollmentSheetState();
@@ -42,9 +38,15 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
     final user = widget.appState.currentUser;
 
     _nameController = TextEditingController(text: user?.fullName ?? '');
-    _phoneController = TextEditingController(text: user?.mobileNumber ?? '+91 98765 43210');
-    _emailController = TextEditingController(text: user?.email ?? 'yuvraj@email.com');
-    _ageController = TextEditingController(text: user != null ? '${user.age}' : '21');
+    _phoneController = TextEditingController(
+      text: user?.mobileNumber ?? '+91 98765 43210',
+    );
+    _emailController = TextEditingController(
+      text: user?.email ?? 'yuvraj@email.com',
+    );
+    _ageController = TextEditingController(
+      text: user != null ? '${user.age}' : '21',
+    );
     _occupationController = TextEditingController(
       text: user?.occupation ?? 'XYZ College of Engineering',
     );
@@ -52,7 +54,8 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
 
     _selectedGender = user != null ? user.gender.label : 'Male';
     _selectedSharing = user?.preferredSharing ?? '2 Sharing';
-    _selectedMoveInDate = user?.moveInDate ?? DateTime.now().add(const Duration(days: 30));
+    _selectedMoveInDate =
+        user?.moveInDate ?? DateTime.now().add(const Duration(days: 30));
   }
 
   @override
@@ -95,7 +98,8 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
 
     final user = widget.appState.currentUser;
     final phone = _phoneController.text.trim();
-    final isAlreadyVerified = user?.isVerified == true && user?.mobileNumber == phone;
+    final isAlreadyVerified =
+        user?.isVerified == true && user?.mobileNumber == phone;
 
     // Save/Update user profile model
     final updatedUser = UserModel(
@@ -202,22 +206,32 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
             children: [
               // Saved Profile Notice
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
                   color: AppColors.tealLight,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppColors.teal.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: AppColors.teal.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.flash_on_rounded, size: 16, color: AppColors.teal),
+                    const Icon(
+                      Icons.flash_on_rounded,
+                      size: 16,
+                      color: AppColors.teal,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Details pre-filled from your saved profile.',
-                        style: AppTypography.bodySmall(color: AppColors.teal)
-                            .copyWith(fontWeight: FontWeight.w600),
+                        style: AppTypography.bodySmall(
+                          color: AppColors.teal,
+                        ).copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],
@@ -229,7 +243,8 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               TextFormField(
                 controller: _nameController,
                 style: const TextStyle(fontSize: 14, color: AppColors.ink),
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(hintText: 'Enter full name'),
               ),
               const SizedBox(height: 14),
@@ -240,7 +255,8 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
                 style: const TextStyle(fontSize: 14, color: AppColors.ink),
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(hintText: '+91 XXXXX XXXXX'),
               ),
               const SizedBox(height: 14),
@@ -251,8 +267,11 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(fontSize: 14, color: AppColors.ink),
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
-                decoration: const InputDecoration(hintText: 'Enter email address'),
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
+                decoration: const InputDecoration(
+                  hintText: 'Enter email address',
+                ),
               ),
               const SizedBox(height: 14),
 
@@ -287,8 +306,12 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                         TextFormField(
                           controller: _ageController,
                           keyboardType: TextInputType.number,
-                          style: const TextStyle(fontSize: 14, color: AppColors.ink),
-                          validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppColors.ink,
+                          ),
+                          validator: (val) =>
+                              val == null || val.isEmpty ? 'Required' : null,
                           decoration: const InputDecoration(hintText: '21'),
                         ),
                       ],
@@ -304,7 +327,10 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                         InkWell(
                           onTap: _selectMoveInDate,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 12,
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.paper,
                               borderRadius: BorderRadius.circular(10),
@@ -314,8 +340,13 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  DateFormat('dd MMM yyyy').format(_selectedMoveInDate),
-                                  style: const TextStyle(fontSize: 13, color: AppColors.ink),
+                                  DateFormat(
+                                    'dd MMM yyyy',
+                                  ).format(_selectedMoveInDate),
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.ink,
+                                  ),
                                 ),
                                 const Icon(
                                   Icons.calendar_month_rounded,

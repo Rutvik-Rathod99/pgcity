@@ -33,13 +33,18 @@ class PrivacyPolicyModal extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(Icons.security_rounded, color: AppColors.teal, size: 24),
+                const Icon(
+                  Icons.security_rounded,
+                  color: AppColors.teal,
+                  size: 24,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     'PGCity complies with the Digital Personal Data Protection Act, 2023 (DPDP Act).',
-                    style: AppTypography.bodySmall(color: AppColors.teal)
-                        .copyWith(fontWeight: FontWeight.w600),
+                    style: AppTypography.bodySmall(
+                      color: AppColors.teal,
+                    ).copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
               ],

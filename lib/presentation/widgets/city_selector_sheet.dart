@@ -87,7 +87,10 @@ class CitySelectorSheet extends StatelessWidget {
                   : null,
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
                 margin: const EdgeInsets.only(bottom: 8),
                 decoration: BoxDecoration(
                   color: currentCity == c['name']
@@ -120,7 +123,9 @@ class CitySelectorSheet extends StatelessWidget {
                             style: AppTypography.titleSmall(
                               color: currentCity == c['name']
                                   ? AppColors.navy
-                                  : (c['isAvailable'] as bool ? AppColors.ink : AppColors.inkSoft),
+                                  : (c['isAvailable'] as bool
+                                        ? AppColors.ink
+                                        : AppColors.inkSoft),
                             ),
                           ),
                           Text(
@@ -142,15 +147,19 @@ class CitySelectorSheet extends StatelessWidget {
                       )
                     else if (!(c['isAvailable'] as bool))
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.line,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           'EXPANDING',
-                          style: AppTypography.monoBadge(color: AppColors.inkSoft)
-                              .copyWith(fontSize: 8),
+                          style: AppTypography.monoBadge(
+                            color: AppColors.inkSoft,
+                          ).copyWith(fontSize: 8),
                         ),
                       ),
                   ],

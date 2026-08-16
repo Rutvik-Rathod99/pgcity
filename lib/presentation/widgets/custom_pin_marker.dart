@@ -56,10 +56,11 @@ class CustomPinMarker extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   '· ${pg.name}',
-                  style: (isSelected
-                          ? AppTypography.monoBadge(color: Colors.white)
-                          : AppTypography.monoBadge(color: AppColors.ink))
-                      .copyWith(fontSize: 10),
+                  style:
+                      (isSelected
+                              ? AppTypography.monoBadge(color: Colors.white)
+                              : AppTypography.monoBadge(color: AppColors.ink))
+                          .copyWith(fontSize: 10),
                 ),
               ],
             ),

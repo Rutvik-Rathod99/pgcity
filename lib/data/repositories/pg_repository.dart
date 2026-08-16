@@ -22,7 +22,9 @@ class PGRepository {
 
     try {
       final list = jsonDecode(rawJson) as List;
-      return list.map((e) => PGModel.fromJson(e as Map<String, dynamic>)).toList();
+      return list
+          .map((e) => PGModel.fromJson(e as Map<String, dynamic>))
+          .toList();
     } catch (_) {
       final initial = PGSeedData.getInitialPGs();
       await saveAllPGs(initial);
@@ -109,7 +111,9 @@ class PGRepository {
       final index = all.indexWhere((e) => e.id == pgId);
       if (index >= 0) {
         final cur = all[index];
-        all[index] = cur.copyWith(contactUnlocksCount: cur.contactUnlocksCount + 1);
+        all[index] = cur.copyWith(
+          contactUnlocksCount: cur.contactUnlocksCount + 1,
+        );
         await saveAllPGs(all);
       }
     }

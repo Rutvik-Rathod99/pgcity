@@ -56,6 +56,8 @@ class UserRepository {
 
   bool verifyOTP(String input) {
     final stored = _prefs.getString(_otpSimKey) ?? '482100';
-    return input.trim() == stored || input.trim() == '482100' || input.trim() == '123456';
+    return input.trim() == stored ||
+        input.trim() == '482100' ||
+        input.trim() == '123456';
   }
 }

@@ -77,7 +77,9 @@ class _ContactUnlockSheetState extends State<ContactUnlockSheet> {
 
   Future<void> _openWhatsApp(String phoneNumber) async {
     final cleaned = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
-    final uri = Uri.parse('https://wa.me/$cleaned?text=Hello%2C%20I%20am%20interested%20in%20${Uri.encodeComponent(widget.pg.name)}%20via%20PGCity.');
+    final uri = Uri.parse(
+      'https://wa.me/$cleaned?text=Hello%2C%20I%20am%20interested%20in%20${Uri.encodeComponent(widget.pg.name)}%20via%20PGCity.',
+    );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
@@ -174,8 +176,9 @@ class _ContactUnlockSheetState extends State<ContactUnlockSheet> {
                   const SizedBox(height: 4),
                   Text(
                     'Contact unlocks in 00:0$_adSecondsLeft',
-                    style: AppTypography.monoBadge(color: AppColors.marigold)
-                        .copyWith(fontSize: 12),
+                    style: AppTypography.monoBadge(
+                      color: AppColors.marigold,
+                    ).copyWith(fontSize: 12),
                   ),
                 ],
               ),
@@ -227,12 +230,17 @@ class _ContactUnlockSheetState extends State<ContactUnlockSheet> {
                           const SizedBox(width: 6),
                           Text(
                             'UNLOCKED CONTACT',
-                            style: AppTypography.monoBadge(color: AppColors.teal),
+                            style: AppTypography.monoBadge(
+                              color: AppColors.teal,
+                            ),
                           ),
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.teal,
                           borderRadius: BorderRadius.circular(4),
@@ -254,8 +262,9 @@ class _ContactUnlockSheetState extends State<ContactUnlockSheet> {
                     children: [
                       Text(
                         widget.pg.contactNumber,
-                        style: AppTypography.monoPrice(color: AppColors.navy)
-                            .copyWith(fontSize: 17),
+                        style: AppTypography.monoPrice(
+                          color: AppColors.navy,
+                        ).copyWith(fontSize: 17),
                       ),
                       Row(
                         children: [
@@ -274,8 +283,12 @@ class _ContactUnlockSheetState extends State<ContactUnlockSheet> {
                           ),
                           const SizedBox(width: 8),
                           OutlinedButton.icon(
-                            onPressed: () => _openWhatsApp(widget.pg.contactNumber),
-                            icon: const Icon(Icons.chat_bubble_rounded, size: 14),
+                            onPressed: () =>
+                                _openWhatsApp(widget.pg.contactNumber),
+                            icon: const Icon(
+                              Icons.chat_bubble_rounded,
+                              size: 14,
+                            ),
                             label: const Text('WhatsApp'),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.teal,

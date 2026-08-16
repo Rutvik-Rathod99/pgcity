@@ -98,7 +98,10 @@ class ProfileScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.admin_panel_settings_rounded, color: AppColors.navy),
+            icon: const Icon(
+              Icons.admin_panel_settings_rounded,
+              color: AppColors.navy,
+            ),
             tooltip: 'Admin Management',
             onPressed: () {
               Navigator.push(
@@ -136,7 +139,9 @@ class ProfileScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       user?.initials ?? 'G',
-                      style: AppTypography.displaySmall(color: AppColors.marigold),
+                      style: AppTypography.displaySmall(
+                        color: AppColors.marigold,
+                      ),
                     ),
                   ),
                 ),
@@ -150,7 +155,9 @@ class ProfileScreen extends StatelessWidget {
                           Flexible(
                             child: Text(
                               user?.fullName ?? 'Guest User',
-                              style: AppTypography.titleMedium(color: AppColors.ink),
+                              style: AppTypography.titleMedium(
+                                color: AppColors.ink,
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -167,7 +174,9 @@ class ProfileScreen extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         user?.mobileNumber ?? 'No phone saved',
-                        style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                        style: AppTypography.bodySmall(
+                          color: AppColors.inkSoft,
+                        ),
                       ),
                       Text(
                         user?.occupation ?? 'Student / Professional',
@@ -178,7 +187,11 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () => _openEditProfile(context),
-                  icon: const Icon(Icons.edit_outlined, size: 20, color: AppColors.navy),
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    size: 20,
+                    color: AppColors.navy,
+                  ),
                   tooltip: 'Edit Profile',
                 ),
               ],
@@ -204,7 +217,11 @@ class ProfileScreen extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
-                    const Icon(Icons.assignment_late_outlined, color: AppColors.inkSoft, size: 32),
+                    const Icon(
+                      Icons.assignment_late_outlined,
+                      color: AppColors.inkSoft,
+                      size: 32,
+                    ),
                     const SizedBox(height: 8),
                     Text(
                       'No Enrollment Requests Yet',
@@ -243,12 +260,16 @@ class ProfileScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   enr.pgName,
-                                  style: AppTypography.titleMedium(color: AppColors.ink),
+                                  style: AppTypography.titleMedium(
+                                    color: AppColors.ink,
+                                  ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   'Submitted ${DateFormat('dd MMM yyyy').format(enr.submittedAt)} · ${enr.sharingType}',
-                                  style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                                  style: AppTypography.bodySmall(
+                                    color: AppColors.inkSoft,
+                                  ),
                                 ),
                               ],
                             ),
@@ -262,17 +283,20 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Move-in: ${DateFormat('dd MMM yyyy').format(enr.moveInDate)}',
-                            style: AppTypography.monoBadge(color: AppColors.inkSoft)
-                                .copyWith(fontSize: 10),
+                            style: AppTypography.monoBadge(
+                              color: AppColors.inkSoft,
+                            ).copyWith(fontSize: 10),
                           ),
                           Text(
                             CurrencyFormatter.format(enr.pgRent),
-                            style: AppTypography.monoPrice(color: AppColors.teal)
-                                .copyWith(fontSize: 12),
+                            style: AppTypography.monoPrice(
+                              color: AppColors.teal,
+                            ).copyWith(fontSize: 12),
                           ),
                         ],
                       ),
-                      if (enr.adminNote != null && enr.adminNote!.isNotEmpty) ...[
+                      if (enr.adminNote != null &&
+                          enr.adminNote!.isNotEmpty) ...[
                         const SizedBox(height: 6),
                         Container(
                           padding: const EdgeInsets.all(8),
@@ -282,12 +306,18 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.comment_outlined, size: 14, color: AppColors.inkSoft),
+                              const Icon(
+                                Icons.comment_outlined,
+                                size: 14,
+                                color: AppColors.inkSoft,
+                              ),
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
                                   'Note: ${enr.adminNote}',
-                                  style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                                  style: AppTypography.bodySmall(
+                                    color: AppColors.inkSoft,
+                                  ),
                                 ),
                               ),
                             ],
@@ -341,7 +371,8 @@ class ProfileScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => AdminDashboardScreen(appState: appState),
+                        builder: (_) =>
+                            AdminDashboardScreen(appState: appState),
                       ),
                     );
                   },
@@ -363,7 +394,9 @@ class ProfileScreen extends StatelessWidget {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('All data reset to curated seed state.'),
+                          content: Text(
+                            'All data reset to curated seed state.',
+                          ),
                           backgroundColor: AppColors.teal,
                         ),
                       );
@@ -379,7 +412,9 @@ class ProfileScreen extends StatelessWidget {
           Center(
             child: Text(
               'PGCity Mobile v1.0.0 · Ahmedabad Curated Edition',
-              style: AppTypography.monoLabel(color: AppColors.inkSoft).copyWith(fontSize: 10),
+              style: AppTypography.monoLabel(
+                color: AppColors.inkSoft,
+              ).copyWith(fontSize: 10),
             ),
           ),
         ],

@@ -68,32 +68,41 @@ class PGSeedData {
             id: 'scene_bed_1',
             title: 'Deluxe Twin Bedroom',
             roomType: 'Bedroom',
-            imageUrl: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
-            description: 'Spacious 2-sharing room with individual study tables, ergonomic chairs, and large wardrobes.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Spacious 2-sharing room with individual study tables, ergonomic chairs, and large wardrobes.',
           ),
           VirtualTourScene(
             id: 'scene_study_1',
             title: 'Dedicated Study Lounge',
             roomType: 'Study Area',
-            imageUrl: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
-            description: 'Quiet 24/7 study hall equipped with high-speed fiber internet and power outlets.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Quiet 24/7 study hall equipped with high-speed fiber internet and power outlets.',
           ),
           VirtualTourScene(
             id: 'scene_dining_1',
             title: 'Hygienic Dining Area',
             roomType: 'Dining & Kitchen',
-            imageUrl: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80',
-            description: 'Buffet dining hall serving hot, nutritious breakfast, lunch, and dinner.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Buffet dining hall serving hot, nutritious breakfast, lunch, and dinner.',
           ),
           VirtualTourScene(
             id: 'scene_balcony_1',
             title: 'Terrace & Common Zone',
             roomType: 'Terrace',
-            imageUrl: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80',
-            description: 'Rooftop recreation area for morning yoga and evening relaxation.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Rooftop recreation area for morning yoga and evening relaxation.',
           ),
         ],
-        youtubeVideoTitle: 'Complete Sunrise Girls PG Tour | Navrangpura Ahmedabad',
+        youtubeVideoTitle:
+            'Complete Sunrise Girls PG Tour | Navrangpura Ahmedabad',
         youtubeVideoId: 'dQw4w9WgXcQ',
         likesCount: 1284,
         viewsCount: 5240,
@@ -157,18 +166,23 @@ class PGSeedData {
             id: 'green_scene_1',
             title: 'Single Executive Bedroom',
             roomType: 'Bedroom',
-            imageUrl: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
-            description: 'Private single room with attached bath, AC, and high-speed LAN port.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Private single room with attached bath, AC, and high-speed LAN port.',
           ),
           VirtualTourScene(
             id: 'green_scene_2',
             title: 'Modern Common Lounge',
             roomType: 'Common Area',
-            imageUrl: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-            description: 'Equipped with 65-inch Smart TV, sofa sets, and indoor board games.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Equipped with 65-inch Smart TV, sofa sets, and indoor board games.',
           ),
         ],
-        youtubeVideoTitle: 'Green Residency Boys PG Room Tour | Satellite Ahmedabad',
+        youtubeVideoTitle:
+            'Green Residency Boys PG Room Tour | Satellite Ahmedabad',
         youtubeVideoId: 'L_LUpnjgPso',
         likesCount: 840,
         viewsCount: 3400,
@@ -229,8 +243,10 @@ class PGSeedData {
             id: 'apex_scene_1',
             title: 'Triple Sharing Student Room',
             roomType: 'Bedroom',
-            imageUrl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
-            description: 'Cost-effective triple sharing bedroom with individual storage lockers.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Cost-effective triple sharing bedroom with individual storage lockers.',
           ),
         ],
         youtubeVideoTitle: 'Apex Elite Boys PG Walkthrough',
@@ -301,15 +317,19 @@ class PGSeedData {
             id: 'stanza_scene_1',
             title: 'Studio Suite',
             roomType: 'Bedroom',
-            imageUrl: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-            description: 'Designer studio suite with smart LED lighting and orthopedic mattress.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Designer studio suite with smart LED lighting and orthopedic mattress.',
           ),
           VirtualTourScene(
             id: 'stanza_scene_2',
             title: 'Co-working & Coffee Bar',
             roomType: 'Common Area',
-            imageUrl: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
-            description: 'Dedicated work pods, ergonomic seating, and high-speed Wi-Fi 6.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Dedicated work pods, ergonomic seating, and high-speed Wi-Fi 6.',
           ),
         ],
         youtubeVideoTitle: 'Life at Stanza Oasis Co-living Ahmedabad',
@@ -372,7 +392,8 @@ class PGSeedData {
             id: 'lotus_scene_1',
             title: 'Sunny Bedroom',
             roomType: 'Bedroom',
-            imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80',
+            imageUrl:
+                'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80',
             description: 'Sunlit bedroom overlooking lush residential gardens.',
           ),
         ],
@@ -441,8 +462,10 @@ class PGSeedData {
             id: 'royal_scene_1',
             title: 'Executive Master Suite',
             roomType: 'Bedroom',
-            imageUrl: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-            description: 'Luxury master bedroom with private balcony, split AC, and workstation.',
+            imageUrl:
+                'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
+            description:
+                'Luxury master bedroom with private balcony, split AC, and workstation.',
           ),
         ],
         youtubeVideoTitle: 'Royal Palms Executive PG Tour | Bodakdev',

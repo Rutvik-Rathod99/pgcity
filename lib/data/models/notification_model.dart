@@ -3,7 +3,7 @@ enum NotificationType {
   enrollmentAccepted,
   enrollmentRejected,
   availabilityAlert,
-  system
+  system,
 }
 
 class NotificationModel {

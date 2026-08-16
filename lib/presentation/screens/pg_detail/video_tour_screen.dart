@@ -29,11 +29,17 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.share_rounded, color: Colors.white, size: 20),
+            icon: const Icon(
+              Icons.share_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Video link copied: https://youtu.be/${widget.pg.youtubeVideoId}'),
+                  content: Text(
+                    'Video link copied: https://youtu.be/${widget.pg.youtubeVideoId}',
+                  ),
                   backgroundColor: AppColors.teal,
                 ),
               );
@@ -58,9 +64,7 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
-                  Container(
-                    color: Colors.black.withValues(alpha: 0.4),
-                  ),
+                  Container(color: Colors.black.withValues(alpha: 0.4)),
                   // Play / Pause central button
                   GestureDetector(
                     onTap: () => setState(() => _isPlaying = !_isPlaying),
@@ -78,7 +82,9 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                         ],
                       ),
                       child: Icon(
-                        _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                        _isPlaying
+                            ? Icons.pause_rounded
+                            : Icons.play_arrow_rounded,
                         color: AppColors.navy,
                         size: 36,
                       ),
@@ -90,7 +96,10 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                     left: 0,
                     right: 0,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.bottomCenter,
@@ -106,7 +115,9 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                         children: [
                           SliderTheme(
                             data: SliderTheme.of(context).copyWith(
-                              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                              thumbShape: const RoundSliderThumbShape(
+                                enabledThumbRadius: 6,
+                              ),
                               trackHeight: 3,
                               activeTrackColor: AppColors.marigold,
                               inactiveTrackColor: Colors.white24,
@@ -114,7 +125,8 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                             ),
                             child: Slider(
                               value: _progress,
-                              onChanged: (val) => setState(() => _progress = val),
+                              onChanged: (val) =>
+                                  setState(() => _progress = val),
                             ),
                           ),
                           Row(
@@ -122,12 +134,17 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                             children: [
                               Text(
                                 '01:15 / 03:42',
-                                style: AppTypography.monoBadge(color: Colors.white70),
+                                style: AppTypography.monoBadge(
+                                  color: Colors.white70,
+                                ),
                               ),
                               Row(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                      vertical: 2,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: Colors.red,
                                       borderRadius: BorderRadius.circular(4),
@@ -142,7 +159,11 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                                     ),
                                   ),
                                   const SizedBox(width: 8),
-                                  const Icon(Icons.fullscreen_rounded, color: Colors.white, size: 20),
+                                  const Icon(
+                                    Icons.fullscreen_rounded,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
                                 ],
                               ),
                             ],
@@ -165,14 +186,19 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.teal,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           'OFFICIAL PG TOUR',
-                          style: AppTypography.monoBadge(color: Colors.white).copyWith(fontSize: 8),
+                          style: AppTypography.monoBadge(
+                            color: Colors.white,
+                          ).copyWith(fontSize: 8),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -200,11 +226,21 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
                     style: AppTypography.titleSmall(color: Colors.white),
                   ),
                   const SizedBox(height: 8),
-                  _buildBulletPoint('00:00 — Entrance, Reception & 24/7 Biometric Security'),
-                  _buildBulletPoint('00:45 — Twin Sharing & Single Air Conditioned Rooms'),
-                  _buildBulletPoint('01:30 — Attached Clean Bathrooms & Geyser Fittings'),
-                  _buildBulletPoint('02:15 — Dining Hall, Live Kitchen & Weekly Menu Board'),
-                  _buildBulletPoint('03:00 — Rooftop Terrace & Laundry Washing Machines'),
+                  _buildBulletPoint(
+                    '00:00 — Entrance, Reception & 24/7 Biometric Security',
+                  ),
+                  _buildBulletPoint(
+                    '00:45 — Twin Sharing & Single Air Conditioned Rooms',
+                  ),
+                  _buildBulletPoint(
+                    '01:30 — Attached Clean Bathrooms & Geyser Fittings',
+                  ),
+                  _buildBulletPoint(
+                    '02:15 — Dining Hall, Live Kitchen & Weekly Menu Board',
+                  ),
+                  _buildBulletPoint(
+                    '03:00 — Rooftop Terrace & Laundry Washing Machines',
+                  ),
                 ],
               ),
             ),
@@ -220,7 +256,11 @@ class _VideoTourScreenState extends State<VideoTourScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.play_circle_outline_rounded, color: AppColors.marigold, size: 14),
+          const Icon(
+            Icons.play_circle_outline_rounded,
+            color: AppColors.marigold,
+            size: 14,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

@@ -7,7 +7,9 @@ class HelpSupportModal extends StatelessWidget {
   const HelpSupportModal({super.key});
 
   Future<void> _openSupportWhatsApp() async {
-    final uri = Uri.parse('https://wa.me/919876543210?text=Hello%20PGCity%20Support%2C%20I%20need%20help%20with%20an%20accommodation%20inquiry.');
+    final uri = Uri.parse(
+      'https://wa.me/919876543210?text=Hello%20PGCity%20Support%2C%20I%20need%20help%20with%20an%20accommodation%20inquiry.',
+    );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
@@ -50,16 +52,26 @@ class HelpSupportModal extends StatelessWidget {
                     color: AppColors.tealLight,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.headset_mic_rounded, color: AppColors.teal, size: 22),
+                  child: const Icon(
+                    Icons.headset_mic_rounded,
+                    color: AppColors.teal,
+                    size: 22,
+                  ),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Direct Support Team', style: AppTypography.titleSmall()),
+                      Text(
+                        'Direct Support Team',
+                        style: AppTypography.titleSmall(),
+                      ),
                       const SizedBox(height: 2),
-                      Text('Available Mon-Sat 9AM-8PM', style: AppTypography.bodySmall()),
+                      Text(
+                        'Available Mon-Sat 9AM-8PM',
+                        style: AppTypography.bodySmall(),
+                      ),
                     ],
                   ),
                 ),
@@ -68,7 +80,10 @@ class HelpSupportModal extends StatelessWidget {
                   icon: const Icon(Icons.chat_bubble_outline_rounded, size: 14),
                   label: const Text('Chat'),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                   ),
                 ),
               ],
@@ -76,7 +91,10 @@ class HelpSupportModal extends StatelessWidget {
           ),
           const SizedBox(height: 22),
 
-          Text('Frequently Asked Questions', style: AppTypography.titleMedium()),
+          Text(
+            'Frequently Asked Questions',
+            style: AppTypography.titleMedium(),
+          ),
           const SizedBox(height: 12),
 
           _buildFAQItem(
@@ -112,7 +130,9 @@ class HelpSupportModal extends StatelessWidget {
         tilePadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
         title: Text(
           question,
-          style: AppTypography.titleSmall(color: AppColors.ink).copyWith(fontSize: 13),
+          style: AppTypography.titleSmall(
+            color: AppColors.ink,
+          ).copyWith(fontSize: 13),
         ),
         childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
         children: [

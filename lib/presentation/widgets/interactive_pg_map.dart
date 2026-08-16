@@ -31,7 +31,8 @@ class _InteractivePGMapState extends State<InteractivePGMap>
   // Lat: 23.0300, Long: 72.5400
   static const double _centerLat = 23.0300;
   static const double _centerLng = 72.5400;
-  static const double _scaleFactor = 7000.0; // Conversion from Lat/Lng to Canvas pixels
+  static const double _scaleFactor =
+      7000.0; // Conversion from Lat/Lng to Canvas pixels
 
   @override
   void initState() {
@@ -50,7 +51,8 @@ class _InteractivePGMapState extends State<InteractivePGMap>
   @override
   void didUpdateWidget(covariant InteractivePGMap oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.selectedPG != oldWidget.selectedPG && widget.selectedPG != null) {
+    if (widget.selectedPG != oldWidget.selectedPG &&
+        widget.selectedPG != null) {
       _centerMapOnSelected();
     }
   }
@@ -118,11 +120,7 @@ class _InteractivePGMapState extends State<InteractivePGMap>
               clipBehavior: Clip.none,
               children: [
                 // Custom Vector Painted City Map
-                Positioned.fill(
-                  child: CustomPaint(
-                    painter: _CityMapPainter(),
-                  ),
-                ),
+                Positioned.fill(child: CustomPaint(painter: _CityMapPainter())),
 
                 // User Location Live Pulse
                 Positioned(
@@ -150,7 +148,10 @@ class _InteractivePGMapState extends State<InteractivePGMap>
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: AppColors.teal,
-                              border: Border.all(color: Colors.white, width: 2.5),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2.5,
+                              ),
                               boxShadow: const [AppColors.pinShadow],
                             ),
                           ),
@@ -161,8 +162,7 @@ class _InteractivePGMapState extends State<InteractivePGMap>
                 ),
 
                 // PG Pin Markers
-                for (final pg in widget.pgs)
-                  _buildPinWidget(pg),
+                for (final pg in widget.pgs) _buildPinWidget(pg),
               ],
             ),
           ),
@@ -221,7 +221,9 @@ class _InteractivePGMapState extends State<InteractivePGMap>
                 const SizedBox(width: 6),
                 Text(
                   '${widget.pgs.length} PGs in this area',
-                  style: AppTypography.monoLabel(color: AppColors.ink).copyWith(fontSize: 11),
+                  style: AppTypography.monoLabel(
+                    color: AppColors.ink,
+                  ).copyWith(fontSize: 11),
                 ),
               ],
             ),
@@ -284,14 +286,24 @@ class _CityMapPainter extends CustomPainter {
     // 2. Parks & Greenery (Vastrapur lake garden, Law garden, Riverfront)
     final parkPaint = Paint()..color = const Color(0xFFD6E8DB);
     canvas.drawRRect(
-      RRect.fromRectAndRadius(const Rect.fromLTWH(80, 180, 140, 100), const Radius.circular(20)),
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(80, 180, 140, 100),
+        const Radius.circular(20),
+      ),
       parkPaint,
     );
     canvas.drawRRect(
-      RRect.fromRectAndRadius(const Rect.fromLTWH(480, 110, 160, 130), const Radius.circular(24)),
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(480, 110, 160, 130),
+        const Radius.circular(24),
+      ),
       parkPaint,
     );
-    canvas.drawCircle(const Offset(680, 620), 80, parkPaint); // Kankaria lake area
+    canvas.drawCircle(
+      const Offset(680, 620),
+      80,
+      parkPaint,
+    ); // Kankaria lake area
 
     // 3. Water Body (Sabarmati River & Lakes)
     final waterPaint = Paint()..color = const Color(0xFFC3DFE4);
@@ -329,7 +341,10 @@ class _CityMapPainter extends CustomPainter {
       const Rect.fromLTWH(420, 660, 130, 100),
     ];
     for (final b in blocks) {
-      canvas.drawRRect(RRect.fromRectAndRadius(b, const Radius.circular(8)), blockPaint);
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(b, const Radius.circular(8)),
+        blockPaint,
+      );
     }
 
     // 5. Roads (Major highways & streets)
@@ -347,29 +362,77 @@ class _CityMapPainter extends CustomPainter {
 
     // SG Highway & 132ft Ring Road
     canvas.drawLine(const Offset(30, 0), const Offset(30, 800), mainRoadPaint);
-    canvas.drawLine(const Offset(190, 0), const Offset(190, 800), mainRoadPaint);
-    canvas.drawLine(const Offset(370, 0), const Offset(370, 800), mainRoadPaint);
-    canvas.drawLine(const Offset(550, 0), const Offset(550, 800), mainRoadPaint);
+    canvas.drawLine(
+      const Offset(190, 0),
+      const Offset(190, 800),
+      mainRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(370, 0),
+      const Offset(370, 800),
+      mainRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(550, 0),
+      const Offset(550, 800),
+      mainRoadPaint,
+    );
 
     // Cross Avenues (Drive In Rd, University Rd, CG Rd)
-    canvas.drawLine(const Offset(0, 150), const Offset(800, 150), mainRoadPaint);
-    canvas.drawLine(const Offset(0, 320), const Offset(800, 320), mainRoadPaint);
-    canvas.drawLine(const Offset(0, 465), const Offset(800, 465), mainRoadPaint);
-    canvas.drawLine(const Offset(0, 610), const Offset(800, 610), mainRoadPaint);
+    canvas.drawLine(
+      const Offset(0, 150),
+      const Offset(800, 150),
+      mainRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(0, 320),
+      const Offset(800, 320),
+      mainRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(0, 465),
+      const Offset(800, 465),
+      mainRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(0, 610),
+      const Offset(800, 610),
+      mainRoadPaint,
+    );
 
     // Secondary streets
-    canvas.drawLine(const Offset(0, 240), const Offset(550, 240), secondaryRoadPaint);
-    canvas.drawLine(const Offset(0, 390), const Offset(550, 390), secondaryRoadPaint);
-    canvas.drawLine(const Offset(0, 540), const Offset(550, 540), secondaryRoadPaint);
-    canvas.drawLine(const Offset(280, 150), const Offset(280, 610), secondaryRoadPaint);
-    canvas.drawLine(const Offset(460, 150), const Offset(460, 610), secondaryRoadPaint);
+    canvas.drawLine(
+      const Offset(0, 240),
+      const Offset(550, 240),
+      secondaryRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(0, 390),
+      const Offset(550, 390),
+      secondaryRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(0, 540),
+      const Offset(550, 540),
+      secondaryRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(280, 150),
+      const Offset(280, 610),
+      secondaryRoadPaint,
+    );
+    canvas.drawLine(
+      const Offset(460, 150),
+      const Offset(460, 610),
+      secondaryRoadPaint,
+    );
 
     // Metro Line (dashed orange line)
     final metroPaint = Paint()
       ..color = AppColors.marigoldDark
       ..strokeWidth = 3
       ..style = PaintingStyle.stroke;
-    
+
     final metroPath = Path()
       ..moveTo(20, 320)
       ..lineTo(190, 320)
@@ -392,14 +455,36 @@ class _CityMapPainter extends CustomPainter {
     // 6. Landmark Text Labels
     _drawText(canvas, 'Navrangpura', const Offset(380, 270), AppColors.inkSoft);
     _drawText(canvas, 'Satellite', const Offset(120, 270), AppColors.inkSoft);
-    _drawText(canvas, 'University Area', const Offset(310, 160), AppColors.inkSoft);
-    _drawText(canvas, 'Prahlad Nagar', const Offset(110, 475), AppColors.inkSoft);
+    _drawText(
+      canvas,
+      'University Area',
+      const Offset(310, 160),
+      AppColors.inkSoft,
+    );
+    _drawText(
+      canvas,
+      'Prahlad Nagar',
+      const Offset(110, 475),
+      AppColors.inkSoft,
+    );
     _drawText(canvas, 'Bodakdev', const Offset(115, 110), AppColors.inkSoft);
     _drawText(canvas, 'Maninagar', const Offset(620, 560), AppColors.inkSoft);
-    _drawText(canvas, 'Sabarmati River', const Offset(585, 340), const Color(0xFF6B9EA8), rotate: true);
+    _drawText(
+      canvas,
+      'Sabarmati River',
+      const Offset(585, 340),
+      const Color(0xFF6B9EA8),
+      rotate: true,
+    );
   }
 
-  void _drawText(Canvas canvas, String text, Offset offset, Color color, {bool rotate = false}) {
+  void _drawText(
+    Canvas canvas,
+    String text,
+    Offset offset,
+    Color color, {
+    bool rotate = false,
+  }) {
     final tp = TextPainter(
       text: TextSpan(
         text: text,

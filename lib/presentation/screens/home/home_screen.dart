@@ -111,21 +111,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(width: 8),
                       Text(
                         'PGCity',
-                        style: AppTypography.brand(color: AppColors.ink)
-                            .copyWith(fontSize: 20),
+                        style: AppTypography.brand(
+                          color: AppColors.ink,
+                        ).copyWith(fontSize: 20),
                       ),
                       if (state.isAdminMode) ...[
                         const SizedBox(width: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.navy,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             'ADMIN OPS',
-                            style: AppTypography.monoBadge(color: AppColors.marigold)
-                                .copyWith(fontSize: 8),
+                            style: AppTypography.monoBadge(
+                              color: AppColors.marigold,
+                            ).copyWith(fontSize: 8),
                           ),
                         ),
                       ],
@@ -137,11 +142,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       IconButton(
                         onPressed: () => state.toggleViewMode(),
                         icon: Icon(
-                          state.isMapView ? Icons.format_list_bulleted_rounded : Icons.map_rounded,
+                          state.isMapView
+                              ? Icons.format_list_bulleted_rounded
+                              : Icons.map_rounded,
                           color: AppColors.ink,
                           size: 22,
                         ),
-                        tooltip: state.isMapView ? 'Switch to List View' : 'Switch to Map View',
+                        tooltip: state.isMapView
+                            ? 'Switch to List View'
+                            : 'Switch to Map View',
                       ),
                       // Notification Bell with Badge
                       Stack(
@@ -213,8 +222,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(width: 6),
                     Text(
                       'Change',
-                      style: AppTypography.button(color: AppColors.teal)
-                          .copyWith(fontSize: 12),
+                      style: AppTypography.button(
+                        color: AppColors.teal,
+                      ).copyWith(fontSize: 12),
                     ),
                   ],
                 ),
@@ -237,8 +247,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   onChanged: (val) => state.setSearchQuery(val),
                   style: const TextStyle(fontSize: 13, color: AppColors.ink),
                   decoration: InputDecoration(
-                    hintText: 'Search PG name or area (e.g. Navrangpura, Satellite)',
-                    hintStyle: AppTypography.bodySmall(color: AppColors.inkSoft),
+                    hintText:
+                        'Search PG name or area (e.g. Navrangpura, Satellite)',
+                    hintStyle: AppTypography.bodySmall(
+                      color: AppColors.inkSoft,
+                    ),
                     prefixIcon: const Icon(
                       Icons.search_rounded,
                       color: AppColors.inkSoft,
@@ -274,7 +287,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   _buildFilterChip(
                     label: 'All',
-                    isSelected: state.genderFilter == GenderFilter.all &&
+                    isSelected:
+                        state.genderFilter == GenderFilter.all &&
                         state.priceFilter == PriceFilter.all,
                     onTap: () => state.clearFilters(),
                   ),
@@ -328,8 +342,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: pgs.isEmpty
                   ? _buildEmptyState(state)
                   : state.isMapView
-                      ? _buildMapView(state, pgs)
-                      : _buildListView(state, pgs),
+                  ? _buildMapView(state, pgs)
+                  : _buildListView(state, pgs),
             ),
           ],
         ),

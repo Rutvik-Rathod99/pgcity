@@ -57,7 +57,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       builder: (_) => AlertDialog(
         backgroundColor: AppColors.paper,
         title: Text('Delete ${pg.name}?', style: AppTypography.titleMedium()),
-        content: const Text('This property will be permanently removed from PGCity.'),
+        content: const Text(
+          'This property will be permanently removed from PGCity.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -140,7 +142,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
 
     // Metrics calculations
     final totalViews = allPGs.fold<int>(0, (sum, pg) => sum + pg.viewsCount);
-    final totalUnlocks = allPGs.fold<int>(0, (sum, pg) => sum + pg.contactUnlocksCount);
+    final totalUnlocks = allPGs.fold<int>(
+      0,
+      (sum, pg) => sum + pg.contactUnlocksCount,
+    );
     final totalLikes = allPGs.fold<int>(0, (sum, pg) => sum + pg.likesCount);
 
     return Scaffold(
@@ -150,7 +155,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         foregroundColor: Colors.white,
         title: Row(
           children: [
-            const Icon(Icons.admin_panel_settings_rounded, color: AppColors.marigold, size: 20),
+            const Icon(
+              Icons.admin_panel_settings_rounded,
+              color: AppColors.marigold,
+              size: 20,
+            ),
             const SizedBox(width: 8),
             Text(
               'PGCity Admin Console',
@@ -160,7 +169,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_circle_rounded, color: AppColors.marigold, size: 24),
+            icon: const Icon(
+              Icons.add_circle_rounded,
+              color: AppColors.marigold,
+              size: 24,
+            ),
             tooltip: 'Onboard New PG',
             onPressed: _openAddPG,
           ),
@@ -216,13 +229,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       children: [
         Text(
           value,
-          style: AppTypography.displaySmall(color: AppColors.marigold)
-              .copyWith(fontSize: 16),
+          style: AppTypography.displaySmall(
+            color: AppColors.marigold,
+          ).copyWith(fontSize: 16),
         ),
         const SizedBox(height: 2),
         Text(
           label,
-          style: AppTypography.monoLabel(color: Colors.white70).copyWith(fontSize: 9),
+          style: AppTypography.monoLabel(
+            color: Colors.white70,
+          ).copyWith(fontSize: 9),
         ),
       ],
     );
@@ -273,25 +289,38 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                             Expanded(
                               child: Text(
                                 pg.name,
-                                style: AppTypography.titleMedium(color: AppColors.ink),
+                                style: AppTypography.titleMedium(
+                                  color: AppColors.ink,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             if (pg.isVerified)
-                              const Icon(Icons.verified_rounded, size: 16, color: AppColors.teal),
+                              const Icon(
+                                Icons.verified_rounded,
+                                size: 16,
+                                color: AppColors.teal,
+                              ),
                           ],
                         ),
                         Text(
                           '${pg.type.label} · ${pg.locality}',
-                          style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                          style: AppTypography.bodySmall(
+                            color: AppColors.inkSoft,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
-                                color: pg.verificationStatus == PGVerificationStatus.published
+                                color:
+                                    pg.verificationStatus ==
+                                        PGVerificationStatus.published
                                     ? AppColors.tealLight
                                     : AppColors.warningLight,
                                 borderRadius: BorderRadius.circular(4),
@@ -299,7 +328,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               child: Text(
                                 pg.verificationStatus.label.toUpperCase(),
                                 style: AppTypography.monoBadge(
-                                  color: pg.verificationStatus == PGVerificationStatus.published
+                                  color:
+                                      pg.verificationStatus ==
+                                          PGVerificationStatus.published
                                       ? AppColors.teal
                                       : AppColors.warning,
                                 ).copyWith(fontSize: 8),
@@ -308,8 +339,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                             const SizedBox(width: 8),
                             Text(
                               CurrencyFormatter.format(pg.monthlyRent),
-                              style: AppTypography.monoPrice(color: AppColors.teal)
-                                  .copyWith(fontSize: 12),
+                              style: AppTypography.monoPrice(
+                                color: AppColors.teal,
+                              ).copyWith(fontSize: 12),
                             ),
                           ],
                         ),
@@ -325,18 +357,27 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 children: [
                   Text(
                     '👁 ${pg.viewsCount} views · 📞 ${pg.contactUnlocksCount} unlocks · 📝 ${pg.enrollmentsCount} leads',
-                    style: AppTypography.monoBadge(color: AppColors.inkSoft)
-                        .copyWith(fontSize: 10),
+                    style: AppTypography.monoBadge(
+                      color: AppColors.inkSoft,
+                    ).copyWith(fontSize: 10),
                   ),
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.edit_outlined, size: 18, color: AppColors.navy),
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                          size: 18,
+                          color: AppColors.navy,
+                        ),
                         tooltip: 'Edit Listing',
                         onPressed: () => _openEditPG(pg),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete_outline_rounded, size: 18, color: AppColors.error),
+                        icon: const Icon(
+                          Icons.delete_outline_rounded,
+                          size: 18,
+                          color: AppColors.error,
+                        ),
                         tooltip: 'Delete Listing',
                         onPressed: () => _confirmDeletePG(pg),
                       ),
@@ -387,24 +428,33 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       children: [
                         Text(
                           lead.applicantName,
-                          style: AppTypography.titleMedium(color: AppColors.ink),
+                          style: AppTypography.titleMedium(
+                            color: AppColors.ink,
+                          ),
                         ),
                         Text(
                           '${lead.applicantPhone} · ${lead.applicantEmail}',
-                          style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                          style: AppTypography.bodySmall(
+                            color: AppColors.inkSoft,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: _getStatusBg(lead.status),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       lead.status.label,
-                      style: AppTypography.monoBadge(color: _getStatusFg(lead.status)),
+                      style: AppTypography.monoBadge(
+                        color: _getStatusFg(lead.status),
+                      ),
                     ),
                   ),
                 ],
@@ -420,7 +470,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   children: [
                     _buildLeadDetailRow('Property', lead.pgName),
                     _buildLeadDetailRow('Sharing Type', lead.sharingType),
-                    _buildLeadDetailRow('Move-in Date', DateFormat('dd MMM yyyy').format(lead.moveInDate)),
+                    _buildLeadDetailRow(
+                      'Move-in Date',
+                      DateFormat('dd MMM yyyy').format(lead.moveInDate),
+                    ),
                     _buildLeadDetailRow('Occupation', lead.occupation),
                     if (lead.message.isNotEmpty)
                       _buildLeadDetailRow('Message', lead.message),
@@ -433,21 +486,29 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OutlinedButton(
-                    onPressed: () => _updateLeadStatus(lead, EnrollmentStatus.rejected),
+                    onPressed: () =>
+                        _updateLeadStatus(lead, EnrollmentStatus.rejected),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.error,
                       side: const BorderSide(color: AppColors.error),
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                     ),
                     child: const Text('Reject Lead'),
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: () => _updateLeadStatus(lead, EnrollmentStatus.accepted),
+                    onPressed: () =>
+                        _updateLeadStatus(lead, EnrollmentStatus.accepted),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.teal,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 8,
+                      ),
                     ),
                     child: const Text('Accept Lead'),
                   ),

@@ -73,7 +73,8 @@ class AppState extends ChangeNotifier {
 
   List<NotificationModel> _notifications = [];
   List<NotificationModel> get notifications => _notifications;
-  int get unreadNotificationsCount => _notifications.where((n) => !n.isRead).length;
+  int get unreadNotificationsCount =>
+      _notifications.where((n) => !n.isRead).length;
 
   bool _isAdminMode = false;
   bool get isAdminMode => _isAdminMode;
@@ -106,7 +107,8 @@ class AppState extends ChangeNotifier {
       NotificationModel(
         id: 'notif_2',
         title: 'Green Residency PG Accepted',
-        message: 'Your enrollment application has been accepted by the property management.',
+        message:
+            'Your enrollment application has been accepted by the property management.',
         type: NotificationType.enrollmentAccepted,
         pgId: 'pg_green_residency',
         createdAt: DateTime.now().subtract(const Duration(days: 1)),
@@ -163,7 +165,8 @@ class AppState extends ChangeNotifier {
   List<PGModel> get filteredPGs {
     return _allPGs.where((pg) {
       // Must be published in regular user mode
-      if (!_isAdminMode && pg.verificationStatus != PGVerificationStatus.published) {
+      if (!_isAdminMode &&
+          pg.verificationStatus != PGVerificationStatus.published) {
         return false;
       }
 
@@ -173,7 +176,9 @@ class AppState extends ChangeNotifier {
         final matchName = pg.name.toLowerCase().contains(q);
         final matchLocality = pg.locality.toLowerCase().contains(q);
         final matchAddress = pg.address.toLowerCase().contains(q);
-        final matchLandmarks = pg.nearbyLandmarks.any((l) => l.name.toLowerCase().contains(q));
+        final matchLandmarks = pg.nearbyLandmarks.any(
+          (l) => l.name.toLowerCase().contains(q),
+        );
         if (!matchName && !matchLocality && !matchAddress && !matchLandmarks) {
           return false;
         }
@@ -310,7 +315,8 @@ class AppState extends ChangeNotifier {
       NotificationModel(
         id: 'notif_${DateTime.now().millisecondsSinceEpoch}',
         title: 'Enrollment Sent',
-        message: 'Your application for ${pg.name} has been submitted (Status: Submitted).',
+        message:
+            'Your application for ${pg.name} has been submitted (Status: Submitted).',
         type: NotificationType.enrollmentSubmitted,
         pgId: pg.id,
         createdAt: DateTime.now(),
@@ -330,7 +336,9 @@ class AppState extends ChangeNotifier {
   }
 
   void markAllNotificationsAsRead() {
-    _notifications = _notifications.map((n) => n.copyWith(isRead: true)).toList();
+    _notifications = _notifications
+        .map((n) => n.copyWith(isRead: true))
+        .toList();
     notifyListeners();
   }
 
@@ -355,8 +363,16 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> adminUpdateEnrollmentStatus(String enrollmentId, EnrollmentStatus newStatus, {String? note}) async {
-    await _enrollmentRepository.updateStatus(enrollmentId, newStatus, adminNote: note);
+  Future<void> adminUpdateEnrollmentStatus(
+    String enrollmentId,
+    EnrollmentStatus newStatus, {
+    String? note,
+  }) async {
+    await _enrollmentRepository.updateStatus(
+      enrollmentId,
+      newStatus,
+      adminNote: note,
+    );
     _enrollments = _enrollmentRepository.getAllEnrollments();
 
     final item = _enrollments.firstWhere((e) => e.id == enrollmentId);
@@ -365,7 +381,8 @@ class AppState extends ChangeNotifier {
       NotificationModel(
         id: 'notif_${DateTime.now().millisecondsSinceEpoch}',
         title: 'Status Update: ${item.pgName}',
-        message: 'Your enrollment status has been updated to "${newStatus.label}".',
+        message:
+            'Your enrollment status has been updated to "${newStatus.label}".',
         type: newStatus == EnrollmentStatus.accepted
             ? NotificationType.enrollmentAccepted
             : NotificationType.system,

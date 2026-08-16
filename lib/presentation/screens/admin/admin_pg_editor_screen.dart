@@ -8,11 +8,7 @@ class AdminPGEditorScreen extends StatefulWidget {
   final PGModel? pg;
   final AppState appState;
 
-  const AdminPGEditorScreen({
-    super.key,
-    this.pg,
-    required this.appState,
-  });
+  const AdminPGEditorScreen({super.key, this.pg, required this.appState});
 
   @override
   State<AdminPGEditorScreen> createState() => _AdminPGEditorScreenState();
@@ -63,29 +59,50 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
 
     _nameController = TextEditingController(text: p?.name ?? '');
     _descriptionController = TextEditingController(text: p?.description ?? '');
-    _rentController = TextEditingController(text: p != null ? '${p.monthlyRent.toInt()}' : '8000');
-    _depositController = TextEditingController(text: p != null ? '${p.securityDeposit.toInt()}' : '10000');
+    _rentController = TextEditingController(
+      text: p != null ? '${p.monthlyRent.toInt()}' : '8000',
+    );
+    _depositController = TextEditingController(
+      text: p != null ? '${p.securityDeposit.toInt()}' : '10000',
+    );
     _addressController = TextEditingController(text: p?.address ?? '');
-    _localityController = TextEditingController(text: p?.locality ?? 'Navrangpura');
-    _contactController = TextEditingController(text: p?.contactNumber ?? '+91 98765 43210');
-    _latController = TextEditingController(text: p != null ? '${p.latitude}' : '23.0300');
-    _lngController = TextEditingController(text: p != null ? '${p.longitude}' : '72.5400');
-    _youtubeController = TextEditingController(text: p?.youtubeVideoTitle ?? 'Complete Property Tour');
+    _localityController = TextEditingController(
+      text: p?.locality ?? 'Navrangpura',
+    );
+    _contactController = TextEditingController(
+      text: p?.contactNumber ?? '+91 98765 43210',
+    );
+    _latController = TextEditingController(
+      text: p != null ? '${p.latitude}' : '23.0300',
+    );
+    _lngController = TextEditingController(
+      text: p != null ? '${p.longitude}' : '72.5400',
+    );
+    _youtubeController = TextEditingController(
+      text: p?.youtubeVideoTitle ?? 'Complete Property Tour',
+    );
 
     _type = p?.type ?? PGType.girls;
     _availability = p?.availability ?? PGAvailability.available;
-    _verificationStatus = p?.verificationStatus ?? PGVerificationStatus.published;
+    _verificationStatus =
+        p?.verificationStatus ?? PGVerificationStatus.published;
     _isVerified = p?.isVerified ?? true;
-    _photos = p != null ? List.from(p.photos) : [
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80',
-    ];
-    _amenities = p != null ? List.from(p.amenities) : ['Wi-Fi', 'Food', 'AC', '24/7 security'];
-    _rules = p != null ? List.from(p.rules) : [
-      'No smoking or alcohol strictly prohibited',
-      'Entry by 10:00 PM',
-      'Minimum stay: 3 months',
-    ];
+    _photos = p != null
+        ? List.from(p.photos)
+        : [
+            'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80',
+          ];
+    _amenities = p != null
+        ? List.from(p.amenities)
+        : ['Wi-Fi', 'Food', 'AC', '24/7 security'];
+    _rules = p != null
+        ? List.from(p.rules)
+        : [
+            'No smoking or alcohol strictly prohibited',
+            'Entry by 10:00 PM',
+            'Minimum stay: 3 months',
+          ];
   }
 
   @override
@@ -130,19 +147,24 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
       photos: _photos,
       amenities: _amenities,
       rules: _rules,
-      nearbyLandmarks: widget.pg?.nearbyLandmarks ?? [
-        const LandmarkInfo(name: 'Nearby University', distance: '500 m'),
-        const LandmarkInfo(name: 'Metro Station', distance: '900 m'),
-      ],
-      virtualTourScenes: widget.pg?.virtualTourScenes ?? [
-        const VirtualTourScene(
-          id: 'sc_1',
-          title: 'Main Bedroom',
-          roomType: 'Bedroom',
-          imageUrl: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
-          description: 'Spacious air conditioned room with study table.',
-        ),
-      ],
+      nearbyLandmarks:
+          widget.pg?.nearbyLandmarks ??
+          [
+            const LandmarkInfo(name: 'Nearby University', distance: '500 m'),
+            const LandmarkInfo(name: 'Metro Station', distance: '900 m'),
+          ],
+      virtualTourScenes:
+          widget.pg?.virtualTourScenes ??
+          [
+            const VirtualTourScene(
+              id: 'sc_1',
+              title: 'Main Bedroom',
+              roomType: 'Bedroom',
+              imageUrl:
+                  'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+              description: 'Spacious air conditioned room with study table.',
+            ),
+          ],
       youtubeVideoTitle: _youtubeController.text.trim(),
       youtubeVideoId: 'dQw4w9WgXcQ',
       likesCount: widget.pg?.likesCount ?? 0,
@@ -196,7 +218,9 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
             TextFormField(
               controller: _nameController,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-              decoration: const InputDecoration(hintText: 'e.g. Sunrise Girls PG'),
+              decoration: const InputDecoration(
+                hintText: 'e.g. Sunrise Girls PG',
+              ),
             ),
             const SizedBox(height: 14),
 
@@ -222,7 +246,9 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
               controller: _descriptionController,
               maxLines: 3,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-              decoration: const InputDecoration(hintText: 'Detailed accommodation summary'),
+              decoration: const InputDecoration(
+                hintText: 'Detailed accommodation summary',
+              ),
             ),
             const SizedBox(height: 14),
 
@@ -236,7 +262,8 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
                       TextFormField(
                         controller: _rentController,
                         keyboardType: TextInputType.number,
-                        validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                        validator: (v) =>
+                            v == null || v.isEmpty ? 'Required' : null,
                         decoration: const InputDecoration(hintText: '8500'),
                       ),
                     ],
@@ -276,7 +303,9 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
             TextFormField(
               controller: _localityController,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-              decoration: const InputDecoration(hintText: 'e.g. Navrangpura, Satellite'),
+              decoration: const InputDecoration(
+                hintText: 'e.g. Navrangpura, Satellite',
+              ),
             ),
             const SizedBox(height: 14),
 
@@ -289,7 +318,9 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
                       _buildLabel('Latitude'),
                       TextFormField(
                         controller: _latController,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         decoration: const InputDecoration(hintText: '23.0372'),
                       ),
                     ],
@@ -303,7 +334,9 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
                       _buildLabel('Longitude'),
                       TextFormField(
                         controller: _lngController,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         decoration: const InputDecoration(hintText: '72.5531'),
                       ),
                     ],
@@ -327,7 +360,9 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
 
             SwitchListTile(
               title: const Text('Verified by PGCity Ops'),
-              subtitle: const Text('Displays verified green shield badge to users'),
+              subtitle: const Text(
+                'Displays verified green shield badge to users',
+              ),
               value: _isVerified,
               activeTrackColor: AppColors.teal,
               onChanged: (val) => setState(() => _isVerified = val),

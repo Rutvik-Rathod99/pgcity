@@ -51,7 +51,10 @@ class PGPreviewCard extends StatelessWidget {
                         color: AppColors.marigold.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(Icons.apartment_rounded, color: AppColors.navy),
+                      child: const Icon(
+                        Icons.apartment_rounded,
+                        color: AppColors.navy,
+                      ),
                     ),
                   ),
                 ),
@@ -60,7 +63,10 @@ class PGPreviewCard extends StatelessWidget {
                     top: 4,
                     left: 4,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.teal,
                         borderRadius: BorderRadius.circular(4),
@@ -68,7 +74,11 @@ class PGPreviewCard extends StatelessWidget {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.check_circle_rounded, size: 8, color: Colors.white),
+                          Icon(
+                            Icons.check_circle_rounded,
+                            size: 8,
+                            color: Colors.white,
+                          ),
                           SizedBox(width: 2),
                           Text(
                             'VERIFIED',
@@ -98,7 +108,9 @@ class PGPreviewCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           pg.name,
-                          style: AppTypography.titleMedium(color: AppColors.ink),
+                          style: AppTypography.titleMedium(
+                            color: AppColors.ink,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -109,9 +121,13 @@ class PGPreviewCard extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4),
                           child: Icon(
-                            isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                            isLiked
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_border_rounded,
                             size: 20,
-                            color: isLiked ? AppColors.likedRed : AppColors.inkSoft,
+                            color: isLiked
+                                ? AppColors.likedRed
+                                : AppColors.inkSoft,
                           ),
                         ),
                       ),
@@ -137,18 +153,24 @@ class PGPreviewCard extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: CurrencyFormatter.format(pg.monthlyRent),
-                              style: AppTypography.monoPrice(color: AppColors.teal)
-                                  .copyWith(fontSize: 14),
+                              style: AppTypography.monoPrice(
+                                color: AppColors.teal,
+                              ).copyWith(fontSize: 14),
                             ),
                             TextSpan(
                               text: '/mo',
-                              style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                              style: AppTypography.bodySmall(
+                                color: AppColors.inkSoft,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.marigold.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),

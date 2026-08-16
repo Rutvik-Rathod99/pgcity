@@ -74,11 +74,17 @@ class _PhotoLightboxScreenState extends State<PhotoLightboxScreen> {
                     loadingBuilder: (context, child, progress) {
                       if (progress == null) return child;
                       return const Center(
-                        child: CircularProgressIndicator(color: AppColors.marigold),
+                        child: CircularProgressIndicator(
+                          color: AppColors.marigold,
+                        ),
                       );
                     },
                     errorBuilder: (_, _, _) => const Center(
-                      child: Icon(Icons.broken_image_rounded, color: Colors.white38, size: 48),
+                      child: Icon(
+                        Icons.broken_image_rounded,
+                        color: Colors.white38,
+                        size: 48,
+                      ),
                     ),
                   ),
                 ),
@@ -111,7 +117,9 @@ class _PhotoLightboxScreenState extends State<PhotoLightboxScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: isSelected ? AppColors.marigold : Colors.transparent,
+                        color: isSelected
+                            ? AppColors.marigold
+                            : Colors.transparent,
                         width: 2,
                       ),
                       image: DecorationImage(

@@ -11,7 +11,7 @@ class AppColors {
   static const Color marigoldDark = Color(0xFF8A5E13);
   static const Color teal = Color(0xFF2C6E63);
   static const Color tealLight = Color(0xFFE4EFEA);
-  
+
   // Typography & Neutral
   static const Color ink = Color(0xFF1A2229);
   static const Color inkSoft = Color(0xFF5B6672);

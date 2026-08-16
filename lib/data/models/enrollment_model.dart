@@ -156,7 +156,9 @@ class EnrollmentModel {
         orElse: () => EnrollmentStatus.submitted,
       ),
       submittedAt: DateTime.parse(json['submittedAt'] as String),
-      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt'] as String) : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
+          : null,
       adminNote: json['adminNote'] as String?,
     );
   }

@@ -14,7 +14,8 @@ class UserModel {
   final String email;
   final UserGender gender;
   final int age;
-  final String occupation; // e.g. "XYZ College of Engineering" or "Software Engineer"
+  final String
+  occupation; // e.g. "XYZ College of Engineering" or "Software Engineer"
   final String? profilePhoto;
   final bool isVerified;
   final DateTime? moveInDate;
@@ -113,7 +114,9 @@ class UserModel {
       occupation: json['occupation'] as String,
       profilePhoto: json['profilePhoto'] as String?,
       isVerified: json['isVerified'] as bool? ?? false,
-      moveInDate: json['moveInDate'] != null ? DateTime.parse(json['moveInDate'] as String) : null,
+      moveInDate: json['moveInDate'] != null
+          ? DateTime.parse(json['moveInDate'] as String)
+          : null,
       preferredSharing: json['preferredSharing'] as String? ?? '2 Sharing',
       currentCity: json['currentCity'] as String? ?? 'Ahmedabad',
       emergencyContact: json['emergencyContact'] as String? ?? '',

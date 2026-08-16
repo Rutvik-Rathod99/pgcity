@@ -87,13 +87,14 @@ class VirtualTourScene {
     'description': description,
   };
 
-  factory VirtualTourScene.fromJson(Map<String, dynamic> json) => VirtualTourScene(
-    id: json['id'] as String,
-    title: json['title'] as String,
-    roomType: json['roomType'] as String,
-    imageUrl: json['imageUrl'] as String,
-    description: json['description'] as String,
-  );
+  factory VirtualTourScene.fromJson(Map<String, dynamic> json) =>
+      VirtualTourScene(
+        id: json['id'] as String,
+        title: json['title'] as String,
+        roomType: json['roomType'] as String,
+        imageUrl: json['imageUrl'] as String,
+        description: json['description'] as String,
+      );
 }
 
 class PGModel {

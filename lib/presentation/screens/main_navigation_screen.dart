@@ -38,10 +38,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ];
 
         return Scaffold(
-          body: IndexedStack(
-            index: _currentIndex,
-            children: screens,
-          ),
+          body: IndexedStack(index: _currentIndex, children: screens),
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
               color: AppColors.paper,
@@ -109,7 +106,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 Icon(
                   isSelected ? activeIcon : icon,
                   size: 22,
-                  color: isSelected ? AppColors.marigoldDark : AppColors.inkSoft,
+                  color: isSelected
+                      ? AppColors.marigoldDark
+                      : AppColors.inkSoft,
                 ),
                 if (badgeCount != null && badgeCount > 0 && index == 1)
                   Positioned(

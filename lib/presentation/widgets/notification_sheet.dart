@@ -51,8 +51,9 @@ class NotificationSheet extends StatelessWidget {
                   onPressed: onMarkAllRead,
                   child: Text(
                     'Mark all as read',
-                    style: AppTypography.button(color: AppColors.teal)
-                        .copyWith(fontSize: 12),
+                    style: AppTypography.button(
+                      color: AppColors.teal,
+                    ).copyWith(fontSize: 12),
                   ),
                 ),
             ],
@@ -116,7 +117,9 @@ class NotificationSheet extends StatelessWidget {
                             child: Icon(
                               _getIconForType(notif.type),
                               size: 16,
-                              color: notif.isRead ? AppColors.ink : Colors.white,
+                              color: notif.isRead
+                                  ? AppColors.ink
+                                  : Colors.white,
                             ),
                           ),
                           const SizedBox(width: 12),

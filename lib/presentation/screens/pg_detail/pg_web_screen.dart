@@ -15,17 +15,14 @@ class PGWebScreen extends StatelessWidget {
   final PGModel pg;
   final AppState appState;
 
-  const PGWebScreen({
-    super.key,
-    required this.pg,
-    required this.appState,
-  });
+  const PGWebScreen({super.key, required this.pg, required this.appState});
 
   void _open360Tour(BuildContext context, {int sceneIndex = 0}) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => VirtualTour360Screen(pg: pg, initialSceneIndex: sceneIndex),
+        builder: (_) =>
+            VirtualTour360Screen(pg: pg, initialSceneIndex: sceneIndex),
       ),
     );
   }
@@ -33,9 +30,7 @@ class PGWebScreen extends StatelessWidget {
   void _openVideoTour(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => VideoTourScreen(pg: pg),
-      ),
+      MaterialPageRoute(builder: (_) => VideoTourScreen(pg: pg)),
     );
   }
 
@@ -108,7 +103,9 @@ class PGWebScreen extends StatelessWidget {
               ),
               child: SelectableText(
                 link,
-                style: AppTypography.monoBadge(color: AppColors.teal).copyWith(fontSize: 12),
+                style: AppTypography.monoBadge(
+                  color: AppColors.teal,
+                ).copyWith(fontSize: 12),
               ),
             ),
           ],
@@ -138,7 +135,9 @@ class PGWebScreen extends StatelessWidget {
 
   Future<void> _openDirections(BuildContext context) async {
     final query = '${pg.latitude},${pg.longitude}';
-    final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$query');
+    final url = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$query',
+    );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
@@ -178,7 +177,11 @@ class PGWebScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white, size: 18),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
@@ -190,7 +193,11 @@ class PGWebScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.share_rounded, color: Colors.white, size: 18),
+                      icon: const Icon(
+                        Icons.share_rounded,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                       onPressed: () => _sharePG(context),
                     ),
                   ),
@@ -202,7 +209,9 @@ class PGWebScreen extends StatelessWidget {
                     ),
                     child: IconButton(
                       icon: Icon(
-                        isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                        isLiked
+                            ? Icons.favorite_rounded
+                            : Icons.favorite_border_rounded,
                         color: isLiked ? AppColors.likedRed : Colors.white,
                         size: 20,
                       ),
@@ -246,20 +255,28 @@ class PGWebScreen extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: AppColors.marigold,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Text(
                                     pg.type.label,
-                                    style: AppTypography.monoBadge(color: AppColors.navy),
+                                    style: AppTypography.monoBadge(
+                                      color: AppColors.navy,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
                                 if (pg.isVerified)
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: AppColors.teal,
                                       borderRadius: BorderRadius.circular(6),
@@ -267,7 +284,11 @@ class PGWebScreen extends StatelessWidget {
                                     child: const Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Icon(Icons.check_circle_rounded, size: 10, color: Colors.white),
+                                        Icon(
+                                          Icons.check_circle_rounded,
+                                          size: 10,
+                                          color: Colors.white,
+                                        ),
                                         SizedBox(width: 4),
                                         Text(
                                           'VERIFIED PG',
@@ -286,12 +307,16 @@ class PGWebScreen extends StatelessWidget {
                             const SizedBox(height: 6),
                             Text(
                               pg.name,
-                              style: AppTypography.displayMedium(color: Colors.white),
+                              style: AppTypography.displayMedium(
+                                color: Colors.white,
+                              ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               '${pg.locality}, ${pg.city} · ${CurrencyFormatter.format(pg.monthlyRent)}/month · ${pg.availability.label}',
-                              style: AppTypography.bodySmall(color: Colors.white70),
+                              style: AppTypography.bodySmall(
+                                color: Colors.white70,
+                              ),
                             ),
                           ],
                         ),
@@ -326,14 +351,19 @@ class PGWebScreen extends StatelessWidget {
                                 top: 0,
                                 left: 0,
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: AppColors.marigold,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Text(
                                     '360° TOUR',
-                                    style: AppTypography.monoBadge(color: AppColors.navy),
+                                    style: AppTypography.monoBadge(
+                                      color: AppColors.navy,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -345,7 +375,9 @@ class PGWebScreen extends StatelessWidget {
                                       width: 48,
                                       height: 48,
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withValues(alpha: 0.15),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.15,
+                                        ),
                                         shape: BoxShape.circle,
                                       ),
                                       child: const Icon(
@@ -357,12 +389,16 @@ class PGWebScreen extends StatelessWidget {
                                     const SizedBox(height: 10),
                                     Text(
                                       'Explore PG in 360° Virtual Reality',
-                                      style: AppTypography.titleMedium(color: Colors.white),
+                                      style: AppTypography.titleMedium(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
                                       'Interact, rotate, and tour bedrooms, dining & study hall',
-                                      style: AppTypography.bodySmall(color: Colors.white70),
+                                      style: AppTypography.bodySmall(
+                                        color: Colors.white70,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -406,12 +442,16 @@ class PGWebScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Take a Video Tour',
-                                      style: AppTypography.titleSmall(color: AppColors.ink),
+                                      style: AppTypography.titleSmall(
+                                        color: AppColors.ink,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       pg.youtubeVideoTitle,
-                                      style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                                      style: AppTypography.bodySmall(
+                                        color: AppColors.inkSoft,
+                                      ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -442,8 +482,14 @@ class PGWebScreen extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         childAspectRatio: 2.2,
                         children: [
-                          _buildDetailBox('Monthly Rent', CurrencyFormatter.format(pg.monthlyRent)),
-                          _buildDetailBox('Security Deposit', CurrencyFormatter.format(pg.securityDeposit)),
+                          _buildDetailBox(
+                            'Monthly Rent',
+                            CurrencyFormatter.format(pg.monthlyRent),
+                          ),
+                          _buildDetailBox(
+                            'Security Deposit',
+                            CurrencyFormatter.format(pg.securityDeposit),
+                          ),
                           _buildDetailBox('Sharing Options', pg.sharingType),
                           _buildDetailBox('Minimum Stay', pg.minimumStay),
                           _buildDetailBox('Food Options', pg.foodOption),
@@ -460,7 +506,9 @@ class PGWebScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         pg.description,
-                        style: AppTypography.bodyLarge(color: AppColors.inkSoft),
+                        style: AppTypography.bodyLarge(
+                          color: AppColors.inkSoft,
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -475,7 +523,10 @@ class PGWebScreen extends StatelessWidget {
                         runSpacing: 8,
                         children: pg.amenities.map((amenity) {
                           return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.paper,
                               borderRadius: BorderRadius.circular(20),
@@ -492,8 +543,9 @@ class PGWebScreen extends StatelessWidget {
                                 const SizedBox(width: 6),
                                 Text(
                                   amenity,
-                                  style: AppTypography.titleSmall(color: AppColors.ink)
-                                      .copyWith(fontSize: 12),
+                                  style: AppTypography.titleSmall(
+                                    color: AppColors.ink,
+                                  ).copyWith(fontSize: 12),
                                 ),
                               ],
                             ),
@@ -531,7 +583,9 @@ class PGWebScreen extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       rule,
-                                      style: AppTypography.bodyMedium(color: AppColors.ink),
+                                      style: AppTypography.bodyMedium(
+                                        color: AppColors.ink,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -548,14 +602,22 @@ class PGWebScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Location',
-                            style: AppTypography.titleLarge(color: AppColors.ink),
+                            style: AppTypography.titleLarge(
+                              color: AppColors.ink,
+                            ),
                           ),
                           TextButton.icon(
                             onPressed: () => _openDirections(context),
-                            icon: const Icon(Icons.navigation_rounded, size: 14, color: AppColors.teal),
+                            icon: const Icon(
+                              Icons.navigation_rounded,
+                              size: 14,
+                              color: AppColors.teal,
+                            ),
                             label: Text(
                               'Directions',
-                              style: AppTypography.button(color: AppColors.teal),
+                              style: AppTypography.button(
+                                color: AppColors.teal,
+                              ),
                             ),
                           ),
                         ],
@@ -563,7 +625,9 @@ class PGWebScreen extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         pg.address,
-                        style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+                        style: AppTypography.bodyMedium(
+                          color: AppColors.inkSoft,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       // Mini Location Card with Landmarks
@@ -579,14 +643,19 @@ class PGWebScreen extends StatelessWidget {
                           children: [
                             Text(
                               'Nearby Landmarks',
-                              style: AppTypography.monoLabel(color: AppColors.teal),
+                              style: AppTypography.monoLabel(
+                                color: AppColors.teal,
+                              ),
                             ),
                             const SizedBox(height: 8),
                             for (final l in pg.nearbyLandmarks)
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 3),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 3,
+                                ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -598,14 +667,17 @@ class PGWebScreen extends StatelessWidget {
                                         const SizedBox(width: 6),
                                         Text(
                                           l.name,
-                                          style: AppTypography.titleSmall(color: AppColors.ink),
+                                          style: AppTypography.titleSmall(
+                                            color: AppColors.ink,
+                                          ),
                                         ),
                                       ],
                                     ),
                                     Text(
                                       l.distance,
-                                      style: AppTypography.monoPrice(color: AppColors.teal)
-                                          .copyWith(fontSize: 12),
+                                      style: AppTypography.monoPrice(
+                                        color: AppColors.teal,
+                                      ).copyWith(fontSize: 12),
                                     ),
                                   ],
                                 ),
@@ -621,13 +693,17 @@ class PGWebScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Photos (${pg.photos.length})',
-                            style: AppTypography.titleLarge(color: AppColors.ink),
+                            style: AppTypography.titleLarge(
+                              color: AppColors.ink,
+                            ),
                           ),
                           TextButton(
                             onPressed: () => _openPhotoGallery(context, 0),
                             child: Text(
                               'View all',
-                              style: AppTypography.button(color: AppColors.teal),
+                              style: AppTypography.button(
+                                color: AppColors.teal,
+                              ),
                             ),
                           ),
                         ],
@@ -661,7 +737,10 @@ class PGWebScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () => appState.toggleLike(pg.id),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.paper,
                             borderRadius: BorderRadius.circular(12),
@@ -671,14 +750,20 @@ class PGWebScreen extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                                color: isLiked ? AppColors.likedRed : AppColors.inkSoft,
+                                isLiked
+                                    ? Icons.favorite_rounded
+                                    : Icons.favorite_border_rounded,
+                                color: isLiked
+                                    ? AppColors.likedRed
+                                    : AppColors.inkSoft,
                                 size: 18,
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 '${pg.likesCount} seekers liked this property',
-                                style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                                style: AppTypography.bodySmall(
+                                  color: AppColors.inkSoft,
+                                ),
                               ),
                             ],
                           ),
@@ -716,14 +801,18 @@ class PGWebScreen extends StatelessWidget {
                     child: OutlinedButton.icon(
                       onPressed: () => _openContactUnlock(context),
                       icon: Icon(
-                        isUnlocked ? Icons.phone_enabled_rounded : Icons.phone_rounded,
+                        isUnlocked
+                            ? Icons.phone_enabled_rounded
+                            : Icons.phone_rounded,
                         size: 16,
                         color: isUnlocked ? AppColors.teal : AppColors.navy,
                       ),
                       label: Text(isUnlocked ? 'Call PG' : 'View Contact'),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 13),
-                        foregroundColor: isUnlocked ? AppColors.teal : AppColors.navy,
+                        foregroundColor: isUnlocked
+                            ? AppColors.teal
+                            : AppColors.navy,
                         side: BorderSide(
                           color: isUnlocked ? AppColors.teal : AppColors.navy,
                           width: 1.5,
@@ -766,7 +855,9 @@ class PGWebScreen extends StatelessWidget {
         children: [
           Text(
             label,
-            style: AppTypography.monoLabel(color: AppColors.teal).copyWith(fontSize: 10),
+            style: AppTypography.monoLabel(
+              color: AppColors.teal,
+            ).copyWith(fontSize: 10),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -784,18 +875,28 @@ class PGWebScreen extends StatelessWidget {
 
   IconData _getAmenityIcon(String name) {
     final lower = name.toLowerCase();
-    if (lower.contains('wi-fi') || lower.contains('wifi')) return Icons.wifi_rounded;
-    if (lower.contains('food') || lower.contains('meal')) return Icons.restaurant_rounded;
-    if (lower.contains('ac') || lower.contains('air')) return Icons.ac_unit_rounded;
-    if (lower.contains('backup') || lower.contains('power')) return Icons.bolt_rounded;
-    if (lower.contains('security') || lower.contains('guard')) return Icons.shield_rounded;
+    if (lower.contains('wi-fi') || lower.contains('wifi'))
+      return Icons.wifi_rounded;
+    if (lower.contains('food') || lower.contains('meal'))
+      return Icons.restaurant_rounded;
+    if (lower.contains('ac') || lower.contains('air'))
+      return Icons.ac_unit_rounded;
+    if (lower.contains('backup') || lower.contains('power'))
+      return Icons.bolt_rounded;
+    if (lower.contains('security') || lower.contains('guard'))
+      return Icons.shield_rounded;
     if (lower.contains('parking')) return Icons.local_parking_rounded;
-    if (lower.contains('washing') || lower.contains('laundry')) return Icons.local_laundry_service_rounded;
+    if (lower.contains('washing') || lower.contains('laundry'))
+      return Icons.local_laundry_service_rounded;
     if (lower.contains('cctv')) return Icons.videocam_rounded;
-    if (lower.contains('study') || lower.contains('table')) return Icons.desk_rounded;
-    if (lower.contains('water') || lower.contains('geyser')) return Icons.water_drop_rounded;
-    if (lower.contains('refrigerator') || lower.contains('fridge')) return Icons.kitchen_rounded;
-    if (lower.contains('common') || lower.contains('lounge')) return Icons.weekend_rounded;
+    if (lower.contains('study') || lower.contains('table'))
+      return Icons.desk_rounded;
+    if (lower.contains('water') || lower.contains('geyser'))
+      return Icons.water_drop_rounded;
+    if (lower.contains('refrigerator') || lower.contains('fridge'))
+      return Icons.kitchen_rounded;
+    if (lower.contains('common') || lower.contains('lounge'))
+      return Icons.weekend_rounded;
     if (lower.contains('bath')) return Icons.bathtub_rounded;
     return Icons.check_circle_outline_rounded;
   }

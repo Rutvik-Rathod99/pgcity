@@ -59,14 +59,19 @@ class EnrollmentRepository {
 
     try {
       final list = jsonDecode(raw) as List;
-      return list.map((e) => EnrollmentModel.fromJson(e as Map<String, dynamic>)).toList();
+      return list
+          .map((e) => EnrollmentModel.fromJson(e as Map<String, dynamic>))
+          .toList();
     } catch (_) {
       return [];
     }
   }
 
   Future<void> saveAllEnrollments(List<EnrollmentModel> list) async {
-    await _prefs.setString(_enrollKey, jsonEncode(list.map((e) => e.toJson()).toList()));
+    await _prefs.setString(
+      _enrollKey,
+      jsonEncode(list.map((e) => e.toJson()).toList()),
+    );
   }
 
   Future<void> addEnrollment(EnrollmentModel item) async {
@@ -75,7 +80,11 @@ class EnrollmentRepository {
     await saveAllEnrollments(all);
   }
 
-  Future<void> updateStatus(String enrollmentId, EnrollmentStatus status, {String? adminNote}) async {
+  Future<void> updateStatus(
+    String enrollmentId,
+    EnrollmentStatus status, {
+    String? adminNote,
+  }) async {
     final all = getAllEnrollments();
     final index = all.indexWhere((e) => e.id == enrollmentId);
     if (index >= 0) {

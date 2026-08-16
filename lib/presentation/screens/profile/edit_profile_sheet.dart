@@ -31,10 +31,16 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
     _nameController = TextEditingController(text: user?.fullName ?? '');
     _phoneController = TextEditingController(text: user?.mobileNumber ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
-    _ageController = TextEditingController(text: user != null ? '${user.age}' : '21');
+    _ageController = TextEditingController(
+      text: user != null ? '${user.age}' : '21',
+    );
     _occupationController = TextEditingController(text: user?.occupation ?? '');
-    _cityController = TextEditingController(text: user?.currentCity ?? 'Ahmedabad');
-    _emergencyController = TextEditingController(text: user?.emergencyContact ?? '');
+    _cityController = TextEditingController(
+      text: user?.currentCity ?? 'Ahmedabad',
+    );
+    _emergencyController = TextEditingController(
+      text: user?.emergencyContact ?? '',
+    );
     _gender = user != null ? user.gender.label : 'Male';
   }
 
@@ -108,7 +114,8 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
               _buildLabel('Full Name'),
               TextFormField(
                 controller: _nameController,
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(hintText: 'Full Name'),
               ),
               const SizedBox(height: 14),
@@ -116,7 +123,8 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
               _buildLabel('Phone Number'),
               TextFormField(
                 controller: _phoneController,
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(hintText: '+91 XXXXX XXXXX'),
               ),
               const SizedBox(height: 14),
@@ -124,7 +132,8 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
               _buildLabel('Email Address'),
               TextFormField(
                 controller: _emailController,
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(hintText: 'Email'),
               ),
               const SizedBox(height: 14),
@@ -149,7 +158,9 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
               _buildLabel('Occupation / College'),
               TextFormField(
                 controller: _occupationController,
-                decoration: const InputDecoration(hintText: 'College or Company name'),
+                decoration: const InputDecoration(
+                  hintText: 'College or Company name',
+                ),
               ),
               const SizedBox(height: 14),
 
@@ -163,7 +174,9 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
               _buildLabel('Emergency Contact (Optional)'),
               TextFormField(
                 controller: _emergencyController,
-                decoration: const InputDecoration(hintText: 'Parent or Guardian Number'),
+                decoration: const InputDecoration(
+                  hintText: 'Parent or Guardian Number',
+                ),
               ),
             ],
           ),

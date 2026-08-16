@@ -72,11 +72,18 @@ class EnrollmentSuccessDialog extends StatelessWidget {
                   const Divider(color: AppColors.line, height: 16),
                   _buildRow('Applicant', applicantName),
                   const Divider(color: AppColors.line, height: 16),
-                  _buildRow('Move-in Date', DateFormat('dd MMM yyyy').format(moveInDate)),
+                  _buildRow(
+                    'Move-in Date',
+                    DateFormat('dd MMM yyyy').format(moveInDate),
+                  ),
                   const Divider(color: AppColors.line, height: 16),
                   _buildRow('Sharing', sharingType),
                   const Divider(color: AppColors.line, height: 16),
-                  _buildRow('Current Status', 'Submitted (Under Review)', isStatus: true),
+                  _buildRow(
+                    'Current Status',
+                    'Submitted (Under Review)',
+                    isStatus: true,
+                  ),
                 ],
               ),
             ),
@@ -102,10 +109,7 @@ class EnrollmentSuccessDialog extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: AppTypography.bodySmall(color: AppColors.inkSoft),
-        ),
+        Text(label, style: AppTypography.bodySmall(color: AppColors.inkSoft)),
         if (isStatus)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -119,10 +123,7 @@ class EnrollmentSuccessDialog extends StatelessWidget {
             ),
           )
         else
-          Text(
-            value,
-            style: AppTypography.titleSmall(color: AppColors.ink),
-          ),
+          Text(value, style: AppTypography.titleSmall(color: AppColors.ink)),
       ],
     );
   }
