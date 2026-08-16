@@ -69,7 +69,7 @@ class _VirtualTour360ScreenState extends State<VirtualTour360Screen>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(_horizontalOffset)
                       ..rotateX(_verticalOffset)
-                      ..scaleByDouble(_zoomScale),
+                      ..scaleByDouble(_zoomScale, _zoomScale, 1.0, 1.0),
                     alignment: Alignment.center,
                     child: Container(
                       decoration: BoxDecoration(

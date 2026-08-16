@@ -61,8 +61,8 @@ class _InteractivePGMapState extends State<InteractivePGMap>
       final pos = _latLngToCanvas(target.latitude, target.longitude);
       // Center the interactive viewer matrix on target position
       final matrix = Matrix4.identity()
-        ..translateByDouble(-pos.dx + 180, -pos.dy + 200)
-        ..scaleByDouble(1.1);
+        ..translateByDouble(-pos.dx + 180, -pos.dy + 200, 0.0, 1.0)
+        ..scaleByDouble(1.1, 1.1, 1.0, 1.0);
       _transformationController.value = matrix;
     }
   }
@@ -70,20 +70,20 @@ class _InteractivePGMapState extends State<InteractivePGMap>
   void _recenterOnUser() {
     // Navrangpura center
     final matrix = Matrix4.identity()
-      ..translateByDouble(-200.0, -180.0)
-      ..scaleByDouble(1.0);
+      ..translateByDouble(-200.0, -180.0, 0.0, 1.0)
+      ..scaleByDouble(1.0, 1.0, 1.0, 1.0);
     _transformationController.value = matrix;
   }
 
   void _zoomIn() {
     final matrix = _transformationController.value.clone();
-    matrix.scaleByDouble(1.25);
+    matrix.scaleByDouble(1.25, 1.25, 1.0, 1.0);
     _transformationController.value = matrix;
   }
 
   void _zoomOut() {
     final matrix = _transformationController.value.clone();
-    matrix.scaleByDouble(0.8);
+    matrix.scaleByDouble(0.8, 0.8, 1.0, 1.0);
     _transformationController.value = matrix;
   }
 
