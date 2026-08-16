@@ -13,16 +13,18 @@ class AppStrings {
   static const Map<String, Map<String, String>> _translations = {
     'en': {
       // Navigation
+      'nav_home': 'Home',
       'nav_explore': 'Explore',
       'nav_map': 'Map Search',
-      'nav_liked': 'Shortlisted',
+      'nav_liked': 'Liked',
       'nav_profile': 'Profile',
       'nav_admin': 'Admin',
+      'nav_notifications': 'Notifications',
 
       // Home & Search
       'app_title': 'PGCity Ahmedabad',
       'app_subtitle': 'Curated verified PGs near CEPT, Nirma, PDPU & SG Highway',
-      'search_hint': 'Search by PG name, locality (Navrangpura, Satellite...)',
+      'search_hint': 'Search PG name, locality (Navrangpura, Satellite...)',
       'filter_all': 'All PGs',
       'filter_girls': 'Girls PG',
       'filter_boys': 'Boys PG',
@@ -31,9 +33,16 @@ class AppStrings {
       'filter_under_10k': 'Under ₹10,000',
       'filter_above_10k': '₹10,000+',
       'curated_count': 'verified spaces found in Ahmedabad',
+      'view_map': 'Map View',
+      'view_list': 'List View',
+      'clear_filters': 'Clear Filters',
+      'no_pgs_found': 'No PGs Match Your Filters',
+      'try_adjusting_filters': 'Try resetting filters or searching another locality in Ahmedabad.',
 
-      // PG Details
+      // Card & Detail
       'monthly_rent': 'Monthly Rent',
+      'per_month': '/ month',
+      'security_deposit': 'Security Deposit',
       'food_kitchen': 'Food & Kitchen',
       'amenities': 'Key Amenities',
       'virtual_tour': '360° Room Tour',
@@ -42,6 +51,16 @@ class AppStrings {
       'house_rules': 'House Rules & Curfew',
       'sharing_options': 'Sharing Options',
       'verified_badge': 'PGCity 100% Physically Verified',
+      'call_now': 'Call Owner',
+      'whatsapp_now': 'WhatsApp',
+      'unlock_contact': 'Unlock Verified Contact (Free)',
+      'near_landmarks': 'Nearby Universities & Transit',
+      'distance_away': 'from SG Highway / University Hub',
+
+      // Liked / Shortlisted
+      'shortlisted_title': 'Shortlisted PGs',
+      'no_liked_title': 'No Shortlisted PGs Yet',
+      'no_liked_subtitle': 'Tap the heart icon on any PG card to bookmark spaces for easy comparison.',
 
       // Profile & Settings
       'my_profile': 'My Profile',
@@ -74,11 +93,13 @@ class AppStrings {
     },
     'gu': {
       // Navigation
+      'nav_home': 'હોમ (Home)',
       'nav_explore': 'શોધો (Explore)',
       'nav_map': 'નકશો (Map)',
       'nav_liked': 'પસંદ કરેલ (Liked)',
       'nav_profile': 'પ્રોફાઇલ (Profile)',
       'nav_admin': 'એડમિન (Admin)',
+      'nav_notifications': 'સૂચનાઓ (Notifications)',
 
       // Home & Search
       'app_title': 'પીજી સિટી અમદાવાદ',
@@ -92,9 +113,16 @@ class AppStrings {
       'filter_under_10k': '₹૧૦,૦૦૦ થી ઓછું',
       'filter_above_10k': '₹૧૦,૦૦૦+',
       'curated_count': 'અમદાવાદમાં ચકાસાયેલ રૂમો ઉપલબ્ધ',
+      'view_map': 'નકશામાં જુઓ',
+      'view_list': 'યાદી જુઓ',
+      'clear_filters': 'ફિલ્ટર્સ સાફ કરો',
+      'no_pgs_found': 'કોઈ પીજી મળ્યા નથી',
+      'try_adjusting_filters': 'કૃપા કરીને અન્ય વિસ્તાર અથવા બજેટ શોધો.',
 
-      // PG Details
+      // Card & Detail
       'monthly_rent': 'માસિક ભાડું',
+      'per_month': '/ મહિનો',
+      'security_deposit': 'ડિપોઝિટ',
       'food_kitchen': 'જમવાનું અને રસોડું',
       'amenities': 'સુવિધાઓ',
       'virtual_tour': '૩૬૦° રૂમ ટૂર',
@@ -103,6 +131,16 @@ class AppStrings {
       'house_rules': 'પીજીના નિયમો',
       'sharing_options': 'શેરિંગ વિકલ્પો',
       'verified_badge': 'પીજી સિટી ૧૦૦% ચકાસાયેલ',
+      'call_now': 'કૉલ કરો',
+      'whatsapp_now': 'વોટ્સએપ',
+      'unlock_contact': 'સંપર્ક નંબર જુઓ (મફત)',
+      'near_landmarks': 'નજીકની કૉલેજ અને સ્થળો',
+      'distance_away': 'મુખ્ય હાઇવે / યુનિવર્સિટીથી અંતર',
+
+      // Liked / Shortlisted
+      'shortlisted_title': 'પસંદ કરેલા પીજી',
+      'no_liked_title': 'કોઈ પીજી પસંદ કરેલ નથી',
+      'no_liked_subtitle': 'પીજી કાર્ડ પર હાર્ટ આઇકન દબાવીને તમારા મનપસંદ રૂમો સાચવો.',
 
       // Profile & Settings
       'my_profile': 'મારી પ્રોફાઇલ',
@@ -135,11 +173,13 @@ class AppStrings {
     },
     'hi': {
       // Navigation
+      'nav_home': 'होम (Home)',
       'nav_explore': 'खोजें (Explore)',
       'nav_map': 'मानचित्र (Map)',
       'nav_liked': 'पसंदीदा (Liked)',
       'nav_profile': 'प्रोफ़ाइल (Profile)',
       'nav_admin': 'एडमिन (Admin)',
+      'nav_notifications': 'सूचनाएं (Notifications)',
 
       // Home & Search
       'app_title': 'पीजी सिटी अहमदाबाद',
@@ -153,9 +193,16 @@ class AppStrings {
       'filter_under_10k': '₹10,000 से कम',
       'filter_above_10k': '₹10,000+',
       'curated_count': 'सत्यापित पीजी अहमदाबाद में उपलब्ध',
+      'view_map': 'नक्शे पर देखें',
+      'view_list': 'सूची देखें',
+      'clear_filters': 'फ़िल्टर हटाएं',
+      'no_pgs_found': 'कोई पीजी नहीं मिला',
+      'try_adjusting_filters': 'कृपया अन्य इलाका या बजट खोजें।',
 
-      // PG Details
+      // Card & Detail
       'monthly_rent': 'मासिक किराया',
+      'per_month': '/ माह',
+      'security_deposit': 'सुरक्षा जमा',
       'food_kitchen': 'भोजन एवं रसोई',
       'amenities': 'मुख्य सुविधाएं',
       'virtual_tour': '360° रूम टूर',
@@ -164,6 +211,16 @@ class AppStrings {
       'house_rules': 'नियम एवं शर्तें',
       'sharing_options': 'शेयरिंग विकल्प',
       'verified_badge': 'पीजी सिटी 100% सत्यापित',
+      'call_now': 'कॉल करें',
+      'whatsapp_now': 'व्हाट्सएप',
+      'unlock_contact': 'सत्यापित संपर्क नंबर देखें (निःशुल्क)',
+      'near_landmarks': 'निकटतम कॉलेज और परिवहन',
+      'distance_away': 'हाईवे / कॉलेज से दूरी',
+
+      // Liked / Shortlisted
+      'shortlisted_title': 'पसंदीदा पीजी सूची',
+      'no_liked_title': 'कोई पसंदीदा पीजी नहीं मिला',
+      'no_liked_subtitle': 'पीजी कार्ड पर दिल का आइकन दबाकर अपने पसंदीदा पीजी सेव करें।',
 
       // Profile & Settings
       'my_profile': 'मेरी प्रोफ़ाइल',

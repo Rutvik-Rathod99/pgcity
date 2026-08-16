@@ -20,15 +20,25 @@ class PGPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.paper,
+          color: context.appSurface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.line),
-          boxShadow: const [AppColors.cardShadow],
+          border: Border.all(color: context.appBorder),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withAlpha(80)
+                  : const Color.fromRGBO(20, 31, 41, 0.12),
+              blurRadius: 20,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -48,7 +58,7 @@ class PGPreviewCard extends StatelessWidget {
                       width: 76,
                       height: 76,
                       decoration: BoxDecoration(
-                        color: AppColors.marigold.withValues(alpha: 0.3),
+                        color: AppColors.marigold.withAlpha(70),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
@@ -109,7 +119,7 @@ class PGPreviewCard extends StatelessWidget {
                         child: Text(
                           pg.name,
                           style: AppTypography.titleMedium(
-                            color: AppColors.ink,
+                            color: isDark ? Colors.white : AppColors.ink,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -127,7 +137,7 @@ class PGPreviewCard extends StatelessWidget {
                             size: 20,
                             color: isLiked
                                 ? AppColors.likedRed
-                                : AppColors.inkSoft,
+                                : (isDark ? Colors.white38 : AppColors.inkSoft),
                           ),
                         ),
                       ),
@@ -138,7 +148,9 @@ class PGPreviewCard extends StatelessWidget {
                   // PG Type & Distance
                   Text(
                     '${pg.type.label} · ${pg.distanceKm} km away · ${pg.locality}',
-                    style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                    style: AppTypography.bodySmall(
+                      color: isDark ? Colors.white60 : AppColors.inkSoft,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -154,13 +166,13 @@ class PGPreviewCard extends StatelessWidget {
                             TextSpan(
                               text: CurrencyFormatter.format(pg.monthlyRent),
                               style: AppTypography.monoPrice(
-                                color: AppColors.teal,
+                                color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
                               ).copyWith(fontSize: 14),
                             ),
                             TextSpan(
                               text: '/mo',
                               style: AppTypography.bodySmall(
-                                color: AppColors.inkSoft,
+                                color: isDark ? Colors.white60 : AppColors.inkSoft,
                               ),
                             ),
                           ],
@@ -172,7 +184,7 @@ class PGPreviewCard extends StatelessWidget {
                           vertical: 5,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.marigold.withValues(alpha: 0.15),
+                          color: AppColors.marigold.withAlpha(isDark ? 50 : 35),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -183,15 +195,15 @@ class PGPreviewCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.marigoldDark,
+                                color: isDark ? AppColors.marigold : AppColors.marigoldDark,
                                 fontFamily: 'Inter',
                               ),
                             ),
                             const SizedBox(width: 3),
-                            const Icon(
+                            Icon(
                               Icons.arrow_forward_ios_rounded,
                               size: 10,
-                              color: AppColors.marigoldDark,
+                              color: isDark ? AppColors.marigold : AppColors.marigoldDark,
                             ),
                           ],
                         ),

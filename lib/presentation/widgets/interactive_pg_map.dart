@@ -103,8 +103,8 @@ class _InteractivePGMapState extends State<InteractivePGMap>
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
+    final isDark = context.isDark;
+
     return Stack(
       children: [
         // Interactive Canvas Map
@@ -120,7 +120,11 @@ class _InteractivePGMapState extends State<InteractivePGMap>
               clipBehavior: Clip.none,
               children: [
                 // Custom Vector Painted City Map
-                Positioned.fill(child: CustomPaint(painter: _CityMapPainter())),
+                Positioned.fill(
+                  child: CustomPaint(
+                    painter: _CityMapPainter(isDark: isDark),
+                  ),
+                ),
 
                 // User Location Live Pulse
                 Positioned(
@@ -253,8 +257,10 @@ class _InteractivePGMapState extends State<InteractivePGMap>
     required VoidCallback onTap,
     required String tooltip,
   }) {
+    final isDark = context.isDark;
+
     return Material(
-      color: AppColors.paper,
+      color: context.appSurface,
       borderRadius: BorderRadius.circular(12),
       elevation: 3,
       shadowColor: Colors.black26,
@@ -266,9 +272,13 @@ class _InteractivePGMapState extends State<InteractivePGMap>
           height: 38,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.line),
+            border: Border.all(color: context.appBorder),
           ),
-          child: Icon(icon, size: 18, color: AppColors.ink),
+          child: Icon(
+            icon,
+            size: 18,
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
       ),
     );
@@ -277,14 +287,20 @@ class _InteractivePGMapState extends State<InteractivePGMap>
 
 /// Custom Vector Canvas Painter for Map Background
 class _CityMapPainter extends CustomPainter {
+  final bool isDark;
+
+  _CityMapPainter({this.isDark = false});
+
   @override
   void paint(Canvas canvas, Size size) {
     // 1. Base terrain
-    final basePaint = Paint()..color = const Color(0xFFEBE6D6);
+    final basePaint = Paint()
+      ..color = isDark ? const Color(0xFF0F172A) : const Color(0xFFEBE6D6);
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), basePaint);
 
     // 2. Parks & Greenery (Vastrapur lake garden, Law garden, Riverfront)
-    final parkPaint = Paint()..color = const Color(0xFFD6E8DB);
+    final parkPaint = Paint()
+      ..color = isDark ? const Color(0xFF143026) : const Color(0xFFD6E8DB);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         const Rect.fromLTWH(80, 180, 140, 100),
@@ -306,7 +322,8 @@ class _CityMapPainter extends CustomPainter {
     ); // Kankaria lake area
 
     // 3. Water Body (Sabarmati River & Lakes)
-    final waterPaint = Paint()..color = const Color(0xFFC3DFE4);
+    final waterPaint = Paint()
+      ..color = isDark ? const Color(0xFF1E3A5F) : const Color(0xFFC3DFE4);
     // Sabarmati river curve
     final riverPath = Path()
       ..moveTo(620, 0)
@@ -323,7 +340,8 @@ class _CityMapPainter extends CustomPainter {
     canvas.drawCircle(const Offset(680, 620), 45, waterPaint);
 
     // 4. Urban Blocks
-    final blockPaint = Paint()..color = const Color(0xFFDDD5BE);
+    final blockPaint = Paint()
+      ..color = isDark ? const Color(0xFF1E293B) : const Color(0xFFDDD5BE);
     final blocks = [
       const Rect.fromLTWH(40, 40, 90, 80),
       const Rect.fromLTWH(160, 50, 110, 70),
@@ -349,13 +367,13 @@ class _CityMapPainter extends CustomPainter {
 
     // 5. Roads (Major highways & streets)
     final mainRoadPaint = Paint()
-      ..color = const Color(0xFFFAF7EE)
+      ..color = isDark ? const Color(0xFF334155) : const Color(0xFFFAF7EE)
       ..strokeWidth = 18
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     final secondaryRoadPaint = Paint()
-      ..color = const Color(0xFFF3EDDC)
+      ..color = isDark ? const Color(0xFF243248) : const Color(0xFFF3EDDC)
       ..strokeWidth = 10
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;

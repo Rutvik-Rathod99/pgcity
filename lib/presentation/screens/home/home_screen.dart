@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.paper,
+      backgroundColor: context.appSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.paper,
+      backgroundColor: context.appSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -77,9 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final state = widget.appState;
     final pgs = state.filteredPGs;
+    final isDark = context.isDark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appBg,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -112,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         'PGCity',
                         style: AppTypography.brand(
-                          color: AppColors.ink,
+                          color: isDark ? Colors.white : AppColors.ink,
                         ).copyWith(fontSize: 20),
                       ),
                       if (state.isAdminMode) ...[
@@ -145,12 +146,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           state.isMapView
                               ? Icons.format_list_bulleted_rounded
                               : Icons.map_rounded,
-                          color: AppColors.ink,
+                          color: isDark ? Colors.white : AppColors.ink,
                           size: 22,
                         ),
                         tooltip: state.isMapView
-                            ? 'Switch to List View'
-                            : 'Switch to Map View',
+                            ? state.tr('view_list')
+                            : state.tr('view_map'),
                       ),
                       // Notification Bell with Badge
                       Stack(
@@ -159,15 +160,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 38,
                             height: 38,
                             decoration: BoxDecoration(
-                              color: AppColors.paper,
+                              color: context.appSurface,
                               shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.line),
+                              border: Border.all(color: context.appBorder),
                             ),
                             child: IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.notifications_none_rounded,
                                 size: 20,
-                                color: AppColors.ink,
+                                color: isDark ? Colors.white : AppColors.ink,
                               ),
                               padding: EdgeInsets.zero,
                               onPressed: _openNotifications,
@@ -209,15 +210,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 behavior: HitTestBehavior.opaque,
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.location_on_rounded,
                       size: 15,
-                      color: AppColors.inkSoft,
+                      color: isDark ? Colors.white60 : AppColors.inkSoft,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       state.currentCity,
-                      style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                      style: AppTypography.bodySmall(
+                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                      ),
                     ),
                     const SizedBox(width: 6),
                     Text(
@@ -237,24 +240,26 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppColors.paper,
+                  color: context.appSurface,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.line),
+                  border: Border.all(color: context.appBorder),
                   boxShadow: const [AppColors.softShadow],
                 ),
                 child: TextField(
                   controller: _searchController,
                   onChanged: (val) => state.setSearchQuery(val),
-                  style: const TextStyle(fontSize: 13, color: AppColors.ink),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: isDark ? Colors.white : AppColors.ink,
+                  ),
                   decoration: InputDecoration(
-                    hintText:
-                        'Search PG name or area (e.g. Navrangpura, Satellite)',
+                    hintText: state.tr('search_hint'),
                     hintStyle: AppTypography.bodySmall(
-                      color: AppColors.inkSoft,
+                      color: isDark ? Colors.white38 : AppColors.inkSoft,
                     ),
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.search_rounded,
-                      color: AppColors.inkSoft,
+                      color: isDark ? Colors.white54 : AppColors.inkSoft,
                       size: 20,
                     ),
                     suffixIcon: _searchController.text.isNotEmpty
@@ -286,51 +291,56 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 children: [
                   _buildFilterChip(
-                    label: 'All',
+                    label: state.tr('filter_all'),
                     isSelected:
                         state.genderFilter == GenderFilter.all &&
                         state.priceFilter == PriceFilter.all,
                     onTap: () => state.clearFilters(),
+                    isDark: isDark,
                   ),
                   const SizedBox(width: 6),
                   _buildFilterChip(
-                    label: 'Girls PG',
+                    label: state.tr('filter_girls'),
                     isSelected: state.genderFilter == GenderFilter.girls,
                     onTap: () => state.setGenderFilter(
                       state.genderFilter == GenderFilter.girls
                           ? GenderFilter.all
                           : GenderFilter.girls,
                     ),
+                    isDark: isDark,
                   ),
                   const SizedBox(width: 6),
                   _buildFilterChip(
-                    label: 'Boys PG',
+                    label: state.tr('filter_boys'),
                     isSelected: state.genderFilter == GenderFilter.boys,
                     onTap: () => state.setGenderFilter(
                       state.genderFilter == GenderFilter.boys
                           ? GenderFilter.all
                           : GenderFilter.boys,
                     ),
+                    isDark: isDark,
                   ),
                   const SizedBox(width: 6),
                   _buildFilterChip(
-                    label: 'Under ₹10k',
+                    label: state.tr('filter_under_10k'),
                     isSelected: state.priceFilter == PriceFilter.under10k,
                     onTap: () => state.setPriceFilter(
                       state.priceFilter == PriceFilter.under10k
                           ? PriceFilter.all
                           : PriceFilter.under10k,
                     ),
+                    isDark: isDark,
                   ),
                   const SizedBox(width: 6),
                   _buildFilterChip(
-                    label: 'Above ₹10k',
+                    label: state.tr('filter_above_10k'),
                     isSelected: state.priceFilter == PriceFilter.above10k,
                     onTap: () => state.setPriceFilter(
                       state.priceFilter == PriceFilter.above10k
                           ? PriceFilter.all
                           : PriceFilter.above10k,
                     ),
+                    isDark: isDark,
                   ),
                 ],
               ),
@@ -340,9 +350,9 @@ class _HomeScreenState extends State<HomeScreen> {
             // 5. Main Content: Map or List View
             Expanded(
               child: pgs.isEmpty
-                  ? _buildEmptyState(state)
+                  ? _buildEmptyState(state, isDark)
                   : state.isMapView
-                  ? _buildMapView(state, pgs)
+                  ? _buildMapView(state, pgs, isDark)
                   : _buildListView(state, pgs),
             ),
           ],
@@ -355,6 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
+    required bool isDark,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -362,17 +373,23 @@ class _HomeScreenState extends State<HomeScreen> {
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.navy : AppColors.paper,
+          color: isSelected
+              ? (isDark ? AppColors.marigold : AppColors.navy)
+              : context.appSurface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppColors.navy : AppColors.line,
+            color: isSelected
+                ? (isDark ? AppColors.marigold : AppColors.navy)
+                : context.appBorder,
           ),
           boxShadow: isSelected ? const [AppColors.softShadow] : null,
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : AppColors.inkSoft,
+            color: isSelected
+                ? (isDark ? AppColors.navy : Colors.white)
+                : (isDark ? Colors.white70 : AppColors.inkSoft),
             fontSize: 12,
             fontWeight: FontWeight.w600,
             fontFamily: 'Inter',
@@ -382,12 +399,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMapView(AppState state, List<PGModel> pgs) {
+  Widget _buildMapView(AppState state, List<PGModel> pgs, bool isDark) {
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
       decoration: BoxDecoration(
+        color: context.appSurface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.line),
+        border: Border.all(color: context.appBorder),
         boxShadow: const [AppColors.softShadow],
       ),
       clipBehavior: Clip.antiAlias,
@@ -439,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildEmptyState(AppState state) {
+  Widget _buildEmptyState(AppState state, bool isDark) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -450,7 +468,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: AppColors.marigold.withValues(alpha: 0.15),
+                color: AppColors.marigold.withAlpha(40),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -461,13 +479,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No PGs Found',
-              style: AppTypography.displaySmall(color: AppColors.ink),
+              state.tr('no_pgs_found'),
+              style: AppTypography.displaySmall(
+                color: isDark ? Colors.white : AppColors.ink,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Try changing your search query, price filter, or gender preference.',
-              style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+              state.tr('try_adjusting_filters'),
+              style: AppTypography.bodyMedium(
+                color: isDark ? Colors.white60 : AppColors.inkSoft,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -477,7 +499,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 state.clearFilters();
               },
               icon: const Icon(Icons.refresh_rounded, size: 16),
-              label: const Text('Clear All Filters'),
+              label: Text(state.tr('clear_filters')),
             ),
           ],
         ),

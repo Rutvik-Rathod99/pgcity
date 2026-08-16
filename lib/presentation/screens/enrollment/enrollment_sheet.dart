@@ -171,17 +171,23 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDark;
+
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.88,
       ),
       child: Scaffold(
-        backgroundColor: AppColors.cream,
+        backgroundColor: context.appBg,
         appBar: AppBar(
-          backgroundColor: AppColors.cream,
+          backgroundColor: context.appBg,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.close_rounded, size: 20),
+            icon: Icon(
+              Icons.close_rounded,
+              size: 20,
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           title: Column(
@@ -189,12 +195,16 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
             children: [
               Text(
                 'Enroll — ${widget.pg.name}',
-                style: AppTypography.titleSmall(color: AppColors.ink),
+                style: AppTypography.titleSmall(
+                  color: isDark ? Colors.white : AppColors.ink,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                 'Step 1 of 2 · Your Details',
-                style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                style: AppTypography.bodySmall(
+                  color: isDark ? Colors.white60 : AppColors.inkSoft,
+                ),
               ),
             ],
           ),
@@ -212,10 +222,10 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                 ),
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                  color: AppColors.tealLight,
+                  color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: AppColors.teal.withValues(alpha: 0.3),
+                    color: AppColors.teal.withAlpha(isDark ? 100 : 75),
                   ),
                 ),
                 child: Row(
@@ -230,7 +240,7 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                       child: Text(
                         'Details pre-filled from your saved profile.',
                         style: AppTypography.bodySmall(
-                          color: AppColors.teal,
+                          color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
                         ).copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -239,10 +249,13 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               ),
 
               // Full Name
-              _buildFieldLabel('Full Name'),
+              _buildFieldLabel('Full Name', isDark),
               TextFormField(
                 controller: _nameController,
-                style: const TextStyle(fontSize: 14, color: AppColors.ink),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: isDark ? Colors.white : AppColors.ink,
+                ),
                 validator: (val) =>
                     val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(hintText: 'Enter full name'),
@@ -250,11 +263,14 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               const SizedBox(height: 14),
 
               // Mobile Number
-              _buildFieldLabel('Mobile Number'),
+              _buildFieldLabel('Mobile Number', isDark),
               TextFormField(
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
-                style: const TextStyle(fontSize: 14, color: AppColors.ink),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: isDark ? Colors.white : AppColors.ink,
+                ),
                 validator: (val) =>
                     val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(hintText: '+91 XXXXX XXXXX'),
@@ -262,11 +278,14 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               const SizedBox(height: 14),
 
               // Email
-              _buildFieldLabel('Email Address'),
+              _buildFieldLabel('Email Address', isDark),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(fontSize: 14, color: AppColors.ink),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: isDark ? Colors.white : AppColors.ink,
+                ),
                 validator: (val) =>
                     val == null || val.isEmpty ? 'Required' : null,
                 decoration: const InputDecoration(
@@ -276,7 +295,7 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               const SizedBox(height: 14),
 
               // Gender Selector Chips
-              _buildFieldLabel('Gender'),
+              _buildFieldLabel('Gender', isDark),
               Row(
                 children: ['Male', 'Female', 'Other'].map((g) {
                   final isSel = _selectedGender == g;
@@ -302,13 +321,13 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildFieldLabel('Age'),
+                        _buildFieldLabel('Age', isDark),
                         TextFormField(
                           controller: _ageController,
                           keyboardType: TextInputType.number,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: AppColors.ink,
+                            color: isDark ? Colors.white : AppColors.ink,
                           ),
                           validator: (val) =>
                               val == null || val.isEmpty ? 'Required' : null,
@@ -323,7 +342,7 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildFieldLabel('Move-in Date'),
+                        _buildFieldLabel('Move-in Date', isDark),
                         InkWell(
                           onTap: _selectMoveInDate,
                           child: Container(
@@ -332,9 +351,9 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                               vertical: 12,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.paper,
+                              color: context.appSurface,
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.line),
+                              border: Border.all(color: context.appBorder),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -343,15 +362,15 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
                                   DateFormat(
                                     'dd MMM yyyy',
                                   ).format(_selectedMoveInDate),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 13,
-                                    color: AppColors.ink,
+                                    color: isDark ? Colors.white : AppColors.ink,
                                   ),
                                 ),
-                                const Icon(
+                                Icon(
                                   Icons.calendar_month_rounded,
                                   size: 18,
-                                  color: AppColors.inkSoft,
+                                  color: isDark ? Colors.white60 : AppColors.inkSoft,
                                 ),
                               ],
                             ),
@@ -365,7 +384,7 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               const SizedBox(height: 14),
 
               // Sharing Preference Chips
-              _buildFieldLabel('Preferred Sharing'),
+              _buildFieldLabel('Preferred Sharing', isDark),
               Row(
                 children: ['1 Sharing', '2 Sharing', '3 Sharing'].map((s) {
                   final isSel = _selectedSharing == s;
@@ -384,10 +403,13 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               const SizedBox(height: 14),
 
               // Occupation / College Name
-              _buildFieldLabel('Occupation / College Name'),
+              _buildFieldLabel('Occupation / College Name', isDark),
               TextFormField(
                 controller: _occupationController,
-                style: const TextStyle(fontSize: 14, color: AppColors.ink),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: isDark ? Colors.white : AppColors.ink,
+                ),
                 decoration: const InputDecoration(
                   hintText: 'e.g. CEPT University or TCS Gandhinagar',
                 ),
@@ -395,11 +417,14 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
               const SizedBox(height: 14),
 
               // Message (Optional)
-              _buildFieldLabel('Message for Property Manager (Optional)'),
+              _buildFieldLabel('Message for Property Manager (Optional)', isDark),
               TextFormField(
                 controller: _messageController,
                 maxLines: 3,
-                style: const TextStyle(fontSize: 14, color: AppColors.ink),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: isDark ? Colors.white : AppColors.ink,
+                ),
                 decoration: const InputDecoration(
                   hintText: 'Any special requirements or dietary preferences?',
                 ),
@@ -414,9 +439,9 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
             20,
             MediaQuery.of(context).padding.bottom + 12,
           ),
-          decoration: const BoxDecoration(
-            color: AppColors.paper,
-            border: Border(top: BorderSide(color: AppColors.line)),
+          decoration: BoxDecoration(
+            color: context.appSurface,
+            border: Border(top: BorderSide(color: context.appBorder)),
           ),
           child: SizedBox(
             width: double.infinity,
@@ -433,12 +458,14 @@ class _EnrollmentSheetState extends State<EnrollmentSheet> {
     );
   }
 
-  Widget _buildFieldLabel(String label) {
+  Widget _buildFieldLabel(String label, bool isDark) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Text(
         label,
-        style: AppTypography.monoLabel(color: AppColors.inkSoft),
+        style: AppTypography.monoLabel(
+          color: isDark ? Colors.white70 : AppColors.inkSoft,
+        ),
       ),
     );
   }

@@ -17,11 +17,17 @@ class NotificationSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDark;
+
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.75,
       ),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+      decoration: BoxDecoration(
+        color: context.appSurface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +38,7 @@ class NotificationSheet extends StatelessWidget {
               width: 36,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.line,
+                color: context.appBorder,
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
@@ -44,7 +50,9 @@ class NotificationSheet extends StatelessWidget {
             children: [
               Text(
                 'Notifications',
-                style: AppTypography.displaySmall(color: AppColors.ink),
+                style: AppTypography.displaySmall(
+                  color: isDark ? Colors.white : AppColors.ink,
+                ),
               ),
               if (notifications.any((n) => !n.isRead))
                 TextButton(
@@ -66,15 +74,17 @@ class NotificationSheet extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.notifications_none_rounded,
                       size: 40,
-                      color: AppColors.inkSoft,
+                      color: isDark ? Colors.white38 : AppColors.inkSoft,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'No notifications yet',
-                      style: AppTypography.titleSmall(color: AppColors.inkSoft),
+                      style: AppTypography.titleSmall(
+                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                      ),
                     ),
                   ],
                 ),
@@ -95,11 +105,11 @@ class NotificationSheet extends StatelessWidget {
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: notif.isRead
-                            ? AppColors.paper
-                            : AppColors.tealLight.withValues(alpha: 0.5),
+                            ? (isDark ? const Color(0xFF1E293B) : AppColors.paper)
+                            : (isDark ? const Color(0xFF0F3934) : AppColors.tealLight.withAlpha(120)),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: notif.isRead ? AppColors.line : AppColors.teal,
+                          color: notif.isRead ? context.appBorder : AppColors.teal,
                           width: notif.isRead ? 1 : 1.2,
                         ),
                       ),
@@ -110,7 +120,7 @@ class NotificationSheet extends StatelessWidget {
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: notif.isRead
-                                  ? AppColors.cream
+                                  ? (isDark ? const Color(0xFF334155) : AppColors.cream)
                                   : AppColors.teal,
                               shape: BoxShape.circle,
                             ),
@@ -118,7 +128,7 @@ class NotificationSheet extends StatelessWidget {
                               _getIconForType(notif.type),
                               size: 16,
                               color: notif.isRead
-                                  ? AppColors.ink
+                                  ? (isDark ? Colors.white70 : AppColors.ink)
                                   : Colors.white,
                             ),
                           ),
@@ -130,21 +140,21 @@ class NotificationSheet extends StatelessWidget {
                                 Text(
                                   notif.title,
                                   style: AppTypography.titleSmall(
-                                    color: AppColors.ink,
+                                    color: isDark ? Colors.white : AppColors.ink,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   notif.message,
                                   style: AppTypography.bodySmall(
-                                    color: AppColors.inkSoft,
+                                    color: isDark ? Colors.white70 : AppColors.inkSoft,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   _formatTimeAgo(notif.createdAt),
                                   style: AppTypography.monoLabel(
-                                    color: AppColors.inkSoft,
+                                    color: isDark ? Colors.white38 : AppColors.inkSoft,
                                   ).copyWith(fontSize: 9),
                                 ),
                               ],

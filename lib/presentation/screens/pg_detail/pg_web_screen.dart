@@ -51,7 +51,7 @@ class PGWebScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.paper,
+      backgroundColor: context.appSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -63,7 +63,7 @@ class PGWebScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -73,17 +73,17 @@ class PGWebScreen extends StatelessWidget {
 
   void _sharePG(BuildContext context) {
     final link = 'https://pgcity.app/pg/${pg.id}';
+    final isDark = context.isDark;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppColors.paper,
+        backgroundColor: context.appSurface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Row(
-          children: [
-            const Icon(Icons.share_rounded, color: AppColors.teal, size: 22),
-            const SizedBox(width: 8),
-            Text('Share ${pg.name}', style: AppTypography.titleMedium()),
-          ],
+        title: Text(
+          'Share PG Deep Link',
+          style: AppTypography.displaySmall(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -156,9 +156,10 @@ class PGWebScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLiked = appState.isPGLiked(pg.id);
     final isUnlocked = appState.isPGUnlocked(pg.id);
+    final isDark = context.isDark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appBg,
       body: Stack(
         children: [
           // Scrollable 14-Section Dedicated Mini-Website Body
@@ -173,7 +174,7 @@ class PGWebScreen extends StatelessWidget {
                 leading: Container(
                   margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.4),
+                    color: Colors.black.withAlpha(100),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
@@ -189,7 +190,7 @@ class PGWebScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.4),
+                      color: Colors.black.withAlpha(100),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -204,7 +205,7 @@ class PGWebScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.fromLTRB(8, 8, 16, 8),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.4),
+                      color: Colors.black.withAlpha(100),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -237,8 +238,8 @@ class PGWebScreen extends StatelessWidget {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              Colors.black.withValues(alpha: 0.3),
-                              AppColors.navy.withValues(alpha: 0.95),
+                              Colors.black.withAlpha(80),
+                              AppColors.navy.withAlpha(240),
                             ],
                           ),
                         ),
@@ -341,67 +342,60 @@ class PGWebScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(18),
                           margin: const EdgeInsets.only(bottom: 12),
                           decoration: BoxDecoration(
-                            color: AppColors.navy,
+                            color: isDark ? const Color(0xFF1E293B) : AppColors.navy,
                             borderRadius: BorderRadius.circular(16),
+                            border: isDark ? Border.all(color: context.appBorder) : null,
                             boxShadow: const [AppColors.softShadow],
                           ),
                           child: Stack(
                             children: [
                               Positioned(
-                                top: 0,
-                                left: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 3,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.marigold,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Text(
-                                    '360° TOUR',
-                                    style: AppTypography.monoBadge(
-                                      color: AppColors.navy,
-                                    ),
-                                  ),
+                                right: -10,
+                                bottom: -10,
+                                child: Icon(
+                                  Icons.view_in_ar_rounded,
+                                  size: 80,
+                                  color: Colors.white.withAlpha(20),
                                 ),
                               ),
-                              Center(
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 12),
-                                    Container(
-                                      width: 48,
-                                      height: 48,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.15,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 3,
                                         ),
-                                        shape: BoxShape.circle,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.marigold,
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          'INTERACTIVE 360°',
+                                          style: AppTypography.monoBadge(
+                                            color: AppColors.navy,
+                                          ).copyWith(fontSize: 9),
+                                        ),
                                       ),
-                                      child: const Icon(
-                                        Icons.explore_rounded,
-                                        color: AppColors.marigold,
-                                        size: 26,
-                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    appState.tr('virtual_tour'),
+                                    style: AppTypography.displaySmall(
+                                      color: Colors.white,
                                     ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Explore PG in 360° Virtual Reality',
-                                      style: AppTypography.titleMedium(
-                                        color: Colors.white,
-                                      ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Inspect bedroom, attached bath & common kitchen with 3D gyroscopic panoramic view.',
+                                    style: AppTypography.bodySmall(
+                                      color: Colors.white70,
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'Interact, rotate, and tour bedrooms, dining & study hall',
-                                      style: AppTypography.bodySmall(
-                                        color: Colors.white70,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -415,9 +409,9 @@ class PGWebScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(14),
                           margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
-                            color: AppColors.paper,
+                            color: context.appSurface,
                             borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: AppColors.line),
+                            border: Border.all(color: context.appBorder),
                             boxShadow: const [AppColors.softShadow],
                           ),
                           child: Row(
@@ -426,7 +420,7 @@ class PGWebScreen extends StatelessWidget {
                                 width: 44,
                                 height: 44,
                                 decoration: BoxDecoration(
-                                  color: AppColors.tealLight,
+                                  color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: const Icon(
@@ -443,14 +437,14 @@ class PGWebScreen extends StatelessWidget {
                                     Text(
                                       'Take a Video Tour',
                                       style: AppTypography.titleSmall(
-                                        color: AppColors.ink,
+                                        color: isDark ? Colors.white : AppColors.ink,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       pg.youtubeVideoTitle,
                                       style: AppTypography.bodySmall(
-                                        color: AppColors.inkSoft,
+                                        color: isDark ? Colors.white60 : AppColors.inkSoft,
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -458,10 +452,10 @@ class PGWebScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 14,
-                                color: AppColors.inkSoft,
+                                color: isDark ? Colors.white60 : AppColors.inkSoft,
                               ),
                             ],
                           ),
@@ -471,7 +465,9 @@ class PGWebScreen extends StatelessWidget {
                       // 4. Quick Details Grid (PRD Section 12.5)
                       Text(
                         'Quick details',
-                        style: AppTypography.titleLarge(color: AppColors.ink),
+                        style: AppTypography.titleLarge(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       GridView.count(
@@ -483,17 +479,41 @@ class PGWebScreen extends StatelessWidget {
                         childAspectRatio: 2.2,
                         children: [
                           _buildDetailBox(
-                            'Monthly Rent',
+                            context,
+                            appState.tr('monthly_rent'),
                             CurrencyFormatter.format(pg.monthlyRent),
+                            isDark,
                           ),
                           _buildDetailBox(
-                            'Security Deposit',
+                            context,
+                            appState.tr('security_deposit'),
                             CurrencyFormatter.format(pg.securityDeposit),
+                            isDark,
                           ),
-                          _buildDetailBox('Sharing Options', pg.sharingType),
-                          _buildDetailBox('Minimum Stay', pg.minimumStay),
-                          _buildDetailBox('Food Options', pg.foodOption),
-                          _buildDetailBox('Electricity', pg.electricityOption),
+                          _buildDetailBox(
+                            context,
+                            appState.tr('sharing_options'),
+                            pg.sharingType,
+                            isDark,
+                          ),
+                          _buildDetailBox(
+                            context,
+                            'Minimum Stay',
+                            pg.minimumStay,
+                            isDark,
+                          ),
+                          _buildDetailBox(
+                            context,
+                            appState.tr('food_kitchen'),
+                            pg.foodOption,
+                            isDark,
+                          ),
+                          _buildDetailBox(
+                            context,
+                            'Electricity',
+                            pg.electricityOption,
+                            isDark,
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -501,21 +521,25 @@ class PGWebScreen extends StatelessWidget {
                       // 5. About Description (PRD Section 12.6)
                       Text(
                         'About this PG',
-                        style: AppTypography.titleLarge(color: AppColors.ink),
+                        style: AppTypography.titleLarge(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         pg.description,
                         style: AppTypography.bodyLarge(
-                          color: AppColors.inkSoft,
+                          color: isDark ? Colors.white70 : AppColors.inkSoft,
                         ),
                       ),
                       const SizedBox(height: 20),
 
                       // 6. Amenities (PRD Section 12.7)
                       Text(
-                        'Amenities',
-                        style: AppTypography.titleLarge(color: AppColors.ink),
+                        appState.tr('amenities'),
+                        style: AppTypography.titleLarge(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Wrap(
@@ -528,9 +552,9 @@ class PGWebScreen extends StatelessWidget {
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.paper,
+                              color: context.appSurface,
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: AppColors.line),
+                              border: Border.all(color: context.appBorder),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -544,7 +568,7 @@ class PGWebScreen extends StatelessWidget {
                                 Text(
                                   amenity,
                                   style: AppTypography.titleSmall(
-                                    color: AppColors.ink,
+                                    color: isDark ? Colors.white : AppColors.ink,
                                   ).copyWith(fontSize: 12),
                                 ),
                               ],
@@ -556,16 +580,18 @@ class PGWebScreen extends StatelessWidget {
 
                       // 7. PG Rules (PRD Section 12.8)
                       Text(
-                        'House Rules',
-                        style: AppTypography.titleLarge(color: AppColors.ink),
+                        appState.tr('house_rules'),
+                        style: AppTypography.titleLarge(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: AppColors.paper,
+                          color: context.appSurface,
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColors.line),
+                          border: Border.all(color: context.appBorder),
                         ),
                         child: Column(
                           children: pg.rules.map((rule) {
@@ -584,7 +610,7 @@ class PGWebScreen extends StatelessWidget {
                                     child: Text(
                                       rule,
                                       style: AppTypography.bodyMedium(
-                                        color: AppColors.ink,
+                                        color: isDark ? Colors.white : AppColors.ink,
                                       ),
                                     ),
                                   ),
@@ -603,7 +629,7 @@ class PGWebScreen extends StatelessWidget {
                           Text(
                             'Location',
                             style: AppTypography.titleLarge(
-                              color: AppColors.ink,
+                              color: isDark ? Colors.white : AppColors.ink,
                             ),
                           ),
                           TextButton.icon(
@@ -626,7 +652,7 @@ class PGWebScreen extends StatelessWidget {
                       Text(
                         pg.address,
                         style: AppTypography.bodyMedium(
-                          color: AppColors.inkSoft,
+                          color: isDark ? Colors.white60 : AppColors.inkSoft,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -634,17 +660,17 @@ class PGWebScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: AppColors.paper,
+                          color: context.appSurface,
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColors.line),
+                          border: Border.all(color: context.appBorder),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Nearby Landmarks',
+                              appState.tr('near_landmarks'),
                               style: AppTypography.monoLabel(
-                                color: AppColors.teal,
+                                color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -659,16 +685,16 @@ class PGWebScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(
+                                        Icon(
                                           Icons.place_outlined,
                                           size: 14,
-                                          color: AppColors.inkSoft,
+                                          color: isDark ? Colors.white60 : AppColors.inkSoft,
                                         ),
                                         const SizedBox(width: 6),
                                         Text(
                                           l.name,
                                           style: AppTypography.titleSmall(
-                                            color: AppColors.ink,
+                                            color: isDark ? Colors.white : AppColors.ink,
                                           ),
                                         ),
                                       ],
@@ -676,7 +702,7 @@ class PGWebScreen extends StatelessWidget {
                                     Text(
                                       l.distance,
                                       style: AppTypography.monoPrice(
-                                        color: AppColors.teal,
+                                        color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
                                       ).copyWith(fontSize: 12),
                                     ),
                                   ],
@@ -694,7 +720,7 @@ class PGWebScreen extends StatelessWidget {
                           Text(
                             'Photos (${pg.photos.length})',
                             style: AppTypography.titleLarge(
-                              color: AppColors.ink,
+                              color: isDark ? Colors.white : AppColors.ink,
                             ),
                           ),
                           TextButton(
@@ -742,9 +768,9 @@ class PGWebScreen extends StatelessWidget {
                             vertical: 10,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.paper,
+                            color: context.appSurface,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.line),
+                            border: Border.all(color: context.appBorder),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -755,14 +781,14 @@ class PGWebScreen extends StatelessWidget {
                                     : Icons.favorite_border_rounded,
                                 color: isLiked
                                     ? AppColors.likedRed
-                                    : AppColors.inkSoft,
+                                    : (isDark ? Colors.white60 : AppColors.inkSoft),
                                 size: 18,
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 '${pg.likesCount} seekers liked this property',
                                 style: AppTypography.bodySmall(
-                                  color: AppColors.inkSoft,
+                                  color: isDark ? Colors.white60 : AppColors.inkSoft,
                                 ),
                               ),
                             ],
@@ -789,8 +815,8 @@ class PGWebScreen extends StatelessWidget {
                 MediaQuery.of(context).padding.bottom + 10,
               ),
               decoration: BoxDecoration(
-                color: AppColors.paper,
-                border: const Border(top: BorderSide(color: AppColors.line)),
+                color: context.appSurface,
+                border: Border(top: BorderSide(color: context.appBorder)),
                 boxShadow: const [AppColors.cardShadow],
               ),
               child: Row(
@@ -805,16 +831,24 @@ class PGWebScreen extends StatelessWidget {
                             ? Icons.phone_enabled_rounded
                             : Icons.phone_rounded,
                         size: 16,
-                        color: isUnlocked ? AppColors.teal : AppColors.navy,
+                        color: isUnlocked
+                            ? AppColors.teal
+                            : (isDark ? AppColors.marigold : AppColors.navy),
                       ),
-                      label: Text(isUnlocked ? 'Call PG' : 'View Contact'),
+                      label: Text(
+                        isUnlocked
+                            ? appState.tr('call_now')
+                            : appState.tr('contact_owner'),
+                      ),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 13),
                         foregroundColor: isUnlocked
                             ? AppColors.teal
-                            : AppColors.navy,
+                            : (isDark ? AppColors.marigold : AppColors.navy),
                         side: BorderSide(
-                          color: isUnlocked ? AppColors.teal : AppColors.navy,
+                          color: isUnlocked
+                              ? AppColors.teal
+                              : (isDark ? AppColors.marigold : AppColors.navy),
                           width: 1.5,
                         ),
                       ),
@@ -829,7 +863,7 @@ class PGWebScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 13),
                       ),
-                      child: const Text('Enroll Now'),
+                      child: Text(appState.tr('enroll_now')),
                     ),
                   ),
                 ],
@@ -841,13 +875,18 @@ class PGWebScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailBox(String label, String value) {
+  Widget _buildDetailBox(
+    BuildContext context,
+    String label,
+    String value,
+    bool isDark,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.paper,
+        color: context.appSurface,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.line),
+        border: Border.all(color: context.appBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -856,7 +895,7 @@ class PGWebScreen extends StatelessWidget {
           Text(
             label,
             style: AppTypography.monoLabel(
-              color: AppColors.teal,
+              color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
             ).copyWith(fontSize: 10),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -864,7 +903,9 @@ class PGWebScreen extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             value,
-            style: AppTypography.titleSmall(color: AppColors.ink),
+            style: AppTypography.titleSmall(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

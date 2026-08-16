@@ -47,6 +47,8 @@ class CitySelectorSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDark;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       child: Column(
@@ -59,7 +61,7 @@ class CitySelectorSheet extends StatelessWidget {
               width: 36,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.line,
+                color: context.appBorder,
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
@@ -68,12 +70,16 @@ class CitySelectorSheet extends StatelessWidget {
 
           Text(
             'Select Discovery City',
-            style: AppTypography.displaySmall(color: AppColors.ink),
+            style: AppTypography.displaySmall(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             'PGCity is currently live across major student & corporate hubs in Ahmedabad.',
-            style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+            style: AppTypography.bodyMedium(
+              color: isDark ? Colors.white60 : AppColors.inkSoft,
+            ),
           ),
           const SizedBox(height: 18),
 
@@ -94,13 +100,13 @@ class CitySelectorSheet extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 8),
                 decoration: BoxDecoration(
                   color: currentCity == c['name']
-                      ? AppColors.tealLight
-                      : AppColors.paper,
+                      ? (isDark ? const Color(0xFF0F3934) : AppColors.tealLight)
+                      : context.appSurface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: currentCity == c['name']
                         ? AppColors.teal
-                        : AppColors.line,
+                        : context.appBorder,
                     width: currentCity == c['name'] ? 1.5 : 1,
                   ),
                 ),
@@ -111,7 +117,7 @@ class CitySelectorSheet extends StatelessWidget {
                       size: 20,
                       color: currentCity == c['name']
                           ? AppColors.teal
-                          : AppColors.inkSoft,
+                          : (isDark ? Colors.white60 : AppColors.inkSoft),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -122,18 +128,18 @@ class CitySelectorSheet extends StatelessWidget {
                             c['name'] as String,
                             style: AppTypography.titleSmall(
                               color: currentCity == c['name']
-                                  ? AppColors.navy
+                                  ? (isDark ? const Color(0xFF38BDF8) : AppColors.navy)
                                   : (c['isAvailable'] as bool
-                                        ? AppColors.ink
-                                        : AppColors.inkSoft),
+                                        ? (isDark ? Colors.white : AppColors.ink)
+                                        : (isDark ? Colors.white38 : AppColors.inkSoft)),
                             ),
                           ),
                           Text(
                             c['localityCount'] as String,
                             style: AppTypography.bodySmall(
                               color: currentCity == c['name']
-                                  ? AppColors.teal
-                                  : AppColors.inkSoft,
+                                  ? (isDark ? const Color(0xFF38BDF8) : AppColors.teal)
+                                  : (isDark ? Colors.white60 : AppColors.inkSoft),
                             ),
                           ),
                         ],
@@ -152,13 +158,13 @@ class CitySelectorSheet extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.line,
+                          color: isDark ? const Color(0xFF334155) : AppColors.line,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           'EXPANDING',
                           style: AppTypography.monoBadge(
-                            color: AppColors.inkSoft,
+                            color: isDark ? Colors.white70 : AppColors.inkSoft,
                           ).copyWith(fontSize: 8),
                         ),
                       ),

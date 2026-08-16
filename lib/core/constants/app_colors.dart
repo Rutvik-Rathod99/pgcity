@@ -12,11 +12,19 @@ class AppColors {
   static const Color teal = Color(0xFF2C6E63);
   static const Color tealLight = Color(0xFFE4EFEA);
 
-  // Typography & Neutral
+  // Typography & Neutral (Light Mode)
   static const Color ink = Color(0xFF1A2229);
   static const Color inkSoft = Color(0xFF5B6672);
   static const Color line = Color(0xFFE1D8C4);
   static const Color lineDark = Color(0xFF33475A);
+
+  // Dark Mode Slate Core
+  static const Color darkBg = Color(0xFF0F172A);
+  static const Color darkSurface = Color(0xFF1E293B);
+  static const Color darkSurfaceAlt = Color(0xFF111827);
+  static const Color darkBorder = Color(0xFF334155);
+  static const Color darkText = Color(0xFFF8FAFC);
+  static const Color darkSubtext = Color(0xFF94A3B8);
 
   // Status & Feedback
   static const Color success = Color(0xFF2C6E63);
@@ -32,6 +40,28 @@ class AppColors {
   static const Color mapRoad = Color(0xFFEFE9D8);
   static const Color mapBlock = Color(0xFFD7CFAE);
   static const Color mapPark = Color(0xFFCFE0D4);
+
+  // Dynamic Theme Helpers
+  static bool isDark(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
+
+  static Color bg(BuildContext context) =>
+      isDark(context) ? darkBg : cream;
+
+  static Color surface(BuildContext context) =>
+      isDark(context) ? darkSurface : paper;
+
+  static Color surfaceAlt(BuildContext context) =>
+      isDark(context) ? darkSurfaceAlt : cream;
+
+  static Color text(BuildContext context) =>
+      isDark(context) ? darkText : ink;
+
+  static Color subtext(BuildContext context) =>
+      isDark(context) ? darkSubtext : inkSoft;
+
+  static Color border(BuildContext context) =>
+      isDark(context) ? darkBorder : line;
 
   // Shadows
   static const BoxShadow softShadow = BoxShadow(
@@ -51,4 +81,14 @@ class AppColors {
     blurRadius: 8,
     offset: Offset(0, 3),
   );
+}
+
+extension AppThemeContextExtension on BuildContext {
+  bool get isDark => Theme.of(this).brightness == Brightness.dark;
+  Color get appBg => isDark ? AppColors.darkBg : AppColors.cream;
+  Color get appSurface => isDark ? AppColors.darkSurface : AppColors.paper;
+  Color get appSurfaceAlt => isDark ? AppColors.darkSurfaceAlt : AppColors.cream;
+  Color get appBorder => isDark ? AppColors.darkBorder : AppColors.line;
+  Color get appText => isDark ? AppColors.darkText : AppColors.ink;
+  Color get appSubtext => isDark ? AppColors.darkSubtext : AppColors.inkSoft;
 }

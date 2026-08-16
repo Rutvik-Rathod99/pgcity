@@ -23,9 +23,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       listenable: widget.appState,
       builder: (context, _) {
         if (widget.appState.isLoading) {
-          return const Scaffold(
-            backgroundColor: AppColors.cream,
-            body: Center(
+          return Scaffold(
+            backgroundColor: context.appBg,
+            body: const Center(
               child: CircularProgressIndicator(color: AppColors.marigold),
             ),
           );
@@ -37,12 +37,24 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ProfileScreen(appState: widget.appState),
         ];
 
+        final isDark = context.isDark;
+
         return Scaffold(
+          backgroundColor: context.appBg,
           body: IndexedStack(index: _currentIndex, children: screens),
           bottomNavigationBar: Container(
-            decoration: const BoxDecoration(
-              color: AppColors.paper,
-              border: Border(top: BorderSide(color: AppColors.line)),
+            decoration: BoxDecoration(
+              color: context.appSurface,
+              border: Border(top: BorderSide(color: context.appBorder)),
+              boxShadow: [
+                BoxShadow(
+                  color: isDark
+                      ? Colors.black.withAlpha(80)
+                      : const Color.fromRGBO(20, 31, 41, 0.08),
+                  blurRadius: 16,
+                  offset: const Offset(0, -2),
+                ),
+              ],
             ),
             padding: EdgeInsets.fromLTRB(
               16,
@@ -59,20 +71,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   index: 0,
                   icon: Icons.explore_outlined,
                   activeIcon: Icons.explore_rounded,
-                  label: 'Home',
+                  label: widget.appState.tr('nav_home'),
                 ),
                 _buildNavItem(
                   index: 1,
                   icon: Icons.favorite_border_rounded,
                   activeIcon: Icons.favorite_rounded,
-                  label: 'Liked',
+                  label: widget.appState.tr('nav_liked'),
                   badgeCount: widget.appState.likedPGs.length,
                 ),
                 _buildNavItem(
                   index: 2,
                   icon: Icons.person_outline_rounded,
                   activeIcon: Icons.person_rounded,
-                  label: 'Profile',
+                  label: widget.appState.tr('nav_profile'),
                   badgeCount: widget.appState.enrollments.length,
                 ),
               ],
@@ -91,6 +103,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     int? badgeCount,
   }) {
     final isSelected = _currentIndex == index;
+    final isDark = context.isDark;
 
     return GestureDetector(
       onTap: () => setState(() => _currentIndex = index),
@@ -105,12 +118,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               children: [
                 Icon(
                   isSelected ? activeIcon : icon,
-                  size: 22,
+                  size: 24,
                   color: isSelected
-                      ? AppColors.marigoldDark
-                      : AppColors.inkSoft,
+                      ? (isDark ? AppColors.marigold : AppColors.navy)
+                      : (isDark ? Colors.white54 : AppColors.inkSoft),
                 ),
-                if (badgeCount != null && badgeCount > 0 && index == 1)
+                if (badgeCount != null && badgeCount > 0)
                   Positioned(
                     right: -8,
                     top: -4,
@@ -120,25 +133,34 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                         color: AppColors.marigold,
                         shape: BoxShape.circle,
                       ),
-                      child: Text(
-                        '$badgeCount',
-                        style: const TextStyle(
-                          fontSize: 8,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.navy,
+                      constraints: const BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Center(
+                        child: Text(
+                          badgeCount > 9 ? '9+' : '$badgeCount',
+                          style: const TextStyle(
+                            color: AppColors.navy,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Inter',
+                          ),
                         ),
                       ),
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 3),
+            const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                color: isSelected ? AppColors.marigoldDark : AppColors.inkSoft,
+                color: isSelected
+                    ? (isDark ? AppColors.marigold : AppColors.navy)
+                    : (isDark ? Colors.white54 : AppColors.inkSoft),
                 fontFamily: 'Inter',
               ),
             ),

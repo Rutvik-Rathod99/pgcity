@@ -52,13 +52,20 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   }
 
   void _confirmDeletePG(PGModel pg) {
+    final isDark = context.isDark;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppColors.paper,
-        title: Text('Delete ${pg.name}?', style: AppTypography.titleMedium()),
-        content: const Text(
+        backgroundColor: context.appSurface,
+        title: Text(
+          'Delete ${pg.name}?',
+          style: AppTypography.titleMedium(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
+        ),
+        content: Text(
           'This property will be permanently removed from PGCity.',
+          style: TextStyle(color: isDark ? Colors.white70 : AppColors.inkSoft),
         ),
         actions: [
           TextButton(
@@ -69,6 +76,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             onPressed: () {
               Navigator.pop(context);
               widget.appState.adminDeletePG(pg.id);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${pg.name} deleted'),
+                  backgroundColor: AppColors.error,
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
             child: const Text('Delete'),
@@ -80,15 +93,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
 
   void _updateLeadStatus(EnrollmentModel lead, EnrollmentStatus newStatus) {
     final noteController = TextEditingController();
+    final isDark = context.isDark;
 
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppColors.paper,
+        backgroundColor: context.appSurface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Update Lead to ${newStatus.label}',
-          style: AppTypography.titleMedium(),
+          style: AppTypography.titleMedium(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -96,11 +112,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           children: [
             Text(
               'Applicant: ${lead.applicantName}\nProperty: ${lead.pgName}\nSharing: ${lead.sharingType}',
-              style: AppTypography.bodySmall(),
+              style: AppTypography.bodySmall(
+                color: isDark ? Colors.white70 : AppColors.inkSoft,
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: noteController,
+              style: TextStyle(color: isDark ? Colors.white : AppColors.ink),
               decoration: const InputDecoration(
                 hintText: 'Add an optional note or confirmation code',
               ),
@@ -139,6 +158,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     final state = widget.appState;
     final allPGs = state.allPGs;
     final enrollments = state.enrollments;
+    final isDark = context.isDark;
 
     // Metrics calculations
     final totalViews = allPGs.fold<int>(0, (sum, pg) => sum + pg.viewsCount);
@@ -149,9 +169,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     final totalLikes = allPGs.fold<int>(0, (sum, pg) => sum + pg.likesCount);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appBg,
       appBar: AppBar(
-        backgroundColor: AppColors.navy,
+        backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.navy,
         foregroundColor: Colors.white,
         title: Row(
           children: [
@@ -194,7 +214,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           // KPI Metric Bar (PRD Section 20.1)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            color: AppColors.navy2,
+            color: isDark ? const Color(0xFF1E293B) : AppColors.navy2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -212,10 +232,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
               controller: _tabController,
               children: [
                 // Tab 1: PGs Management
-                _buildPGsList(allPGs),
+                _buildPGsList(allPGs, isDark),
 
                 // Tab 2: Leads Management
-                _buildLeadsList(enrollments),
+                _buildLeadsList(enrollments, isDark),
               ],
             ),
           ),
@@ -244,7 +264,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     );
   }
 
-  Widget _buildPGsList(List<PGModel> pgs) {
+  Widget _buildPGsList(List<PGModel> pgs, bool isDark) {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: pgs.length,
@@ -254,9 +274,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         return Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppColors.paper,
+            color: context.appSurface,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.line),
+            border: Border.all(color: context.appBorder),
             boxShadow: const [AppColors.softShadow],
           ),
           child: Column(
@@ -274,7 +294,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       errorBuilder: (_, _, _) => Container(
                         width: 60,
                         height: 60,
-                        color: AppColors.cream,
+                        color: isDark ? const Color(0xFF334155) : AppColors.cream,
                         child: const Icon(Icons.apartment_rounded),
                       ),
                     ),
@@ -290,7 +310,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               child: Text(
                                 pg.name,
                                 style: AppTypography.titleMedium(
-                                  color: AppColors.ink,
+                                  color: isDark ? Colors.white : AppColors.ink,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -306,7 +326,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         Text(
                           '${pg.type.label} · ${pg.locality}',
                           style: AppTypography.bodySmall(
-                            color: AppColors.inkSoft,
+                            color: isDark ? Colors.white60 : AppColors.inkSoft,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -318,19 +338,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color:
-                                    pg.verificationStatus ==
-                                        PGVerificationStatus.published
-                                    ? AppColors.tealLight
-                                    : AppColors.warningLight,
+                                color: pg.verificationStatus == PGVerificationStatus.published
+                                    ? (isDark ? const Color(0xFF0F3934) : AppColors.tealLight)
+                                    : (isDark ? const Color(0xFF422006) : AppColors.warningLight),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
                                 pg.verificationStatus.label.toUpperCase(),
                                 style: AppTypography.monoBadge(
-                                  color:
-                                      pg.verificationStatus ==
-                                          PGVerificationStatus.published
+                                  color: pg.verificationStatus == PGVerificationStatus.published
                                       ? AppColors.teal
                                       : AppColors.warning,
                                 ).copyWith(fontSize: 8),
@@ -340,7 +356,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                             Text(
                               CurrencyFormatter.format(pg.monthlyRent),
                               style: AppTypography.monoPrice(
-                                color: AppColors.teal,
+                                color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
                               ).copyWith(fontSize: 12),
                             ),
                           ],
@@ -351,23 +367,23 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 ],
               ),
               const SizedBox(height: 10),
-              const Divider(color: AppColors.line),
+              Divider(color: context.appBorder),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '👁 ${pg.viewsCount} views · 📞 ${pg.contactUnlocksCount} unlocks · 📝 ${pg.enrollmentsCount} leads',
                     style: AppTypography.monoBadge(
-                      color: AppColors.inkSoft,
+                      color: isDark ? Colors.white60 : AppColors.inkSoft,
                     ).copyWith(fontSize: 10),
                   ),
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.edit_outlined,
                           size: 18,
-                          color: AppColors.navy,
+                          color: isDark ? Colors.white : AppColors.navy,
                         ),
                         tooltip: 'Edit Listing',
                         onPressed: () => _openEditPG(pg),
@@ -392,12 +408,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     );
   }
 
-  Widget _buildLeadsList(List<EnrollmentModel> leads) {
+  Widget _buildLeadsList(List<EnrollmentModel> leads, bool isDark) {
     if (leads.isEmpty) {
       return Center(
         child: Text(
           'No enrollment leads received yet.',
-          style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+          style: AppTypography.bodyMedium(
+            color: isDark ? Colors.white60 : AppColors.inkSoft,
+          ),
         ),
       );
     }
@@ -411,9 +429,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         return Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.paper,
+            color: context.appSurface,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.line),
+            border: Border.all(color: context.appBorder),
             boxShadow: const [AppColors.softShadow],
           ),
           child: Column(
@@ -429,13 +447,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         Text(
                           lead.applicantName,
                           style: AppTypography.titleMedium(
-                            color: AppColors.ink,
+                            color: isDark ? Colors.white : AppColors.ink,
                           ),
                         ),
                         Text(
                           '${lead.applicantPhone} · ${lead.applicantEmail}',
                           style: AppTypography.bodySmall(
-                            color: AppColors.inkSoft,
+                            color: isDark ? Colors.white60 : AppColors.inkSoft,
                           ),
                         ),
                       ],
@@ -447,7 +465,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: _getStatusBg(lead.status),
+                      color: _getStatusBg(lead.status, isDark),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
@@ -463,20 +481,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppColors.cream,
+                  color: isDark ? const Color(0xFF0F172A) : AppColors.cream,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
                   children: [
-                    _buildLeadDetailRow('Property', lead.pgName),
-                    _buildLeadDetailRow('Sharing Type', lead.sharingType),
+                    _buildLeadDetailRow('Property', lead.pgName, isDark),
+                    _buildLeadDetailRow('Sharing Type', lead.sharingType, isDark),
                     _buildLeadDetailRow(
                       'Move-in Date',
                       DateFormat('dd MMM yyyy').format(lead.moveInDate),
+                      isDark,
                     ),
-                    _buildLeadDetailRow('Occupation', lead.occupation),
+                    _buildLeadDetailRow('Occupation', lead.occupation, isDark),
                     if (lead.message.isNotEmpty)
-                      _buildLeadDetailRow('Message', lead.message),
+                      _buildLeadDetailRow('Message', lead.message, isDark),
                   ],
                 ),
               ),
@@ -521,20 +540,30 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     );
   }
 
-  Widget _buildLeadDetailRow(String label, String value) {
+  Widget _buildLeadDetailRow(String label, String value, bool isDark) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTypography.bodySmall(color: AppColors.inkSoft)),
-          Text(value, style: AppTypography.titleSmall(color: AppColors.ink)),
+          Text(
+            label,
+            style: AppTypography.bodySmall(
+              color: isDark ? Colors.white60 : AppColors.inkSoft,
+            ),
+          ),
+          Text(
+            value,
+            style: AppTypography.titleSmall(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Color _getStatusBg(EnrollmentStatus status) {
+  Color _getStatusBg(EnrollmentStatus status, bool isDark) {
     switch (status) {
       case EnrollmentStatus.underReview:
         return AppColors.marigold;
@@ -544,7 +573,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       case EnrollmentStatus.cancelled:
         return AppColors.error;
       case EnrollmentStatus.submitted:
-        return AppColors.tealLight;
+        return isDark ? const Color(0xFF0F3934) : AppColors.tealLight;
     }
   }
 

@@ -13,15 +13,18 @@ class LikedPGsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final liked = appState.likedPGs;
+    final isDark = context.isDark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appBg,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: context.appBg,
         elevation: 0,
         title: Text(
-          'Liked Properties',
-          style: AppTypography.displaySmall(color: AppColors.ink),
+          appState.tr('shortlisted_title'),
+          style: AppTypography.displaySmall(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
       ),
       body: liked.isEmpty
@@ -35,7 +38,7 @@ class LikedPGsScreen extends StatelessWidget {
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        color: AppColors.marigold.withValues(alpha: 0.15),
+                        color: AppColors.marigold.withAlpha(isDark ? 50 : 35),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -46,13 +49,17 @@ class LikedPGsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No Liked PGs Yet',
-                      style: AppTypography.displaySmall(color: AppColors.ink),
+                      appState.tr('no_liked_title'),
+                      style: AppTypography.displaySmall(
+                        color: isDark ? Colors.white : AppColors.ink,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Tap the heart icon on any PG card to bookmark it here for quick access.',
-                      style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+                      appState.tr('no_liked_subtitle'),
+                      style: AppTypography.bodyMedium(
+                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
