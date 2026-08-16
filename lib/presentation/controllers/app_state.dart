@@ -6,11 +6,15 @@ import 'package:pgcity/data/models/pg_model.dart';
 import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
 import 'package:pgcity/data/models/notification_model.dart';
+import 'package:pgcity/data/models/roommate_model.dart';
+import 'package:pgcity/data/models/chat_message_model.dart';
+import 'package:pgcity/data/models/rent_receipt_model.dart';
 import 'package:pgcity/data/repositories/pg_repository.dart';
 import 'package:pgcity/data/repositories/user_repository.dart';
 import 'package:pgcity/data/repositories/enrollment_repository.dart';
 import 'package:pgcity/core/utils/app_logger.dart';
 import 'package:pgcity/core/services/crashlytics_service.dart';
+import 'package:pgcity/core/services/biometric_auth_service.dart';
 
 enum GenderFilter {
   all('All'),
@@ -570,6 +574,241 @@ class AppState extends ChangeNotifier {
       ),
     );
 
+    notifyListeners();
+  }
+
+  // -------------------------------------------------------------
+  // 1. SIDE-BY-SIDE PG COMPARISON SUITE
+  // -------------------------------------------------------------
+  final Set<String> _comparePGIds = {};
+  Set<String> get comparePGIds => _comparePGIds;
+  List<PGModel> get comparedPGs =>
+      _allPGs.where((p) => _comparePGIds.contains(p.id)).toList();
+
+  bool isCompared(String pgId) => _comparePGIds.contains(pgId);
+
+  bool toggleCompare(String pgId) {
+    if (_comparePGIds.contains(pgId)) {
+      _comparePGIds.remove(pgId);
+      AppLogger.i('Removed PG $pgId from comparison. Count=${_comparePGIds.length}', tag: 'COMPARE');
+      notifyListeners();
+      return true;
+    } else {
+      if (_comparePGIds.length >= 3) {
+        AppLogger.w('Cannot add PG $pgId to comparison: Limit of 3 reached.', tag: 'COMPARE');
+        return false;
+      }
+      _comparePGIds.add(pgId);
+      AppLogger.i('Added PG $pgId to comparison. Count=${_comparePGIds.length}', tag: 'COMPARE');
+      notifyListeners();
+      return true;
+    }
+  }
+
+  void clearCompare() {
+    _comparePGIds.clear();
+    AppLogger.i('Cleared all compared PGs', tag: 'COMPARE');
+    notifyListeners();
+  }
+
+  // -------------------------------------------------------------
+  // 2. ROOMMATE MATCHER & COMPATIBILITY SUITE
+  // -------------------------------------------------------------
+  final List<RoommateModel> _roommates = [
+    RoommateModel(
+      id: 'rm_1',
+      fullName: 'Aarav Patel',
+      gender: 'Male',
+      age: 21,
+      collegeOrCompany: 'CEPT University (Architecture)',
+      targetLocality: 'Navrangpura / University Road',
+      budgetMax: 9500,
+      foodHabit: FoodHabit.pureVeg,
+      sleepHabit: SleepHabit.nightOwl,
+      isSmokingAllowed: false,
+      isAlcoholAllowed: false,
+      bio: 'Final year Architecture student. Quiet, focused on thesis, clean habits. Looking for a neat 2-sharing room.',
+      contactNumber: '+91 98250 11223',
+      isVerifiedStudent: true,
+      avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80',
+      postedAt: DateTime.now().subtract(const Duration(days: 2)),
+    ),
+    RoommateModel(
+      id: 'rm_2',
+      fullName: 'Diya Shah',
+      gender: 'Female',
+      age: 22,
+      collegeOrCompany: 'Nirma University (MBA)',
+      targetLocality: 'SG Highway / Gota',
+      budgetMax: 11000,
+      foodHabit: FoodHabit.jain,
+      sleepHabit: SleepHabit.earlyBird,
+      isSmokingAllowed: false,
+      isAlcoholAllowed: false,
+      bio: 'MBA student at Nirma. Early riser, prepares Jain food, loves a peaceful environment and hygienic space.',
+      contactNumber: '+91 97240 44556',
+      isVerifiedStudent: true,
+      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+      postedAt: DateTime.now().subtract(const Duration(days: 4)),
+    ),
+    RoommateModel(
+      id: 'rm_3',
+      fullName: 'Rohan Mehta',
+      gender: 'Male',
+      age: 24,
+      collegeOrCompany: 'TCS Gandhinagar (Software Engineer)',
+      targetLocality: 'Infocity / Gandhinagar Kudasan',
+      budgetMax: 12500,
+      foodHabit: FoodHabit.vegEgg,
+      sleepHabit: SleepHabit.flexible,
+      isSmokingAllowed: false,
+      isAlcoholAllowed: false,
+      bio: 'Software engineer at TCS. Work from home 3 days/week. Looking for a flatmate who values cleanliness and good Wi-Fi.',
+      contactNumber: '+91 99099 77889',
+      isVerifiedStudent: true,
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+      postedAt: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+    RoommateModel(
+      id: 'rm_4',
+      fullName: 'Pooja Joshi',
+      gender: 'Female',
+      age: 20,
+      collegeOrCompany: 'HL College of Commerce',
+      targetLocality: 'Commerce Six Roads / Navrangpura',
+      budgetMax: 8000,
+      foodHabit: FoodHabit.pureVeg,
+      sleepHabit: SleepHabit.earlyBird,
+      isSmokingAllowed: false,
+      isAlcoholAllowed: false,
+      bio: 'B.Com student. Friendly, studious, non-smoker. Looking for a budget friendly PG roommate near college.',
+      contactNumber: '+91 98980 33445',
+      isVerifiedStudent: true,
+      avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+      postedAt: DateTime.now().subtract(const Duration(hours: 12)),
+    ),
+  ];
+
+  List<RoommateModel> get roommates => _roommates;
+
+  void addRoommateProfile(RoommateModel profile) {
+    _roommates.insert(0, profile);
+    AppLogger.i('Added new roommate profile for: ${profile.fullName}', tag: 'ROOMMATE');
+    notifyListeners();
+  }
+
+  // -------------------------------------------------------------
+  // 3. IN-APP PROPERTY MANAGER CHAT INQUIRIES
+  // -------------------------------------------------------------
+  final Map<String, List<ChatMessageModel>> _chatHistories = {};
+
+  List<ChatMessageModel> getChatForPG(String pgId, String pgName) {
+    if (!_chatHistories.containsKey(pgId)) {
+      _chatHistories[pgId] = [
+        ChatMessageModel(
+          id: 'msg_${DateTime.now().millisecondsSinceEpoch}_0',
+          pgId: pgId,
+          text: 'Hello! I am the property manager for $pgName. How can I help with your room inquiry today?',
+          sender: MessageSender.landlord,
+          timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
+        ),
+      ];
+    }
+    return _chatHistories[pgId]!;
+  }
+
+  void sendChatMessage(String pgId, String messageText, String pgName) {
+    if (!_chatHistories.containsKey(pgId)) {
+      getChatForPG(pgId, pgName);
+    }
+
+    final userMsg = ChatMessageModel(
+      id: 'msg_${DateTime.now().millisecondsSinceEpoch}',
+      pgId: pgId,
+      text: messageText,
+      sender: MessageSender.user,
+      timestamp: DateTime.now(),
+    );
+
+    _chatHistories[pgId]!.add(userMsg);
+    AppLogger.i('User sent message to PG $pgId: "$messageText"', tag: 'CHAT');
+    notifyListeners();
+
+    // Automated manager response simulation after 600ms
+    Future.delayed(const Duration(milliseconds: 700), () {
+      String response;
+      final lower = messageText.toLowerCase();
+      if (lower.contains('visit') || lower.contains('schedule') || lower.contains('time')) {
+        response = 'Sure! We would love to show you around. You can visit anytime between 10:00 AM and 7:00 PM. Would tomorrow at 4:00 PM work for you?';
+      } else if (lower.contains('sharing') || lower.contains('vacan') || lower.contains('room')) {
+        response = 'Yes, we currently have 1 triple-sharing and 2 twin-sharing AC rooms available with immediate move-in.';
+      } else if (lower.contains('food') || lower.contains('jain') || lower.contains('meal')) {
+        response = 'We serve 100% hygienic vegetarian meals (Breakfast, Lunch, Dinner). Jain food options are prepared separately on request.';
+      } else if (lower.contains('bike') || lower.contains('parking') || lower.contains('car')) {
+        response = 'Dedicated covered two-wheeler parking with CCTV surveillance is included free of cost for all residents.';
+      } else {
+        response = 'Thank you for your message! Our property supervisor will reach out shortly, or you can call us directly via the Call button.';
+      }
+
+      final managerMsg = ChatMessageModel(
+        id: 'msg_${DateTime.now().millisecondsSinceEpoch}_reply',
+        pgId: pgId,
+        text: response,
+        sender: MessageSender.landlord,
+        timestamp: DateTime.now(),
+      );
+
+      _chatHistories[pgId]!.add(managerMsg);
+      notifyListeners();
+    });
+  }
+
+  // -------------------------------------------------------------
+  // 4. DIGITAL MOVE-IN AGREEMENT & RENT RECEIPTS
+  // -------------------------------------------------------------
+  List<RentReceiptModel> get rentReceipts => [
+        RentReceiptModel(
+          invoiceId: 'INV-2026-0801',
+          monthYear: 'August 2026',
+          pgName: 'Sunrise Luxury PG for Girls',
+          amount: 8500,
+          electricityCharges: 620,
+          maintenanceCharges: 350,
+          transactionReference: 'UPI-AXIS-9928172648',
+          paidDate: DateTime(2026, 8, 1),
+          status: ReceiptPaymentStatus.paid,
+        ),
+        RentReceiptModel(
+          invoiceId: 'INV-2026-0701',
+          monthYear: 'July 2026',
+          pgName: 'Sunrise Luxury PG for Girls',
+          amount: 8500,
+          electricityCharges: 780,
+          maintenanceCharges: 350,
+          transactionReference: 'UPI-HDFC-1102938475',
+          paidDate: DateTime(2026, 7, 1),
+          status: ReceiptPaymentStatus.paid,
+        ),
+        RentReceiptModel(
+          invoiceId: 'INV-2026-0601',
+          monthYear: 'June 2026',
+          pgName: 'Sunrise Luxury PG for Girls',
+          amount: 8500,
+          electricityCharges: 540,
+          maintenanceCharges: 350,
+          transactionReference: 'UPI-ICICI-8849201948',
+          paidDate: DateTime(2026, 6, 1),
+          status: ReceiptPaymentStatus.paid,
+        ),
+      ];
+
+  // -------------------------------------------------------------
+  // 5. BIOMETRIC QUICK UNLOCK
+  // -------------------------------------------------------------
+  bool get isBiometricEnabled => BiometricAuthService.instance.isBiometricEnabled;
+
+  Future<void> setBiometricEnabled(bool enabled) async {
+    await BiometricAuthService.instance.setBiometricEnabled(enabled);
     notifyListeners();
   }
 

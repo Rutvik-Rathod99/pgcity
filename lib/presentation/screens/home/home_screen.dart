@@ -8,6 +8,8 @@ import 'package:pgcity/presentation/widgets/pg_preview_card.dart';
 import 'package:pgcity/presentation/widgets/city_selector_sheet.dart';
 import 'package:pgcity/presentation/widgets/notification_sheet.dart';
 import 'package:pgcity/presentation/screens/pg_detail/pg_web_screen.dart';
+import 'package:pgcity/presentation/screens/compare/pg_compare_screen.dart';
+import 'package:pgcity/presentation/screens/roommates/roommate_finder_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppState appState;
@@ -348,18 +350,95 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     isDark: isDark,
                   ),
+                  const SizedBox(width: 8),
+                  // Roommate Matcher Quick Action Chip
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => RoommateFinderScreen(appState: state),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                      decoration: BoxDecoration(
+                        color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.teal),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.people_alt_rounded, size: 14, color: AppColors.teal),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Roommate Matcher',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                              fontFamily: 'Inter',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 10),
 
+            // Compare Floating Dock (Visible when 1+ PGs selected for compare)
+            if (state.comparePGIds.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF1E293B) : AppColors.navy,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: const [AppColors.softShadow],
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.compare_arrows_rounded, color: AppColors.marigold, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        '${state.comparePGIds.length}/3 PGs ready to compare',
+                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PGCompareScreen(appState: state),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.marigold,
+                        foregroundColor: AppColors.navy,
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
+                      ),
+                      child: const Text('Compare Now'),
+                    ),
+                  ],
+                ),
+              ),
+
             // 5. Main Content: Map or List View
             Expanded(
               child: pgs.isEmpty
                   ? _buildEmptyState(state, isDark)
-                  : state.isMapView
-                  ? _buildMapView(state, pgs, isDark)
-                  : _buildListView(state, pgs),
+                  : (state.isMapView
+                        ? _buildMapView(state, pgs, isDark)
+                        : _buildListView(state, pgs, isDark)),
             ),
           ],
         ),
@@ -444,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildListView(AppState state, List<PGModel> pgs) {
+  Widget _buildListView(AppState state, List<PGModel> pgs, [bool isDark = false]) {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       itemCount: pgs.length,
@@ -452,11 +531,24 @@ class _HomeScreenState extends State<HomeScreen> {
       itemBuilder: (context, index) {
         final pg = pgs[index];
         final isLiked = state.isPGLiked(pg.id);
+        final isCompared = state.isCompared(pg.id);
 
         return PGPreviewCard(
           pg: pg,
           isLiked: isLiked,
           onToggleLike: () => state.toggleLike(pg.id),
+          isCompared: isCompared,
+          onToggleCompare: () {
+            final added = state.toggleCompare(pg.id);
+            if (!added && !isCompared) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('You can compare a maximum of 3 PGs at a time.'),
+                  backgroundColor: AppColors.error,
+                ),
+              );
+            }
+          },
           onTap: () => _navigateToPG(pg),
         );
       },

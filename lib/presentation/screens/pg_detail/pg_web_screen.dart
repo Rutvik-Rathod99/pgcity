@@ -10,6 +10,10 @@ import 'video_tour_screen.dart';
 import 'photo_lightbox_screen.dart';
 import 'contact_unlock_sheet.dart';
 import 'package:pgcity/presentation/screens/enrollment/enrollment_sheet.dart';
+import 'package:pgcity/presentation/screens/compare/pg_compare_screen.dart';
+import 'package:pgcity/presentation/screens/chat/pg_landlord_chat_screen.dart';
+import 'package:pgcity/presentation/widgets/rent_calculator_modal.dart';
+import 'package:pgcity/presentation/widgets/pg_brochure_modal.dart';
 
 class PGWebScreen extends StatelessWidget {
   final PGModel pg;
@@ -71,66 +75,51 @@ class PGWebScreen extends StatelessWidget {
     );
   }
 
-  void _sharePG(BuildContext context) {
-    final link = 'https://pgcity.app/pg/${pg.id}';
-    final isDark = context.isDark;
-    showDialog(
+  void _openRentCalculator(BuildContext context) {
+    showModalBottomSheet(
       context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: context.appSurface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          'Share PG Deep Link',
-          style: AppTypography.displaySmall(
-            color: isDark ? Colors.white : AppColors.ink,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Share this dedicated PG Web Screen with your friends or parents:',
-              style: AppTypography.bodySmall(),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              decoration: BoxDecoration(
-                color: AppColors.cream,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.line),
-              ),
-              child: SelectableText(
-                link,
-                style: AppTypography.monoBadge(
-                  color: AppColors.teal,
-                ).copyWith(fontSize: 12),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Deep link copied: $link'),
-                  backgroundColor: AppColors.teal,
-                ),
-              );
-            },
-            icon: const Icon(Icons.copy_rounded, size: 14),
-            label: const Text('Copy Link'),
-          ),
-        ],
+      isScrollControlled: true,
+      backgroundColor: context.appSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => RentCalculatorModal(pg: pg),
+    );
+  }
+
+  void _openBrochure(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: context.appSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => PGBrochureModal(pg: pg),
+    );
+  }
+
+  void _openLandlordChat(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PGLandlordChatScreen(pg: pg, appState: appState),
       ),
     );
+  }
+
+  void _toggleCompareAndOpen(BuildContext context) {
+    appState.toggleCompare(pg.id);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PGCompareScreen(appState: appState),
+      ),
+    );
+  }
+
+  void _sharePG(BuildContext context) {
+    _openBrochure(context);
   }
 
   Future<void> _openDirections(BuildContext context) async {
@@ -334,6 +323,53 @@ class PGWebScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Quick Power Tools Bar (Compare, Calculator, Brochure, Manager Chat)
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildToolPill(
+                                context,
+                                icon: Icons.compare_arrows_rounded,
+                                label: appState.isCompared(pg.id) ? 'In Compare (View)' : 'Compare PG',
+                                color: AppColors.teal,
+                                onTap: () => _toggleCompareAndOpen(context),
+                                isDark: isDark,
+                              ),
+                              const SizedBox(width: 8),
+                              _buildToolPill(
+                                context,
+                                icon: Icons.calculate_rounded,
+                                label: 'Cost Calculator',
+                                color: AppColors.marigold,
+                                onTap: () => _openRentCalculator(context),
+                                isDark: isDark,
+                              ),
+                              const SizedBox(width: 8),
+                              _buildToolPill(
+                                context,
+                                icon: Icons.share_rounded,
+                                label: 'Parent Share',
+                                color: const Color(0xFF25D366),
+                                onTap: () => _openBrochure(context),
+                                isDark: isDark,
+                              ),
+                              const SizedBox(width: 8),
+                              _buildToolPill(
+                                context,
+                                icon: Icons.chat_rounded,
+                                label: 'Chat Manager',
+                                color: AppColors.navy,
+                                onTap: () => _openLandlordChat(context),
+                                isDark: isDark,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
                       // 2. 360° / 3D Virtual Tour Card (PRD Section 12.3)
                       GestureDetector(
                         onTap: () => _open360Tour(context),
@@ -974,5 +1010,43 @@ class PGWebScreen extends StatelessWidget {
       return Icons.bathtub_rounded;
     }
     return Icons.check_circle_outline_rounded;
+  }
+
+  Widget _buildToolPill(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+    required bool isDark,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: context.appSurface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: context.appBorder),
+          boxShadow: const [AppColors.softShadow],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: isDark ? Colors.white : AppColors.ink,
+                fontFamily: 'Inter',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

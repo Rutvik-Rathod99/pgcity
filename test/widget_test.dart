@@ -8,6 +8,9 @@ import 'package:pgcity/core/utils/app_logger.dart';
 import 'package:pgcity/data/models/pg_model.dart';
 import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
+import 'package:pgcity/data/models/roommate_model.dart';
+import 'package:pgcity/data/models/chat_message_model.dart';
+import 'package:pgcity/core/services/pg_share_service.dart';
 import 'package:pgcity/data/repositories/pg_repository.dart';
 import 'package:pgcity/data/repositories/user_repository.dart';
 import 'package:pgcity/data/repositories/enrollment_repository.dart';
@@ -286,6 +289,103 @@ void main() {
       expect(crashlytics.currentUserId, 'usr_test_99');
       expect(crashlytics.recordedReports.isNotEmpty, true);
       expect(crashlytics.breadcrumbs.any((b) => b.contains('Test Breadcrumb')), true);
+    });
+
+    test('PG Comparison Suite: Toggle compare, max 3 limit, and clear', () async {
+      final pgs = await pgRepo.getAllPGs();
+      expect(appState.comparePGIds.isEmpty, true);
+
+      // Add 1st PG
+      expect(appState.toggleCompare(pgs[0].id), true);
+      expect(appState.isCompared(pgs[0].id), true);
+      expect(appState.comparePGIds.length, 1);
+
+      // Add 2nd and 3rd PG
+      expect(appState.toggleCompare(pgs[1].id), true);
+      expect(appState.toggleCompare(pgs[2].id), true);
+      expect(appState.comparePGIds.length, 3);
+      expect(appState.comparedPGs.length, 3);
+
+      // Attempt 4th PG (should fail limit of 3)
+      if (pgs.length > 3) {
+        expect(appState.toggleCompare(pgs[3].id), false);
+        expect(appState.comparePGIds.length, 3);
+      }
+
+      // Remove 1st PG
+      expect(appState.toggleCompare(pgs[0].id), true);
+      expect(appState.isCompared(pgs[0].id), false);
+      expect(appState.comparePGIds.length, 2);
+
+      // Clear compare
+      appState.clearCompare();
+      expect(appState.comparePGIds.isEmpty, true);
+    });
+
+    test('Roommate Matcher Suite: Sample roommates and add profile', () {
+      expect(appState.roommates.isNotEmpty, true);
+      final initialCount = appState.roommates.length;
+
+      final newProfile = RoommateModel(
+        id: 'rm_test_1',
+        fullName: 'Karan Shah',
+        gender: 'Male',
+        age: 23,
+        collegeOrCompany: 'DAIICT Gandhinagar',
+        targetLocality: 'Kudasan / Infocity',
+        budgetMax: 12000,
+        foodHabit: FoodHabit.pureVeg,
+        sleepHabit: SleepHabit.nightOwl,
+        bio: 'M.Tech student seeking neat roommate.',
+        contactNumber: '+91 98000 11111',
+        avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
+        postedAt: DateTime.now(),
+      );
+
+      appState.addRoommateProfile(newProfile);
+      expect(appState.roommates.length, initialCount + 1);
+      expect(appState.roommates.first.fullName, 'Karan Shah');
+    });
+
+    test('In-App Landlord Chat Suite: Send message and receive auto-response', () async {
+      final pgs = await pgRepo.getAllPGs();
+      final testPG = pgs.first;
+
+      final chat = appState.getChatForPG(testPG.id, testPG.name);
+      expect(chat.isNotEmpty, true);
+      expect(chat.first.sender, MessageSender.landlord);
+
+      appState.sendChatMessage(testPG.id, 'Can I schedule a visit tomorrow?', testPG.name);
+      final updatedChat = appState.getChatForPG(testPG.id, testPG.name);
+      expect(updatedChat.any((m) => m.text == 'Can I schedule a visit tomorrow?'), true);
+
+      // Wait for simulated manager reply
+      await Future.delayed(const Duration(milliseconds: 800));
+      final afterReply = appState.getChatForPG(testPG.id, testPG.name);
+      expect(afterReply.length >= 3, true);
+      expect(afterReply.last.sender, MessageSender.landlord);
+    });
+
+    test('Biometric Quick Unlock Suite: Toggle preference', () async {
+      expect(appState.isBiometricEnabled, false);
+      await appState.setBiometricEnabled(true);
+      expect(appState.isBiometricEnabled, true);
+      expect(prefs.getBool('pgcity_biometric_enabled'), true);
+
+      await appState.setBiometricEnabled(false);
+      expect(appState.isBiometricEnabled, false);
+      expect(prefs.getBool('pgcity_biometric_enabled'), false);
+    });
+
+    test('PG Share Service: Formatted Parent WhatsApp message', () async {
+      final pgs = await pgRepo.getAllPGs();
+      final testPG = pgs.first;
+
+      final shareText = PGShareService.generateParentShareText(testPG);
+      expect(shareText.contains(testPG.name.toUpperCase()), true);
+      expect(shareText.contains('Monthly Rent:'), true);
+      expect(shareText.contains('Google Maps Location:'), true);
+      expect(shareText.contains('PGCity App'), true);
     });
   });
 }

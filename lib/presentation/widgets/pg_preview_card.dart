@@ -8,6 +8,8 @@ class PGPreviewCard extends StatelessWidget {
   final PGModel pg;
   final bool isLiked;
   final VoidCallback onToggleLike;
+  final bool isCompared;
+  final VoidCallback? onToggleCompare;
   final VoidCallback onTap;
 
   const PGPreviewCard({
@@ -15,6 +17,8 @@ class PGPreviewCard extends StatelessWidget {
     required this.pg,
     required this.isLiked,
     required this.onToggleLike,
+    this.isCompared = false,
+    this.onToggleCompare,
     required this.onTap,
   });
 
@@ -29,7 +33,10 @@ class PGPreviewCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: context.appSurface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: context.appBorder),
+          border: Border.all(
+            color: isCompared ? AppColors.teal : context.appBorder,
+            width: isCompared ? 1.5 : 1,
+          ),
           boxShadow: [
             BoxShadow(
               color: isDark
@@ -42,7 +49,7 @@ class PGPreviewCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Thumbnail Image with Verified Badge overlay
+            // Thumbnail Image with Verified & Featured Badge overlay
             Stack(
               children: [
                 ClipRRect(
@@ -112,7 +119,7 @@ class PGPreviewCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Title & Like
+                  // Title, Compare & Like Actions
                   Row(
                     children: [
                       Expanded(
@@ -125,6 +132,23 @@ class PGPreviewCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      if (onToggleCompare != null)
+                        GestureDetector(
+                          onTap: onToggleCompare,
+                          behavior: HitTestBehavior.opaque,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Icon(
+                              isCompared
+                                  ? Icons.compare_arrows_rounded
+                                  : Icons.compare_arrows_outlined,
+                              size: 20,
+                              color: isCompared
+                                  ? AppColors.teal
+                                  : (isDark ? Colors.white38 : AppColors.inkSoft),
+                            ),
+                          ),
+                        ),
                       GestureDetector(
                         onTap: onToggleLike,
                         behavior: HitTestBehavior.opaque,

@@ -15,6 +15,9 @@ import 'in_app_rating_modal.dart';
 import 'theme_font_settings_modal.dart';
 import 'package:pgcity/presentation/screens/admin/admin_dashboard_screen.dart';
 import 'package:pgcity/presentation/screens/admin/app_logger_screen.dart';
+import 'package:pgcity/presentation/screens/roommates/roommate_finder_screen.dart';
+import 'package:pgcity/presentation/screens/profile/rent_receipts_screen.dart';
+import 'package:pgcity/presentation/screens/compare/pg_compare_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AppState appState;
@@ -567,6 +570,88 @@ class ProfileScreen extends StatelessWidget {
             ),
           const SizedBox(height: 24),
 
+          // Resident Tools & Ecosystem Section
+          Text(
+            'Resident Tools & Community',
+            style: AppTypography.titleLarge(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          Container(
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: isDark ? const Color(0xFF334155) : AppColors.line,
+              ),
+            ),
+            child: Column(
+              children: [
+                // Roommate Matcher Hub
+                _buildAccountTile(
+                  icon: Icons.people_alt_rounded,
+                  title: 'Roommate Matcher Hub',
+                  subtitle: 'Find compatible flatmates by college, diet & habits',
+                  iconColor: AppColors.teal,
+                  isDark: isDark,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => RoommateFinderScreen(appState: appState),
+                      ),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Side-by-Side Comparison
+                _buildAccountTile(
+                  icon: Icons.compare_arrows_rounded,
+                  title: 'PG Comparison Matrix',
+                  subtitle: '${appState.comparePGIds.length} properties selected for comparison',
+                  iconColor: AppColors.marigold,
+                  isDark: isDark,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PGCompareScreen(appState: appState),
+                      ),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // Digital Rental Agreement & Invoices
+                _buildAccountTile(
+                  icon: Icons.receipt_long_rounded,
+                  title: 'Rental Agreement & Invoices',
+                  subtitle: 'Signed tenancy contracts & monthly HRA receipts',
+                  iconColor: AppColors.navy,
+                  isDark: isDark,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => RentReceiptsScreen(appState: appState),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
           // 3. Appearance & Preferences Section
           Text(
             appState.tr('account_settings'),
@@ -586,6 +671,53 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
+                // Biometric Fingerprint / FaceID Switch
+                ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.teal.withAlpha(isDark ? 50 : 35),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.fingerprint_rounded,
+                      size: 20,
+                      color: AppColors.teal,
+                    ),
+                  ),
+                  title: Text(
+                    'Biometric Quick Unlock',
+                    style: AppTypography.titleSmall(
+                      color: isDark ? Colors.white : AppColors.ink,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Use Face ID / Fingerprint to open app securely',
+                    style: AppTypography.bodySmall(
+                      color: isDark ? Colors.white60 : AppColors.inkSoft,
+                    ),
+                  ),
+                  trailing: Switch(
+                    value: appState.isBiometricEnabled,
+                    activeTrackColor: AppColors.teal,
+                    onChanged: (val) async {
+                      await appState.setBiometricEnabled(val);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(val ? 'Biometric authentication enabled.' : 'Biometric authentication disabled.'),
+                            backgroundColor: AppColors.teal,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
                 // Theme, Font & Language Selection
                 _buildAccountTile(
                   icon: Icons.palette_outlined,
