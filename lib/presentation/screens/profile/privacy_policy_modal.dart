@@ -7,18 +7,26 @@ class PrivacyPolicyModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDark;
+
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appBg,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: context.appBg,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded, size: 20),
+          icon: Icon(
+            Icons.close_rounded,
+            size: 20,
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Privacy & DPDP Compliance',
-          style: AppTypography.titleMedium(color: AppColors.ink),
+          style: AppTypography.titleMedium(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
       ),
       body: ListView(
@@ -27,7 +35,7 @@ class PrivacyPolicyModal extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AppColors.tealLight,
+              color: isDark ? const Color(0xFF0F3934) : AppColors.tealLight,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.teal),
             ),
@@ -43,7 +51,7 @@ class PrivacyPolicyModal extends StatelessWidget {
                   child: Text(
                     'PGCity complies with the Digital Personal Data Protection Act, 2023 (DPDP Act).',
                     style: AppTypography.bodySmall(
-                      color: AppColors.teal,
+                      color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
                     ).copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -54,45 +62,61 @@ class PrivacyPolicyModal extends StatelessWidget {
 
           Text(
             '1. Notice & Data We Collect',
-            style: AppTypography.titleMedium(color: AppColors.ink),
+            style: AppTypography.titleMedium(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             'We only collect personal information necessary to facilitate accommodation discovery and verified enrollment: Full Name, Verified Mobile Number, Email Address, Age, Gender, and Preferred Move-in Date.',
-            style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+            style: AppTypography.bodyMedium(
+              color: isDark ? Colors.white70 : AppColors.inkSoft,
+            ),
           ),
           const SizedBox(height: 16),
 
           Text(
             '2. Why We Collect Your Data',
-            style: AppTypography.titleMedium(color: AppColors.ink),
+            style: AppTypography.titleMedium(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             'Your data is utilized exclusively for:\n• Displaying personalized PG accommodation options.\n• Transmitting verified enrollment leads to property managers.\n• Authenticating your identity via secure 6-digit OTP.\n• Sending real-time notifications regarding application acceptance or rejection.',
-            style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+            style: AppTypography.bodyMedium(
+              color: isDark ? Colors.white70 : AppColors.inkSoft,
+            ),
           ),
           const SizedBox(height: 16),
 
           Text(
             '3. Protection of Contact Numbers',
-            style: AppTypography.titleMedium(color: AppColors.ink),
+            style: AppTypography.titleMedium(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             'Property owner contact numbers and applicant personal details are never exposed in public unauthenticated APIs. Contact numbers are revealed solely through authenticated rewarded ad completion or formal enrollment submission.',
-            style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+            style: AppTypography.bodyMedium(
+              color: isDark ? Colors.white70 : AppColors.inkSoft,
+            ),
           ),
           const SizedBox(height: 16),
 
           Text(
             '4. Consent Withdrawal & Right to Erasure',
-            style: AppTypography.titleMedium(color: AppColors.ink),
+            style: AppTypography.titleMedium(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             'In accordance with the DPDP Act 2023, you have full control over your personal data. You may withdraw consent or permanently erase your account and enrollment history at any time using the "Delete Account" option in your Profile settings.',
-            style: AppTypography.bodyMedium(color: AppColors.inkSoft),
+            style: AppTypography.bodyMedium(
+              color: isDark ? Colors.white70 : AppColors.inkSoft,
+            ),
           ),
           const SizedBox(height: 24),
 

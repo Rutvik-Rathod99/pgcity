@@ -666,7 +666,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         decoration: BoxDecoration(
           color: isSelected
               ? (isDark ? AppColors.marigold : AppColors.navy)
@@ -679,16 +679,28 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           boxShadow: isSelected ? const [AppColors.softShadow] : null,
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected
-                ? (isDark ? AppColors.navy : Colors.white)
-                : (isDark ? Colors.white70 : AppColors.inkSoft),
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Inter',
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isSelected) ...[
+              Icon(
+                Icons.check_rounded,
+                size: 13,
+                color: isDark ? AppColors.navy : Colors.white,
+              ),
+              const SizedBox(width: 4),
+            ],
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected
+                    ? (isDark ? AppColors.navy : Colors.white)
+                    : (isDark ? Colors.white70 : AppColors.inkSoft),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );

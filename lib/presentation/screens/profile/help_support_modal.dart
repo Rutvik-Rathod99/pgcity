@@ -17,18 +17,26 @@ class HelpSupportModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDark;
+
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appBg,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: context.appBg,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded, size: 20),
+          icon: Icon(
+            Icons.close_rounded,
+            size: 20,
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Help & Support',
-          style: AppTypography.titleMedium(color: AppColors.ink),
+          style: AppTypography.titleMedium(
+            color: isDark ? Colors.white : AppColors.ink,
+          ),
         ),
       ),
       body: ListView(
@@ -38,9 +46,9 @@ class HelpSupportModal extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.paper,
+              color: context.appSurface,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.line),
+              border: Border.all(color: context.appBorder),
               boxShadow: const [AppColors.softShadow],
             ),
             child: Row(
@@ -48,8 +56,10 @@ class HelpSupportModal extends StatelessWidget {
                 Container(
                   width: 44,
                   height: 44,
-                  decoration: const BoxDecoration(
-                    color: AppColors.tealLight,
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0xFF0F3934)
+                        : AppColors.tealLight,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -65,12 +75,16 @@ class HelpSupportModal extends StatelessWidget {
                     children: [
                       Text(
                         'Direct Support Team',
-                        style: AppTypography.titleSmall(),
+                        style: AppTypography.titleSmall(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         'Available Mon-Sat 9AM-8PM',
-                        style: AppTypography.bodySmall(),
+                        style: AppTypography.bodySmall(
+                          color: isDark ? Colors.white60 : AppColors.inkSoft,
+                        ),
                       ),
                     ],
                   ),
@@ -93,52 +107,71 @@ class HelpSupportModal extends StatelessWidget {
 
           Text(
             'Frequently Asked Questions',
-            style: AppTypography.titleMedium(),
+            style: AppTypography.titleMedium(
+              color: isDark ? Colors.white : AppColors.ink,
+            ),
           ),
           const SizedBox(height: 12),
 
           _buildFAQItem(
             'Why is contact unlocking gated by a short ad?',
             'PGCity provides 100% free PG discovery, virtual tours, and verified pricing to students without any subscription fees. Rewarded partner ads keep the platform free while preventing automated web scrapers and telemarketers from spamming property owners.',
+            context,
+            isDark,
           ),
           _buildFAQItem(
             'What does "Under Review" status mean for my enrollment?',
             'When you submit an enrollment request, the PGCity Operations team reviews your preferred move-in date and room sharing availability with the property manager. You will receive an instant notification when your application is accepted.',
+            context,
+            isDark,
           ),
           _buildFAQItem(
             'How are PGs verified by PGCity?',
             'Every listing published on PGCity is physically inspected by our ground ops team to verify cleanliness, food hygiene, safety measures, Wi-Fi speed, and accurate photographs.',
+            context,
+            isDark,
           ),
           _buildFAQItem(
             'Is my personal data safe?',
             'Yes. PGCity adheres strictly to the Digital Personal Data Protection Act 2023. We never sell your personal information or spam your contact number.',
+            context,
+            isDark,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFAQItem(String question, String answer) {
+  Widget _buildFAQItem(
+    String question,
+    String answer,
+    BuildContext context,
+    bool isDark,
+  ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: AppColors.paper,
+        color: context.appSurface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.line),
+        border: Border.all(color: context.appBorder),
       ),
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+        iconColor: isDark ? Colors.white70 : AppColors.ink,
+        collapsedIconColor: isDark ? Colors.white38 : AppColors.inkSoft,
         title: Text(
           question,
           style: AppTypography.titleSmall(
-            color: AppColors.ink,
+            color: isDark ? Colors.white : AppColors.ink,
           ).copyWith(fontSize: 13),
         ),
         childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
         children: [
           Text(
             answer,
-            style: AppTypography.bodySmall(color: AppColors.inkSoft),
+            style: AppTypography.bodySmall(
+              color: isDark ? Colors.white70 : AppColors.inkSoft,
+            ),
           ),
         ],
       ),

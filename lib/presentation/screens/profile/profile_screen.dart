@@ -533,20 +533,24 @@ class ProfileScreen extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.assignment_late_outlined,
-                      color: AppColors.inkSoft,
+                      color: isDark ? Colors.white38 : AppColors.inkSoft,
                       size: 32,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'No Enrollment Requests Yet',
-                      style: AppTypography.titleSmall(color: AppColors.inkSoft),
+                      style: AppTypography.titleSmall(
+                        color: isDark ? Colors.white : AppColors.inkSoft,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Explore PGs and tap "Enroll Now" to apply.',
-                      style: AppTypography.bodySmall(color: AppColors.inkSoft),
+                      style: AppTypography.bodySmall(
+                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                      ),
                     ),
                   ],
                 ),

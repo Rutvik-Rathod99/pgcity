@@ -512,16 +512,16 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.people_outline_rounded,
                           size: 48,
-                          color: AppColors.inkSoft,
+                          color: isDark ? Colors.white38 : AppColors.inkSoft,
                         ),
                         const SizedBox(height: 12),
                         Text(
                           'No matching roommates found',
                           style: AppTypography.titleSmall(
-                            color: isDark ? Colors.white70 : AppColors.inkSoft,
+                            color: isDark ? Colors.white : AppColors.inkSoft,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -673,7 +673,7 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
           Text(
             rm.bio,
             style: AppTypography.bodySmall(
-              color: isDark ? Colors.white70 : AppColors.ink,
+              color: isDark ? const Color(0xFFCBD5E1) : AppColors.ink,
             ),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
@@ -688,8 +688,8 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
               Text(
                 'Posted ${DateFormat('dd MMM').format(rm.postedAt)}',
                 style: AppTypography.monoLabel(
-                  color: isDark ? Colors.white38 : AppColors.inkSoft,
-                ).copyWith(fontSize: 9),
+                  color: isDark ? const Color(0xFF94A3B8) : AppColors.inkSoft,
+                ).copyWith(fontSize: 9.5),
               ),
               Row(
                 children: [
@@ -704,19 +704,31 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
                         ),
                       );
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.chat_bubble_outline_rounded,
                       size: 14,
+                      color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
                     ),
-                    label: const Text('Connect'),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 6,
-                      ),
-                      textStyle: const TextStyle(
+                    label: Text(
+                      'Connect',
+                      style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
+                        color: isDark
+                            ? const Color(0xFF38BDF8)
+                            : AppColors.teal,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(
+                        color: isDark
+                            ? const Color(0xFF38BDF8)
+                            : AppColors.teal,
+                        width: 1.2,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
                       ),
                     ),
                   ),
@@ -731,26 +743,30 @@ class _RoommateFinderScreenState extends State<RoommateFinderScreen> {
 
   Widget _buildTag(String text, IconData icon, bool isDark) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF334155) : AppColors.cream,
-        borderRadius: BorderRadius.circular(6),
+        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+          width: 0.8,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             icon,
-            size: 10,
-            color: isDark ? Colors.white70 : AppColors.inkSoft,
+            size: 12,
+            color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 5),
           Text(
             text,
             style: TextStyle(
-              fontSize: 9,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white70 : AppColors.inkSoft,
+              color: isDark ? const Color(0xFFF1F5F9) : AppColors.ink,
             ),
           ),
         ],

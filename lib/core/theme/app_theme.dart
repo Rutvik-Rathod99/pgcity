@@ -71,6 +71,7 @@ class AppTheme {
         disabledColor: AppColors.line,
         selectedColor: AppColors.navy,
         secondarySelectedColor: AppColors.navy,
+        checkmarkColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -192,6 +193,7 @@ class AppTheme {
         disabledColor: darkBorder,
         selectedColor: AppColors.marigold,
         secondarySelectedColor: AppColors.marigold,
+        checkmarkColor: AppColors.navy,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

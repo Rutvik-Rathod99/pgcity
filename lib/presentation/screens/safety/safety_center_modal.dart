@@ -91,39 +91,48 @@ class SafetyCenterModal extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.error.withAlpha(30),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.shield_rounded,
-                        color: AppColors.error,
-                        size: 22,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Safety & SOS Center',
-                          style: AppTypography.titleLarge(
-                            color: isDark ? Colors.white : AppColors.ink,
-                          ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.error.withAlpha(30),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        Text(
-                          'Ahmedabad 24x7 Emergency Helplines',
-                          style: AppTypography.bodySmall(
-                            color: isDark ? Colors.white60 : AppColors.inkSoft,
-                          ),
+                        child: const Icon(
+                          Icons.shield_rounded,
+                          color: AppColors.error,
+                          size: 22,
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              appState.tr('safety_sos'),
+                              style: AppTypography.titleLarge(
+                                color: isDark ? Colors.white : AppColors.ink,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'Ahmedabad 24x7 Emergency Helplines',
+                              style: AppTypography.bodySmall(
+                                color: isDark
+                                    ? Colors.white60
+                                    : AppColors.inkSoft,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.close_rounded),
@@ -143,7 +152,7 @@ class SafetyCenterModal extends StatelessWidget {
                   onTap: () => _triggerSos(context),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 20,
+                      vertical: 18,
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(
@@ -160,30 +169,33 @@ class SafetyCenterModal extends StatelessWidget {
                       ],
                     ),
                     child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.sos_rounded, color: Colors.white, size: 36),
                         SizedBox(width: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'PRESS FOR EMERGENCY SOS',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 0.8,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'PRESS FOR EMERGENCY SOS',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 0.8,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Sends live GPS coordinates to Emergency Contacts',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 11,
+                              SizedBox(height: 2),
+                              Text(
+                                'Sends live GPS coordinates to Emergency Contacts',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 11,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -329,10 +341,13 @@ class SafetyCenterModal extends StatelessWidget {
                     fontSize: 11,
                     color: isDark ? Colors.white60 : AppColors.inkSoft,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           ElevatedButton.icon(
             onPressed: () => _callHotline(number),
             style: ElevatedButton.styleFrom(
@@ -364,7 +379,7 @@ class SafetyCenterModal extends StatelessWidget {
   ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF0F172A) : AppColors.cream,
         borderRadius: BorderRadius.circular(10),
@@ -372,26 +387,33 @@ class SafetyCenterModal extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: isDark ? Colors.white : AppColors.ink,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? Colors.white : AppColors.ink,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              Text(
-                location,
-                style: TextStyle(
-                  fontSize: 10,
-                  color: isDark ? Colors.white60 : AppColors.inkSoft,
+                const SizedBox(height: 2),
+                Text(
+                  location,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: isDark ? Colors.white60 : AppColors.inkSoft,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          const SizedBox(width: 8),
           IconButton(
             icon: const Icon(
               Icons.phone_in_talk_rounded,
