@@ -213,15 +213,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         children: [
           // KPI Metric Bar (PRD Section 20.1)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
             color: isDark ? const Color(0xFF1E293B) : AppColors.navy2,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildKpiItem('Total PGs', '${allPGs.length}'),
-                _buildKpiItem('Total Views', '$totalViews'),
-                _buildKpiItem('Contact Unlocks', '$totalUnlocks'),
-                _buildKpiItem('Total Likes', '$totalLikes'),
+                Expanded(child: _buildKpiItem('Total PGs', '${allPGs.length}')),
+                Expanded(child: _buildKpiItem('Total Views', '$totalViews')),
+                Expanded(child: _buildKpiItem('Contact Unlocks', '$totalUnlocks')),
+                Expanded(child: _buildKpiItem('Total Likes', '$totalLikes')),
               ],
             ),
           ),
@@ -246,19 +245,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
 
   Widget _buildKpiItem(String label, String value) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          value,
-          style: AppTypography.displaySmall(
-            color: AppColors.marigold,
-          ).copyWith(fontSize: 16),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            value,
+            style: AppTypography.displaySmall(
+              color: AppColors.marigold,
+            ).copyWith(fontSize: 16),
+          ),
         ),
         const SizedBox(height: 2),
-        Text(
-          label,
-          style: AppTypography.monoLabel(
-            color: Colors.white70,
-          ).copyWith(fontSize: 9),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label,
+            style: AppTypography.monoLabel(
+              color: Colors.white70,
+            ).copyWith(fontSize: 9),
+          ),
         ),
       ],
     );
@@ -369,35 +375,39 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
               const SizedBox(height: 10),
               Divider(color: context.appBorder),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '👁 ${pg.viewsCount} views · 📞 ${pg.contactUnlocksCount} unlocks · 📝 ${pg.enrollmentsCount} leads',
-                    style: AppTypography.monoBadge(
-                      color: isDark ? Colors.white60 : AppColors.inkSoft,
-                    ).copyWith(fontSize: 10),
+                  Expanded(
+                    child: Text(
+                      '👁 ${pg.viewsCount} · 📞 ${pg.contactUnlocksCount} · 📝 ${pg.enrollmentsCount} leads',
+                      style: AppTypography.monoBadge(
+                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                      ).copyWith(fontSize: 10),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.edit_outlined,
-                          size: 18,
-                          color: isDark ? Colors.white : AppColors.navy,
-                        ),
-                        tooltip: 'Edit Listing',
-                        onPressed: () => _openEditPG(pg),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete_outline_rounded,
-                          size: 18,
-                          color: AppColors.error,
-                        ),
-                        tooltip: 'Delete Listing',
-                        onPressed: () => _confirmDeletePG(pg),
-                      ),
-                    ],
+                  const SizedBox(width: 6),
+                  IconButton(
+                    icon: Icon(
+                      Icons.edit_outlined,
+                      size: 18,
+                      color: isDark ? Colors.white : AppColors.navy,
+                    ),
+                    tooltip: 'Edit Listing',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () => _openEditPG(pg),
+                  ),
+                  const SizedBox(width: 12),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.delete_outline_rounded,
+                      size: 18,
+                      color: AppColors.error,
+                    ),
+                    tooltip: 'Delete Listing',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () => _confirmDeletePG(pg),
                   ),
                 ],
               ),
@@ -545,6 +555,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
@@ -552,10 +563,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
               color: isDark ? Colors.white60 : AppColors.inkSoft,
             ),
           ),
-          Text(
-            value,
-            style: AppTypography.titleSmall(
-              color: isDark ? Colors.white : AppColors.ink,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: AppTypography.titleSmall(
+                color: isDark ? Colors.white : AppColors.ink,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
           ),
         ],

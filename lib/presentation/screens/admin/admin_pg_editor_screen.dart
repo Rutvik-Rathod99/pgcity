@@ -187,11 +187,12 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.pg != null;
+    final isDark = context.isDark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: context.appBg,
       appBar: AppBar(
-        backgroundColor: AppColors.navy,
+        backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.navy,
         foregroundColor: Colors.white,
         title: Text(
           isEditing ? 'Edit PG Listing' : 'Onboard New PG',
@@ -211,7 +212,12 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
           children: [
             // Basic Information
-            Text('Property Details', style: AppTypography.titleMedium()),
+            Text(
+              'Property Details',
+              style: AppTypography.titleMedium(
+                color: isDark ? Colors.white : AppColors.ink,
+              ),
+            ),
             const SizedBox(height: 10),
 
             _buildLabel('PG Name'),
@@ -225,17 +231,16 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
             const SizedBox(height: 14),
 
             _buildLabel('PG Type'),
-            Row(
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
               children: PGType.values.map((t) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: ChoiceChip(
-                    label: Text(t.label),
-                    selected: _type == t,
-                    onSelected: (val) {
-                      if (val) setState(() => _type = t);
-                    },
-                  ),
+                return ChoiceChip(
+                  label: Text(t.label),
+                  selected: _type == t,
+                  onSelected: (val) {
+                    if (val) setState(() => _type = t);
+                  },
                 );
               }).toList(),
             ),
@@ -446,7 +451,9 @@ class _AdminPGEditorScreenState extends State<AdminPGEditorScreen> {
       padding: const EdgeInsets.only(bottom: 6),
       child: Text(
         text,
-        style: AppTypography.monoLabel(color: AppColors.inkSoft),
+        style: AppTypography.monoLabel(
+          color: context.isDark ? Colors.white70 : AppColors.inkSoft,
+        ),
       ),
     );
   }

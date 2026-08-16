@@ -476,7 +476,7 @@ class PGWebScreen extends StatelessWidget {
                         mainAxisSpacing: 10,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        childAspectRatio: 2.2,
+                        childAspectRatio: 2.4,
                         children: [
                           _buildDetailBox(
                             context,
@@ -683,22 +683,28 @@ class PGWebScreen extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.place_outlined,
-                                          size: 14,
-                                          color: isDark ? Colors.white60 : AppColors.inkSoft,
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          l.name,
-                                          style: AppTypography.titleSmall(
-                                            color: isDark ? Colors.white : AppColors.ink,
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.place_outlined,
+                                            size: 14,
+                                            color: isDark ? Colors.white60 : AppColors.inkSoft,
                                           ),
-                                        ),
-                                      ],
+                                          const SizedBox(width: 6),
+                                          Expanded(
+                                            child: Text(
+                                              l.name,
+                                              style: AppTypography.titleSmall(
+                                                color: isDark ? Colors.white : AppColors.ink,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    const SizedBox(width: 8),
                                     Text(
                                       l.distance,
                                       style: AppTypography.monoPrice(
@@ -835,13 +841,19 @@ class PGWebScreen extends StatelessWidget {
                             ? AppColors.teal
                             : (isDark ? AppColors.marigold : AppColors.navy),
                       ),
-                      label: Text(
-                        isUnlocked
-                            ? appState.tr('call_now')
-                            : appState.tr('contact_owner'),
+                      label: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          isUnlocked
+                              ? appState.tr('call_now')
+                              : appState.tr('contact_owner'),
+                        ),
                       ),
                       style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 13,
+                          horizontal: 8,
+                        ),
                         foregroundColor: isUnlocked
                             ? AppColors.teal
                             : (isDark ? AppColors.marigold : AppColors.navy),
@@ -861,9 +873,15 @@ class PGWebScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => _openEnrollment(context),
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 13,
+                          horizontal: 8,
+                        ),
                       ),
-                      child: Text(appState.tr('enroll_now')),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(appState.tr('enroll_now')),
+                      ),
                     ),
                   ),
                 ],

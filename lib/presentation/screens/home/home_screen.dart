@@ -91,53 +91,56 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      // Signature 45 deg Marigold Pin Icon
-                      Transform.rotate(
-                        angle: -0.785398,
-                        child: Container(
-                          width: 18,
-                          height: 18,
-                          decoration: const BoxDecoration(
-                            color: AppColors.marigold,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        // Signature 45 deg Marigold Pin Icon
+                        Transform.rotate(
+                          angle: -0.785398,
+                          child: Container(
+                            width: 18,
+                            height: 18,
+                            decoration: const BoxDecoration(
+                              color: AppColors.marigold,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'PGCity',
-                        style: AppTypography.brand(
-                          color: isDark ? Colors.white : AppColors.ink,
-                        ).copyWith(fontSize: 20),
-                      ),
-                      if (state.isAdminMode) ...[
                         const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.navy,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            'ADMIN OPS',
-                            style: AppTypography.monoBadge(
-                              color: AppColors.marigold,
-                            ).copyWith(fontSize: 8),
-                          ),
+                        Text(
+                          'PGCity',
+                          style: AppTypography.brand(
+                            color: isDark ? Colors.white : AppColors.ink,
+                          ).copyWith(fontSize: 20),
                         ),
+                        if (state.isAdminMode) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.navy,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              'ADMIN OPS',
+                              style: AppTypography.monoBadge(
+                                color: AppColors.marigold,
+                              ).copyWith(fontSize: 8),
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       // View Mode Toggle (Map / List)
                       IconButton(
@@ -216,10 +219,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: isDark ? Colors.white60 : AppColors.inkSoft,
                     ),
                     const SizedBox(width: 4),
-                    Text(
-                      state.currentCity,
-                      style: AppTypography.bodySmall(
-                        color: isDark ? Colors.white60 : AppColors.inkSoft,
+                    Flexible(
+                      child: Text(
+                        state.currentCity,
+                        style: AppTypography.bodySmall(
+                          color: isDark ? Colors.white60 : AppColors.inkSoft,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(width: 6),
