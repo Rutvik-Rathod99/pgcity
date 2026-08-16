@@ -70,7 +70,7 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen>
       AiChatMessage(
         id: 'ai_welcome',
         text:
-            '👋 **Hello! I am your PGCity AI Assistant, powered by Groq LLaMA 3.3.**\n\n'
+            '👋 **Hello! I am your PGCity AI Assistant.**\n\n'
             'I can help you find verified PGs across Ahmedabad & Gandhinagar, compare pricing, check food menus, calculate true rent, or answer local city questions.\n\n'
             'How can I help you today?',
         isUser: false,
@@ -231,7 +231,7 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen>
                           ),
                         ),
                         child: const Text(
-                          'LLaMA 3.3',
+                          'Smart AI',
                           style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
@@ -385,149 +385,138 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen>
 
   Widget _buildInputBar(bool isDark) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+      padding: const EdgeInsets.fromLTRB(14, 8, 14, 12),
       decoration: BoxDecoration(
         color: context.appSurface,
-        border: Border(top: BorderSide(color: context.appBorder, width: 0.8)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(isDark ? 30 : 10),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
+        border: Border(
+          top: BorderSide(
+            color: context.appBorder.withAlpha(isDark ? 80 : 120),
+            width: 0.8,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         top: false,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            // Text Input Pill Container with perfectly fit padding
-            Expanded(
-              child: Container(
-                constraints: const BoxConstraints(
-                  minHeight: 46,
-                  maxHeight: 120,
+        child: Container(
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: _focusNode.hasFocus
+                  ? const Color(0xFF6366F1)
+                  : (isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFCBD5E1)),
+              width: 1.2,
+            ),
+          ),
+          padding: const EdgeInsets.fromLTRB(14, 3, 6, 3),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.auto_awesome_rounded,
+                size: 18,
+                color: Color(0xFF6366F1),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: TextField(
+                  controller: _textController,
+                  focusNode: _focusNode,
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 4,
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    height: 1.3,
+                    color: isDark ? Colors.white : AppColors.ink,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: widget.appState.tr('ask_ai_hint'),
+                    hintStyle: TextStyle(
+                      fontSize: 12.5,
+                      color: isDark ? Colors.white38 : AppColors.inkSoft,
+                    ),
+                    isDense: true,
+                    filled: false,
+                    fillColor: Colors.transparent,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    focusedErrorBorder: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 2,
+                      vertical: 10,
+                    ),
+                  ),
+                  onSubmitted: (val) => _sendMessage(val),
                 ),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? const Color(0xFF0F172A)
-                      : const Color(0xFFF8FAFC),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: _focusNode.hasFocus
-                        ? const Color(0xFF6366F1)
+              ),
+              if (_hasText)
+                GestureDetector(
+                  onTap: () {
+                    _textController.clear();
+                    setState(() => _hasText = false);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Icon(
+                      Icons.cancel_rounded,
+                      size: 16,
+                      color: isDark ? Colors.white38 : AppColors.inkSoft,
+                    ),
+                  ),
+                ),
+              GestureDetector(
+                onTap: _hasText && !_isLoading
+                    ? () => _sendMessage(_textController.text)
+                    : null,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: _hasText
+                        ? const LinearGradient(
+                            colors: [Color(0xFF6366F1), Color(0xFFA855F7)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
+                        : null,
+                    color: _hasText
+                        ? null
                         : (isDark
                               ? const Color(0xFF334155)
                               : const Color(0xFFCBD5E1)),
-                    width: 1.2,
+                    boxShadow: _hasText
+                        ? [
+                            BoxShadow(
+                              color: const Color(0xFF6366F1).withAlpha(100),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
                   ),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.chat_bubble_outline_rounded,
-                      size: 18,
-                      color: isDark ? Colors.white38 : AppColors.inkSoft,
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_upward_rounded,
+                      color: _hasText
+                          ? Colors.white
+                          : (isDark ? Colors.white30 : Colors.white70),
+                      size: 20,
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: _textController,
-                        focusNode: _focusNode,
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        maxLines: 4,
-                        style: TextStyle(
-                          fontSize: 13.5,
-                          height: 1.35,
-                          color: isDark ? Colors.white : AppColors.ink,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'Ask about PGs, rent, food, locality...',
-                          hintStyle: TextStyle(
-                            fontSize: 13,
-                            color: isDark ? Colors.white38 : AppColors.inkSoft,
-                          ),
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                          ),
-                        ),
-                        onSubmitted: (val) => _sendMessage(val),
-                      ),
-                    ),
-                    if (_hasText)
-                      GestureDetector(
-                        onTap: () {
-                          _textController.clear();
-                          setState(() => _hasText = false);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Icon(
-                            Icons.cancel_rounded,
-                            size: 16,
-                            color: isDark ? Colors.white38 : AppColors.inkSoft,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-
-            // Send Button
-            GestureDetector(
-              onTap: _hasText && !_isLoading
-                  ? () => _sendMessage(_textController.text)
-                  : null,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: 46,
-                height: 46,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: _hasText
-                      ? const LinearGradient(
-                          colors: [Color(0xFF6366F1), Color(0xFFA855F7)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        )
-                      : null,
-                  color: _hasText
-                      ? null
-                      : (isDark
-                            ? const Color(0xFF1E293B)
-                            : const Color(0xFFE2E8F0)),
-                  boxShadow: _hasText
-                      ? [
-                          BoxShadow(
-                            color: const Color(0xFF6366F1).withAlpha(100),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.arrow_upward_rounded,
-                    color: _hasText
-                        ? Colors.white
-                        : (isDark ? Colors.white30 : AppColors.inkSoft),
-                    size: 22,
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -615,19 +604,7 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SelectableText(
-                        msg.text,
-                        style: TextStyle(
-                          fontSize: 13.5,
-                          height: 1.5,
-                          color: isUser
-                              ? Colors.white
-                              : (isDark
-                                    ? const Color(0xFFF1F5F9)
-                                    : const Color(0xFF1E293B)),
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                      _buildFormattedText(msg.text, isUser, isDark),
                       const SizedBox(height: 6),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -905,7 +882,7 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen>
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  'Groq AI is thinking...',
+                  'PGCity AI is researching...',
                   style: TextStyle(
                     fontSize: 12.5,
                     fontStyle: FontStyle.italic,
@@ -925,5 +902,219 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen>
     final minute = dt.minute.toString().padLeft(2, '0');
     final period = dt.hour >= 12 ? 'PM' : 'AM';
     return '$hour:$minute $period';
+  }
+
+  Widget _buildFormattedText(String text, bool isUser, bool isDark) {
+    if (isUser) {
+      return SelectableText(
+        text,
+        style: const TextStyle(
+          fontSize: 13.5,
+          height: 1.45,
+          color: Colors.white,
+          fontWeight: FontWeight.w400,
+        ),
+      );
+    }
+
+    final lines = text.split('\n');
+    final List<Widget> widgets = [];
+
+    for (var line in lines) {
+      final trimmed = line.trim();
+      if (trimmed.isEmpty) {
+        widgets.add(const SizedBox(height: 6));
+        continue;
+      }
+
+      // Heading ### or ## or #
+      if (trimmed.startsWith('### ')) {
+        widgets.add(
+          Padding(
+            padding: const EdgeInsets.only(top: 6, bottom: 3),
+            child: Text(
+              trimmed.substring(4),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: isDark
+                    ? const Color(0xFF38BDF8)
+                    : const Color(0xFF4F46E5),
+              ),
+            ),
+          ),
+        );
+        continue;
+      } else if (trimmed.startsWith('## ') || trimmed.startsWith('# ')) {
+        final title = trimmed.replaceFirst(RegExp(r'^#+\s*'), '');
+        widgets.add(
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 4),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 14.5,
+                fontWeight: FontWeight.w800,
+                color: isDark ? Colors.white : AppColors.ink,
+              ),
+            ),
+          ),
+        );
+        continue;
+      }
+
+      // Bullet points & Numbered lists
+      final isBullet =
+          trimmed.startsWith('• ') ||
+          trimmed.startsWith('- ') ||
+          (trimmed.startsWith('* ') && !trimmed.startsWith('**'));
+      final isNumberList = RegExp(r'^\d+\.\s+').hasMatch(trimmed);
+
+      if (isBullet || isNumberList) {
+        String bulletContent;
+        String bulletPrefix;
+        if (isNumberList) {
+          final match = RegExp(r'^(\d+\.)\s+').firstMatch(trimmed);
+          bulletPrefix = match?.group(1) ?? '1.';
+          bulletContent = trimmed.substring(match?.end ?? 0);
+        } else {
+          bulletPrefix = '•';
+          bulletContent = trimmed.substring(2);
+        }
+
+        widgets.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$bulletPrefix ',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: isDark
+                        ? const Color(0xFF818CF8)
+                        : const Color(0xFF6366F1),
+                  ),
+                ),
+                Expanded(child: _buildRichSpanText(bulletContent, isDark)),
+              ],
+            ),
+          ),
+        );
+        continue;
+      }
+
+      // Normal paragraph line
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: _buildRichSpanText(trimmed, isDark),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: widgets,
+    );
+  }
+
+  Widget _buildRichSpanText(String rawText, bool isDark) {
+    final spans = <InlineSpan>[];
+    final regex = RegExp(r'(\*\*.*?\*\*|\*.*?\*|`.*?`)');
+    int lastIndex = 0;
+
+    for (final match in regex.allMatches(rawText)) {
+      if (match.start > lastIndex) {
+        spans.add(
+          TextSpan(
+            text: rawText.substring(lastIndex, match.start),
+            style: TextStyle(
+              fontSize: 13.5,
+              height: 1.45,
+              color: isDark ? const Color(0xFFF1F5F9) : const Color(0xFF1E293B),
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        );
+      }
+
+      final matchedText = match.group(0)!;
+      if (matchedText.startsWith('**') && matchedText.endsWith('**')) {
+        final boldContent = matchedText.substring(2, matchedText.length - 2);
+        spans.add(
+          TextSpan(
+            text: boldContent,
+            style: TextStyle(
+              fontSize: 13.5,
+              height: 1.45,
+              color: isDark ? Colors.white : AppColors.ink,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        );
+      } else if (matchedText.startsWith('*') && matchedText.endsWith('*')) {
+        final italicContent = matchedText.substring(1, matchedText.length - 1);
+        spans.add(
+          TextSpan(
+            text: italicContent,
+            style: TextStyle(
+              fontSize: 13.5,
+              height: 1.45,
+              fontStyle: FontStyle.italic,
+              color: isDark ? const Color(0xFFE2E8F0) : AppColors.ink,
+            ),
+          ),
+        );
+      } else if (matchedText.startsWith('`') && matchedText.endsWith('`')) {
+        final codeContent = matchedText.substring(1, matchedText.length - 1);
+        spans.add(
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+              margin: const EdgeInsets.symmetric(horizontal: 2),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? const Color(0xFF334155)
+                    : const Color(0xFFE2E8F0),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                codeContent,
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontFamily: 'monospace',
+                  fontWeight: FontWeight.w600,
+                  color: isDark
+                      ? const Color(0xFF38BDF8)
+                      : const Color(0xFF4F46E5),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+
+      lastIndex = match.end;
+    }
+
+    if (lastIndex < rawText.length) {
+      spans.add(
+        TextSpan(
+          text: rawText.substring(lastIndex),
+          style: TextStyle(
+            fontSize: 13.5,
+            height: 1.45,
+            color: isDark ? const Color(0xFFF1F5F9) : const Color(0xFF1E293B),
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      );
+    }
+
+    return SelectableText.rich(TextSpan(children: spans));
   }
 }

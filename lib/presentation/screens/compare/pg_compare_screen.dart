@@ -98,213 +98,185 @@ class PGCompareScreen extends StatelessWidget {
                   // Side-by-side Table Matrix
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width - 32,
+                    child: Table(
+                      defaultColumnWidth: FixedColumnWidth(
+                        pgs.length == 1
+                            ? (MediaQuery.of(context).size.width - 32)
+                            : (pgs.length == 2
+                                  ? (MediaQuery.of(context).size.width - 32) / 2
+                                  : 160.0),
                       ),
-                      child: Table(
-                        defaultColumnWidth: FixedColumnWidth(
-                          pgs.length == 1
-                              ? (MediaQuery.of(context).size.width - 32)
-                              : (MediaQuery.of(context).size.width - 32) /
-                                    pgs.length,
-                        ),
-                        border: TableBorder.all(
-                          color: context.appBorder,
-                          borderRadius: BorderRadius.circular(16),
-                          width: 1,
-                        ),
-                        children: [
-                          // 1. Header Card Row (Image, Name, Delete)
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildHeaderCell(context, pg, isDark),
-                                )
-                                .toList(),
-                          ),
-
-                          // 2. Monthly Rent Row
-                          _buildSectionHeaderRow(
-                            'PRICING & DEPOSIT',
-                            pgs.length,
-                            isDark,
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildDataCell(
-                                    label: 'Monthly Rent',
-                                    value: CurrencyFormatter.format(
-                                      pg.monthlyRent,
-                                    ),
-                                    isHighlighted: true,
-                                    isDark: isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildDataCell(
-                                    label: 'Security Deposit',
-                                    value: CurrencyFormatter.format(
-                                      pg.securityDeposit,
-                                    ),
-                                    isDark: isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-
-                          // 3. Accommodation Specs
-                          _buildSectionHeaderRow(
-                            'ROOM & AMENITIES',
-                            pgs.length,
-                            isDark,
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildDataCell(
-                                    label: 'Sharing Types',
-                                    value: pg.sharingType,
-                                    isDark: isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildDataCell(
-                                    label: 'Food Plan',
-                                    value: pg.foodOption,
-                                    isDark: isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildDataCell(
-                                    label: 'Electricity',
-                                    value: pg.electricityOption,
-                                    isDark: isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildDataCell(
-                                    label: 'Minimum Stay',
-                                    value: pg.minimumStay,
-                                    isDark: isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-
-                          // 4. Amenities Checklist
-                          _buildSectionHeaderRow(
-                            'ESSENTIALS CHECKLIST',
-                            pgs.length,
-                            isDark,
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildChecklistCell(
-                                    'Wi-Fi',
-                                    pg.amenities.contains('Wi-Fi'),
-                                    isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildChecklistCell(
-                                    'Air Conditioning',
-                                    pg.amenities.contains('AC'),
-                                    isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildChecklistCell(
-                                    '24/7 Security & CCTV',
-                                    pg.amenities.contains('24/7 security') ||
-                                        pg.amenities.contains('CCTV'),
-                                    isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map(
-                                  (pg) => _buildChecklistCell(
-                                    'Washing Machine',
-                                    pg.amenities.contains('Washing machine'),
-                                    isDark,
-                                  ),
-                                )
-                                .toList(),
-                          ),
-
-                          // 5. Direct View Action
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: context.appSurface,
-                            ),
-                            children: pgs
-                                .map((pg) => _buildActionCell(context, pg))
-                                .toList(),
-                          ),
-                        ],
+                      border: TableBorder.all(
+                        color: context.appBorder,
+                        borderRadius: BorderRadius.circular(16),
+                        width: 1,
                       ),
+                      children: [
+                        // 1. Header Card Row (Image, Name, Delete)
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildHeaderCell(context, pg, isDark),
+                              )
+                              .toList(),
+                        ),
+
+                        // 2. Monthly Rent Row
+                        _buildSectionHeaderRow(
+                          'PRICING & DEPOSIT',
+                          pgs.length,
+                          isDark,
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildDataCell(
+                                  label: 'Monthly Rent',
+                                  value: CurrencyFormatter.format(
+                                    pg.monthlyRent,
+                                  ),
+                                  isHighlighted: true,
+                                  isDark: isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildDataCell(
+                                  label: 'Security Deposit',
+                                  value: CurrencyFormatter.format(
+                                    pg.securityDeposit,
+                                  ),
+                                  isDark: isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+
+                        // 3. Accommodation Specs
+                        _buildSectionHeaderRow(
+                          'ROOM & AMENITIES',
+                          pgs.length,
+                          isDark,
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildDataCell(
+                                  label: 'Sharing Types',
+                                  value: pg.sharingType,
+                                  isDark: isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildDataCell(
+                                  label: 'Food Plan',
+                                  value: pg.foodOption,
+                                  isDark: isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildDataCell(
+                                  label: 'Electricity',
+                                  value: pg.electricityOption,
+                                  isDark: isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildDataCell(
+                                  label: 'Minimum Stay',
+                                  value: pg.minimumStay,
+                                  isDark: isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+
+                        // 4. Amenities Checklist
+                        _buildSectionHeaderRow(
+                          'ESSENTIALS CHECKLIST',
+                          pgs.length,
+                          isDark,
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildChecklistCell(
+                                  'Wi-Fi',
+                                  pg.amenities.contains('Wi-Fi'),
+                                  isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildChecklistCell(
+                                  'Air Conditioning',
+                                  pg.amenities.contains('AC'),
+                                  isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildChecklistCell(
+                                  '24/7 Security & CCTV',
+                                  pg.amenities.contains('24/7 security') ||
+                                      pg.amenities.contains('CCTV'),
+                                  isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map(
+                                (pg) => _buildChecklistCell(
+                                  'Washing Machine',
+                                  pg.amenities.contains('Washing machine'),
+                                  isDark,
+                                ),
+                              )
+                              .toList(),
+                        ),
+
+                        // 5. Direct View Action
+                        TableRow(
+                          decoration: BoxDecoration(color: context.appSurface),
+                          children: pgs
+                              .map((pg) => _buildActionCell(context, pg))
+                              .toList(),
+                        ),
+                      ],
                     ),
                   ),
                 ],

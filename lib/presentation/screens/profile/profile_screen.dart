@@ -648,7 +648,7 @@ class ProfileScreen extends StatelessWidget {
                 // Groq AI PG Assistant
                 _buildAccountTile(
                   icon: Icons.auto_awesome_rounded,
-                  title: 'Groq AI PG Assistant',
+                  title: appState.tr('ai_assistant'),
                   subtitle: '24x7 intelligent PG finder & local city guide',
                   iconColor: const Color(0xFFA855F7),
                   isDark: isDark,
@@ -662,7 +662,7 @@ class ProfileScreen extends StatelessWidget {
                 // Roommate Matcher Hub
                 _buildAccountTile(
                   icon: Icons.people_alt_rounded,
-                  title: 'Roommate Matcher Hub',
+                  title: appState.tr('find_roommates'),
                   subtitle:
                       'Find compatible flatmates by college, diet & habits',
                   iconColor: AppColors.teal,
@@ -685,7 +685,7 @@ class ProfileScreen extends StatelessWidget {
                 // Side-by-Side Comparison
                 _buildAccountTile(
                   icon: Icons.compare_arrows_rounded,
-                  title: 'PG Comparison Matrix',
+                  title: appState.tr('compare_pgs'),
                   subtitle:
                       '${appState.comparePGIds.length} properties selected for comparison',
                   iconColor: AppColors.marigold,
@@ -707,7 +707,7 @@ class ProfileScreen extends StatelessWidget {
                 // Weekly Tiffin & Food Menu
                 _buildAccountTile(
                   icon: Icons.restaurant_menu_rounded,
-                  title: 'Weekly Tiffin & Meal Menu',
+                  title: appState.tr('tiffin_menu'),
                   subtitle: '7-day breakfast, lunch & dinner with Jain options',
                   iconColor: const Color(0xFFE2A63B),
                   isDark: isDark,
@@ -721,7 +721,7 @@ class ProfileScreen extends StatelessWidget {
                 // Safety & SOS Center
                 _buildAccountTile(
                   icon: Icons.shield_rounded,
-                  title: 'Safety & Emergency SOS',
+                  title: appState.tr('safety_sos'),
                   subtitle:
                       '1-tap GPS dispatch, 1091 helpline & police directory',
                   iconColor: AppColors.error,
@@ -736,7 +736,7 @@ class ProfileScreen extends StatelessWidget {
                 // Resident Community Q&A
                 _buildAccountTile(
                   icon: Icons.forum_rounded,
-                  title: 'Resident Community Q&A',
+                  title: appState.tr('community_qa'),
                   subtitle: 'Real questions & answers from verified residents',
                   iconColor: AppColors.teal,
                   isDark: isDark,
@@ -750,7 +750,7 @@ class ProfileScreen extends StatelessWidget {
                 // Digital Rental Agreement & Invoices
                 _buildAccountTile(
                   icon: Icons.receipt_long_rounded,
-                  title: 'Rental Agreement & Invoices',
+                  title: appState.tr('rental_agreement'),
                   subtitle: 'Signed tenancy contracts & monthly HRA receipts',
                   iconColor: AppColors.navy,
                   isDark: isDark,

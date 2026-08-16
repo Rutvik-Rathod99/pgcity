@@ -417,22 +417,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: const [AppColors.softShadow],
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.auto_awesome_rounded,
                             size: 14,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
-                            'AI Assistant',
-                            style: TextStyle(
+                            state.tr('ai_assistant'),
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
-                              fontFamily: 'Inter',
                             ),
                           ),
                         ],
@@ -473,14 +472,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Roommates',
+                            state.tr('find_roommates'),
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                               color: isDark
                                   ? const Color(0xFF38BDF8)
                                   : AppColors.teal,
-                              fontFamily: 'Inter',
                             ),
                           ),
                         ],
@@ -521,14 +519,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Tiffin Menu',
+                            state.tr('tiffin_menu'),
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                               color: isDark
                                   ? AppColors.marigold
                                   : AppColors.marigoldDark,
-                              fontFamily: 'Inter',
                             ),
                           ),
                         ],
@@ -537,7 +534,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(width: 8),
 
-                  // 4. Safety SOS Chip
+                  // 4. Women Safety & Emergency SOS Chip
                   GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
@@ -553,26 +550,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         vertical: 7,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.error.withAlpha(25),
+                        color: isDark
+                            ? const Color(0xFF3B1414)
+                            : AppColors.error.withAlpha(30),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: AppColors.error),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.shield_rounded,
                             size: 14,
                             color: AppColors.error,
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text(
-                            'Safety SOS',
+                            state.tr('safety_sos'),
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.error,
-                              fontFamily: 'Inter',
+                              color: isDark
+                                  ? const Color(0xFFFCA5A5)
+                                  : AppColors.error,
                             ),
                           ),
                         ],

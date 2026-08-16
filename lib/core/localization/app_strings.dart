@@ -94,6 +94,18 @@ class AppStrings {
       'sign_in_apple': 'Sign in with Apple',
       'create_account': 'Create Account',
       'skip_guest': 'Skip & Explore as Guest →',
+
+      // Power Ecosystem
+      'ai_assistant': 'AI Assistant',
+      'tiffin_menu': 'Weekly Meal Menu',
+      'safety_sos': 'Safety & Emergency SOS',
+      'community_qa': 'Resident Community Q&A',
+      'compare_pgs': 'Compare PGs',
+      'find_roommates': 'Find Roommates',
+      'rent_calculator': 'Rent Calculator',
+      'rental_agreement': 'Tenancy Agreement & HRA',
+      'chat_manager': 'Chat with Manager',
+      'ask_ai_hint': 'Ask about PGs, rent, food, locality...',
     },
     'gu': {
       // Navigation
@@ -175,6 +187,18 @@ class AppStrings {
       'sign_in_apple': 'Apple ID સાથે સાઇન ઇન',
       'create_account': 'નવું એકાઉન્ટ બનાવો',
       'skip_guest': 'મહેમાન તરીકે આગળ વધો →',
+
+      // Power Ecosystem
+      'ai_assistant': 'એઆઈ આસિસ્ટન્ટ',
+      'tiffin_menu': 'સાપ્તાહિક ભોજન મેનુ',
+      'safety_sos': 'સુરક્ષા અને ઈમરજન્સી SOS',
+      'community_qa': 'રહેવાસી પ્રશ્નોત્તરી',
+      'compare_pgs': 'પીજી સરખામણી',
+      'find_roommates': 'રૂમમેટ શોધો',
+      'rent_calculator': 'ભાડા કેલ્ક્યુલેટર',
+      'rental_agreement': 'ભાડા કરાર અને HRA',
+      'chat_manager': 'મેનેજર સાથે ચેટ કરો',
+      'ask_ai_hint': 'પીજી, ભાડું, જમવાનું, વિસ્તાર વિશે પૂછો...',
     },
     'hi': {
       // Navigation
@@ -256,6 +280,18 @@ class AppStrings {
       'sign_in_apple': 'Apple ID से साइन इन',
       'create_account': 'नया खाता बनाएं',
       'skip_guest': 'अतिथि के रूप में आगे बढ़ें →',
+
+      // Power Ecosystem
+      'ai_assistant': 'एआई सहायक',
+      'tiffin_menu': 'साप्ताहिक भोजन मेनू',
+      'safety_sos': 'सुरक्षा एवं आपातकालीन SOS',
+      'community_qa': 'निवासी प्रश्नोत्तरी',
+      'compare_pgs': 'पीजी तुलना',
+      'find_roommates': 'रूममेट खोजें',
+      'rent_calculator': 'किराया कैलकुलेटर',
+      'rental_agreement': 'किराया अनुबंध एवं HRA',
+      'chat_manager': 'प्रबंधक से चैट करें',
+      'ask_ai_hint': 'पीजी, किराया, भोजन, इलाके के बारे में पूछें...',
     },
   };
 
