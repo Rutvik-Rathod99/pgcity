@@ -9,6 +9,8 @@ import 'package:pgcity/data/models/notification_model.dart';
 import 'package:pgcity/data/repositories/pg_repository.dart';
 import 'package:pgcity/data/repositories/user_repository.dart';
 import 'package:pgcity/data/repositories/enrollment_repository.dart';
+import 'package:pgcity/core/utils/app_logger.dart';
+import 'package:pgcity/core/services/crashlytics_service.dart';
 
 enum GenderFilter {
   all('All'),
@@ -333,30 +335,50 @@ class AppState extends ChangeNotifier {
 
   Future<void> loginWithPhoneOtp(String phone, String otp) async {
     _currentUser = await userRepository.loginWithPhoneOtp(phone, otp);
+    AppLogger.i('User signed in with Phone OTP: ${_currentUser?.mobileNumber}', tag: 'AUTH');
+    if (_currentUser != null) {
+      CrashlyticsService.instance.setUserId(_currentUser!.id);
+    }
     notifyListeners();
   }
 
   Future<void> loginWithPhonePassword(String phone, String password) async {
     _currentUser =
         await userRepository.loginWithPhonePassword(phone, password);
+    AppLogger.i('User signed in with Phone & Password: ${_currentUser?.mobileNumber}', tag: 'AUTH');
+    if (_currentUser != null) {
+      CrashlyticsService.instance.setUserId(_currentUser!.id);
+    }
     notifyListeners();
   }
 
   Future<void> loginWithEmailPassword(String email, String password) async {
     _currentUser =
         await userRepository.loginWithEmailPassword(email, password);
+    AppLogger.i('User signed in with Email & Password: ${_currentUser?.email}', tag: 'AUTH');
+    if (_currentUser != null) {
+      CrashlyticsService.instance.setUserId(_currentUser!.id);
+    }
     notifyListeners();
   }
 
   Future<void> loginWithGoogle({String? name, String? email}) async {
     _currentUser =
         await userRepository.loginWithGoogle(name: name, email: email);
+    AppLogger.i('User signed in with Google: ${_currentUser?.email}', tag: 'AUTH');
+    if (_currentUser != null) {
+      CrashlyticsService.instance.setUserId(_currentUser!.id);
+    }
     notifyListeners();
   }
 
   Future<void> loginWithApple({String? appleId, String? email}) async {
     _currentUser =
         await userRepository.loginWithApple(appleId: appleId, email: email);
+    AppLogger.i('User signed in with Apple ID (Guideline 5.1.1v)', tag: 'AUTH');
+    if (_currentUser != null) {
+      CrashlyticsService.instance.setUserId(_currentUser!.id);
+    }
     notifyListeners();
   }
 
@@ -376,28 +398,38 @@ class AppState extends ChangeNotifier {
       gender: gender,
       authProvider: authProvider,
     );
+    AppLogger.i('New resident registered: ${_currentUser?.fullName}', tag: 'AUTH');
+    if (_currentUser != null) {
+      CrashlyticsService.instance.setUserId(_currentUser!.id);
+    }
     notifyListeners();
   }
 
   Future<void> logoutUser() async {
+    AppLogger.i('User logged out. Resetting to guest.', tag: 'AUTH');
     await userRepository.logout();
     _currentUser = null;
+    CrashlyticsService.instance.setUserId('guest');
     notifyListeners();
   }
 
   Future<void> deleteAppleAccount() async {
+    AppLogger.w('Apple Account deleted & tokens revoked under Guideline 5.1.1(v)', tag: 'AUTH');
     await userRepository.deleteAppleAccount();
     _currentUser = null;
     await enrollmentRepository.clearAll();
     _enrollments = [];
+    CrashlyticsService.instance.setUserId('guest');
     notifyListeners();
   }
 
   Future<void> deleteAccount() async {
+    AppLogger.w('Account erased under DPDP Act 2023', tag: 'AUTH');
     await userRepository.clearUser();
     _currentUser = null;
     await enrollmentRepository.clearAll();
     _enrollments = [];
+    CrashlyticsService.instance.setUserId('guest');
     notifyListeners();
   }
 

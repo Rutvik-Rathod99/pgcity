@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pgcity/core/constants/app_typography.dart';
 import 'package:pgcity/core/localization/app_strings.dart';
+import 'package:pgcity/core/services/crashlytics_service.dart';
+import 'package:pgcity/core/utils/app_logger.dart';
 import 'package:pgcity/data/models/pg_model.dart';
 import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
@@ -255,6 +257,35 @@ void main() {
       expect(appState.appVersion, '1.0.0');
       expect(appState.appBuildNumber, '100');
       expect(appState.appFullVersion, 'v1.0.0 (Build 100)');
+    });
+
+    test('AppLogger & Firebase Crashlytics logging pipeline', () {
+      AppLogger.clear();
+      expect(AppLogger.logs.isEmpty, true);
+
+      AppLogger.d('Debug level test message', tag: 'TEST');
+      AppLogger.i('Info level test message', tag: 'TEST');
+      AppLogger.w('Warning level test message', tag: 'TEST');
+      AppLogger.e('Error level test message', tag: 'TEST', error: 'Sample Error');
+
+      expect(AppLogger.logs.length, 4);
+      expect(AppLogger.logs.any((l) => l.level == AppLogLevel.error), true);
+
+      final export = AppLogger.exportLogsAsString();
+      expect(export.contains('=== PGCITY APPLICATION LOG EXPORT ==='), true);
+      expect(export.contains('Sample Error'), true);
+
+      // Crashlytics pipeline verification
+      final crashlytics = CrashlyticsService.instance;
+      crashlytics.clearReports();
+      crashlytics.setUserId('usr_test_99');
+      crashlytics.setCustomKey('test_key', 'test_value');
+      crashlytics.log('Test Breadcrumb');
+      crashlytics.simulateNonFatalError();
+
+      expect(crashlytics.currentUserId, 'usr_test_99');
+      expect(crashlytics.recordedReports.isNotEmpty, true);
+      expect(crashlytics.breadcrumbs.any((b) => b.contains('Test Breadcrumb')), true);
     });
   });
 }

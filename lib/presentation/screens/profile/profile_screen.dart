@@ -14,6 +14,7 @@ import 'terms_conditions_modal.dart';
 import 'in_app_rating_modal.dart';
 import 'theme_font_settings_modal.dart';
 import 'package:pgcity/presentation/screens/admin/admin_dashboard_screen.dart';
+import 'package:pgcity/presentation/screens/admin/app_logger_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AppState appState;
@@ -666,6 +667,26 @@ class ProfileScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) =>
                             AdminDashboardScreen(appState: appState),
+                      ),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1,
+                  color: isDark ? const Color(0xFF334155) : AppColors.line,
+                ),
+
+                // App Logger & Crashlytics Diagnostics
+                _buildAccountTile(
+                  icon: Icons.bug_report_outlined,
+                  title: 'App Logger & Crashlytics',
+                  subtitle: 'Live logs buffer & Firebase error pipeline',
+                  isDark: isDark,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AppLoggerScreen(),
                       ),
                     );
                   },

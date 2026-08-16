@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'core/services/crashlytics_service.dart';
 import 'core/theme/app_theme.dart';
+import 'core/utils/app_logger.dart';
 import 'data/repositories/pg_repository.dart';
 import 'data/repositories/user_repository.dart';
 import 'data/repositories/enrollment_repository.dart';
@@ -11,7 +13,11 @@ import 'presentation/screens/main_navigation_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set system overlay style
+  // 1. Initialize Firebase Crashlytics error interception
+  CrashlyticsService.instance.initialize();
+  AppLogger.i('PGCity Ahmedabad application launching...', tag: 'STARTUP');
+
+  // 2. Set system overlay style
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -21,7 +27,7 @@ void main() async {
     ),
   );
 
-  // Initialize persistent local storage
+  // 3. Initialize persistent local storage
   final prefs = await SharedPreferences.getInstance();
 
   final pgRepository = PGRepository(prefs);
@@ -34,6 +40,8 @@ void main() async {
     enrollmentRepository: enrollmentRepository,
     prefs: prefs,
   );
+
+  AppLogger.i('All repositories and AppState initialized.', tag: 'STATE');
 
   runApp(PGCityApp(appState: appState));
 }
