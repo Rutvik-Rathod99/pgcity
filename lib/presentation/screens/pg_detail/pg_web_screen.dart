@@ -875,29 +875,45 @@ class PGWebScreen extends StatelessWidget {
 
   IconData _getAmenityIcon(String name) {
     final lower = name.toLowerCase();
-    if (lower.contains('wi-fi') || lower.contains('wifi'))
+    if (lower.contains('wi-fi') || lower.contains('wifi')) {
       return Icons.wifi_rounded;
-    if (lower.contains('food') || lower.contains('meal'))
+    }
+    if (lower.contains('food') || lower.contains('meal')) {
       return Icons.restaurant_rounded;
-    if (lower.contains('ac') || lower.contains('air'))
+    }
+    if (lower.contains('ac') || lower.contains('air')) {
       return Icons.ac_unit_rounded;
-    if (lower.contains('backup') || lower.contains('power'))
+    }
+    if (lower.contains('backup') || lower.contains('power')) {
       return Icons.bolt_rounded;
-    if (lower.contains('security') || lower.contains('guard'))
+    }
+    if (lower.contains('security') || lower.contains('guard')) {
       return Icons.shield_rounded;
-    if (lower.contains('parking')) return Icons.local_parking_rounded;
-    if (lower.contains('washing') || lower.contains('laundry'))
+    }
+    if (lower.contains('parking')) {
+      return Icons.local_parking_rounded;
+    }
+    if (lower.contains('washing') || lower.contains('laundry')) {
       return Icons.local_laundry_service_rounded;
-    if (lower.contains('cctv')) return Icons.videocam_rounded;
-    if (lower.contains('study') || lower.contains('table'))
+    }
+    if (lower.contains('cctv')) {
+      return Icons.videocam_rounded;
+    }
+    if (lower.contains('study') || lower.contains('table')) {
       return Icons.desk_rounded;
-    if (lower.contains('water') || lower.contains('geyser'))
+    }
+    if (lower.contains('water') || lower.contains('geyser')) {
       return Icons.water_drop_rounded;
-    if (lower.contains('refrigerator') || lower.contains('fridge'))
+    }
+    if (lower.contains('refrigerator') || lower.contains('fridge')) {
       return Icons.kitchen_rounded;
-    if (lower.contains('common') || lower.contains('lounge'))
+    }
+    if (lower.contains('common') || lower.contains('lounge')) {
       return Icons.weekend_rounded;
-    if (lower.contains('bath')) return Icons.bathtub_rounded;
+    }
+    if (lower.contains('bath')) {
+      return Icons.bathtub_rounded;
+    }
     return Icons.check_circle_outline_rounded;
   }
 }
