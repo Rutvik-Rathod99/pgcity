@@ -20,29 +20,59 @@ class PGAiAssistantScreen extends StatefulWidget {
   State<PGAiAssistantScreen> createState() => _PGAiAssistantScreenState();
 }
 
-class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
+class _PGAiAssistantScreenState extends State<PGAiAssistantScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
   final List<AiChatMessage> _messages = [];
   bool _isLoading = false;
+  bool _hasText = false;
 
-  final List<String> _quickPrompts = [
-    '🏢 Best Girls PG in Navrangpura under ₹8,000',
-    '🍲 Find PGs with Pure Veg & Jain food',
-    '🎓 Top student PGs near LDCE & CEPT',
-    '💡 Explain deposit & notice period rules',
-    '⚡ Boys PG on SG Highway with Wi-Fi & AC',
+  final List<Map<String, dynamic>> _quickPrompts = [
+    {
+      'icon': Icons.female_rounded,
+      'text': 'Girls PG in Navrangpura under ₹8k',
+      'query':
+          'Show me the best Girls PG in Navrangpura under ₹8,000 with food',
+    },
+    {
+      'icon': Icons.restaurant_rounded,
+      'text': 'Pure Veg & Jain Meals',
+      'query': 'Which PGs provide pure veg and Jain food options?',
+    },
+    {
+      'icon': Icons.school_rounded,
+      'text': 'Near LDCE & CEPT University',
+      'query': 'Recommend top student PGs near LDCE and CEPT University',
+    },
+    {
+      'icon': Icons.receipt_long_rounded,
+      'text': 'Deposit & Notice Period Rules',
+      'query':
+          'Explain standard PG security deposit, notice period, and lock-in terms',
+    },
+    {
+      'icon': Icons.bolt_rounded,
+      'text': 'SG Highway Boys PG with AC',
+      'query':
+          'Best Boys PGs on SG Highway with high-speed Wi-Fi, AC, and food',
+    },
   ];
 
   @override
   void initState() {
     super.initState();
-    // Welcome message from AI
+    _textController.addListener(_onTextChanged);
+
+    // Initial welcome message
     _messages.add(
       AiChatMessage(
         id: 'ai_welcome',
         text:
-            '👋 **Hello! I am your PGCity AI Assistant, powered by Groq LLaMA 3.3.**\n\nI can help you find verified PGs across Ahmedabad & Gandhinagar, compare pricing, check food menus, calculate true rent, or answer local city questions.\n\nHow can I help you today?',
+            '👋 **Hello! I am your PGCity AI Assistant, powered by Groq LLaMA 3.3.**\n\n'
+            'I can help you find verified PGs across Ahmedabad & Gandhinagar, compare pricing, check food menus, calculate true rent, or answer local city questions.\n\n'
+            'How can I help you today?',
         isUser: false,
         timestamp: DateTime.now(),
       ),
@@ -55,10 +85,19 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
     }
   }
 
+  void _onTextChanged() {
+    final hasText = _textController.text.trim().isNotEmpty;
+    if (hasText != _hasText) {
+      setState(() => _hasText = hasText);
+    }
+  }
+
   @override
   void dispose() {
+    _textController.removeListener(_onTextChanged);
     _textController.dispose();
     _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -67,6 +106,8 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
     if (query.isEmpty || _isLoading) return;
 
     _textController.clear();
+    setState(() => _hasText = false);
+
     final userMsg = AiChatMessage(
       id: 'usr_${DateTime.now().millisecondsSinceEpoch}',
       text: query,
@@ -101,9 +142,9 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent + 80,
+          _scrollController.position.maxScrollExtent + 120,
           duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+          curve: Curves.easeOutCubic,
         );
       }
     });
@@ -116,19 +157,24 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
     return Scaffold(
       backgroundColor: context.appBg,
       appBar: AppBar(
-        backgroundColor: context.appBg,
+        backgroundColor: context.appSurface,
         elevation: 0,
+        scrolledUnderElevation: 1,
+        shadowColor: Colors.black12,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_rounded,
+            Icons.arrow_back_ios_new_rounded,
             color: isDark ? Colors.white : AppColors.ink,
+            size: 18,
           ),
           onPressed: () => Navigator.pop(context),
         ),
+        titleSpacing: 0,
         title: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(6),
+              width: 38,
+              height: 38,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [
@@ -136,53 +182,108 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
                     Color(0xFFA855F7),
                     Color(0xFFEC4899),
                   ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF6366F1).withAlpha(80),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              child: const Icon(
-                Icons.auto_awesome_rounded,
-                color: Colors.white,
-                size: 16,
+              child: const Center(
+                child: Icon(
+                  Icons.auto_awesome_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
             ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'PGCity AI Assistant',
-                  style: AppTypography.titleMedium(
-                    color: isDark ? Colors.white : AppColors.ink,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'PGCity AI',
+                        style: AppTypography.titleMedium(
+                          color: isDark ? Colors.white : AppColors.ink,
+                        ).copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF6366F1).withAlpha(30),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: const Color(0xFF6366F1).withAlpha(80),
+                            width: 0.8,
+                          ),
+                        ),
+                        child: const Text(
+                          'LLaMA 3.3',
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF6366F1),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Text(
-                  'Groq LLaMA 3.3 · Online',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      Container(
+                        width: 7,
+                        height: 7,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF10B981),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        'Online · Real-time PG Data',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? Colors.white60 : AppColors.inkSoft,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
         actions: [
           IconButton(
             icon: Icon(
-              Icons.delete_outline_rounded,
-              color: isDark ? Colors.white60 : AppColors.inkSoft,
-              size: 20,
+              Icons.refresh_rounded,
+              color: isDark ? Colors.white70 : AppColors.inkSoft,
+              size: 22,
             ),
-            tooltip: 'Clear Chat',
+            tooltip: 'Reset Conversation',
             onPressed: () {
               setState(() {
                 _messages.clear();
                 _messages.add(
                   AiChatMessage(
-                    id: 'ai_welcome_new',
+                    id: 'ai_welcome_reset',
                     text:
-                        '✨ Chat cleared. How can I help you find your ideal PG in Ahmedabad?',
+                        '✨ Conversation reset. Ask me anything about student & professional PGs in Ahmedabad!',
                     isUser: false,
                     timestamp: DateTime.now(),
                   ),
@@ -190,41 +291,68 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
               });
             },
           ),
+          const SizedBox(width: 4),
         ],
       ),
       body: Column(
         children: [
-          // Quick Prompts Horizontal Bar
+          // Quick Prompts Carousel
           Container(
-            height: 42,
-            margin: const EdgeInsets.symmetric(vertical: 6),
+            height: 44,
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            decoration: BoxDecoration(
+              color: context.appSurface.withAlpha(180),
+              border: Border(
+                bottom: BorderSide(color: context.appBorder, width: 0.8),
+              ),
+            ),
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               scrollDirection: Axis.horizontal,
               itemCount: _quickPrompts.length,
               separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, idx) {
-                final prompt = _quickPrompts[idx];
-                return GestureDetector(
-                  onTap: () => _sendMessage(prompt),
+                final item = _quickPrompts[idx];
+                return InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () => _sendMessage(item['query'] as String),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
-                      vertical: 8,
+                      vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
+                      color: isDark
+                          ? const Color(0xFF1E293B)
+                          : const Color(0xFFF1F5F9),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: context.appBorder),
-                      boxShadow: const [AppColors.softShadow],
-                    ),
-                    child: Text(
-                      prompt,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.white70 : AppColors.ink,
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
+                        width: 1,
                       ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          item['icon'] as IconData,
+                          size: 13,
+                          color: const Color(0xFF6366F1),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          item['text'] as String,
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w600,
+                            color: isDark
+                                ? const Color(0xFFE2E8F0)
+                                : AppColors.ink,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -232,11 +360,11 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
             ),
           ),
 
-          // Messages List
+          // Message Thread
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
-              padding: const EdgeInsets.fromLTRB(14, 8, 14, 16),
+              padding: const EdgeInsets.fromLTRB(14, 16, 14, 16),
               itemCount: _messages.length + (_isLoading ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == _messages.length && _isLoading) {
@@ -248,73 +376,159 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
             ),
           ),
 
-          // Input Bar
-          Container(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-            decoration: BoxDecoration(
-              color: context.appSurface,
-              border: Border(top: BorderSide(color: context.appBorder)),
-            ),
-            child: SafeArea(
-              top: false,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF0F172A)
-                            : AppColors.cream,
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: context.appBorder),
-                      ),
+          // Redesigned Integrated Text Input Box
+          _buildInputBar(isDark),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputBar(bool isDark) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+      decoration: BoxDecoration(
+        color: context.appSurface,
+        border: Border(top: BorderSide(color: context.appBorder, width: 0.8)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(isDark ? 30 : 10),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // Text Input Pill Container with perfectly fit padding
+            Expanded(
+              child: Container(
+                constraints: const BoxConstraints(
+                  minHeight: 46,
+                  maxHeight: 120,
+                ),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? const Color(0xFF0F172A)
+                      : const Color(0xFFF8FAFC),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: _focusNode.hasFocus
+                        ? const Color(0xFF6366F1)
+                        : (isDark
+                              ? const Color(0xFF334155)
+                              : const Color(0xFFCBD5E1)),
+                    width: 1.2,
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      size: 18,
+                      color: isDark ? Colors.white38 : AppColors.inkSoft,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
                       child: TextField(
                         controller: _textController,
+                        focusNode: _focusNode,
                         textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.multiline,
                         minLines: 1,
                         maxLines: 4,
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 13.5,
+                          height: 1.35,
                           color: isDark ? Colors.white : AppColors.ink,
+                          fontWeight: FontWeight.w400,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Ask AI about PGs, rent, food, areas...',
+                          hintText: 'Ask about PGs, rent, food, locality...',
                           hintStyle: TextStyle(
-                            fontSize: 12,
+                            fontSize: 13,
                             color: isDark ? Colors.white38 : AppColors.inkSoft,
                           ),
                           border: InputBorder.none,
+                          isDense: true,
                           contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10,
+                            vertical: 12,
                           ),
                         ),
-                        onSubmitted: _sendMessage,
+                        onSubmitted: (val) => _sendMessage(val),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xFF6366F1), Color(0xFFA855F7)],
+                    if (_hasText)
+                      GestureDetector(
+                        onTap: () {
+                          _textController.clear();
+                          setState(() => _hasText = false);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Icon(
+                            Icons.cancel_rounded,
+                            size: 16,
+                            color: isDark ? Colors.white38 : AppColors.inkSoft,
+                          ),
+                        ),
                       ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.send_rounded,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                      onPressed: () => _sendMessage(_textController.text),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(width: 10),
+
+            // Send Button
+            GestureDetector(
+              onTap: _hasText && !_isLoading
+                  ? () => _sendMessage(_textController.text)
+                  : null,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: _hasText
+                      ? const LinearGradient(
+                          colors: [Color(0xFF6366F1), Color(0xFFA855F7)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        )
+                      : null,
+                  color: _hasText
+                      ? null
+                      : (isDark
+                            ? const Color(0xFF1E293B)
+                            : const Color(0xFFE2E8F0)),
+                  boxShadow: _hasText
+                      ? [
+                          BoxShadow(
+                            color: const Color(0xFF6366F1).withAlpha(100),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_upward_rounded,
+                    color: _hasText
+                        ? Colors.white
+                        : (isDark ? Colors.white30 : AppColors.inkSoft),
+                    size: 22,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -324,7 +538,7 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
     final allPGs = widget.appState.allPGs;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: isUser
             ? CrossAxisAlignment.end
@@ -336,167 +550,284 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
                 : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // AI Avatar
               if (!isUser) ...[
                 Container(
-                  width: 28,
-                  height: 28,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
+                  width: 32,
+                  height: 32,
+                  margin: const EdgeInsets.only(top: 2),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
                       colors: [Color(0xFF6366F1), Color(0xFFA855F7)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF6366F1).withAlpha(60),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                  child: const Icon(
-                    Icons.auto_awesome_rounded,
-                    color: Colors.white,
-                    size: 14,
+                  child: const Center(
+                    child: Icon(
+                      Icons.auto_awesome_rounded,
+                      color: Colors.white,
+                      size: 16,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
               ],
+
+              // Message Body Bubble
               Flexible(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 11,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                   decoration: BoxDecoration(
                     color: isUser
-                        ? (isDark ? AppColors.teal : AppColors.navy)
-                        : (isDark ? const Color(0xFF1E293B) : AppColors.paper),
+                        ? const Color(0xFF6366F1)
+                        : (isDark ? const Color(0xFF1E293B) : Colors.white),
                     borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(16),
-                      topRight: const Radius.circular(16),
-                      bottomLeft: isUser
-                          ? const Radius.circular(16)
-                          : const Radius.circular(4),
-                      bottomRight: isUser
-                          ? const Radius.circular(4)
-                          : const Radius.circular(16),
+                      topLeft: Radius.circular(isUser ? 20 : 4),
+                      topRight: const Radius.circular(20),
+                      bottomLeft: const Radius.circular(20),
+                      bottomRight: Radius.circular(isUser ? 4 : 20),
                     ),
                     border: isUser
                         ? null
-                        : Border.all(color: context.appBorder),
-                    boxShadow: const [AppColors.softShadow],
+                        : Border.all(
+                            color: isDark
+                                ? const Color(0xFF334155)
+                                : const Color(0xFFE2E8F0),
+                            width: 1,
+                          ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(isDark ? 30 : 8),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      SelectableText(
                         msg.text,
                         style: TextStyle(
-                          fontSize: 13,
-                          height: 1.45,
+                          fontSize: 13.5,
+                          height: 1.5,
                           color: isUser
                               ? Colors.white
-                              : (isDark ? Colors.white : AppColors.ink),
+                              : (isDark
+                                    ? const Color(0xFFF1F5F9)
+                                    : const Color(0xFF1E293B)),
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Clipboard.setData(ClipboardData(text: msg.text));
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Message copied to clipboard'),
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
-                            },
-                            child: Icon(
-                              Icons.copy_rounded,
-                              size: 12,
+                          Text(
+                            _formatTime(msg.timestamp),
+                            style: TextStyle(
+                              fontSize: 10,
                               color: isUser
-                                  ? Colors.white60
+                                  ? Colors.white70
                                   : (isDark
                                         ? Colors.white38
                                         : AppColors.inkSoft),
                             ),
                           ),
+                          if (!isUser) ...[
+                            const SizedBox(width: 10),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(4),
+                              onTap: () {
+                                Clipboard.setData(
+                                  ClipboardData(text: msg.text),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Response copied to clipboard',
+                                    ),
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: Icon(
+                                  Icons.copy_rounded,
+                                  size: 13,
+                                  color: isDark
+                                      ? Colors.white38
+                                      : AppColors.inkSoft,
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
+
+              // User Avatar
               if (isUser) ...[
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 Container(
-                  width: 28,
-                  height: 28,
+                  width: 32,
+                  height: 32,
+                  margin: const EdgeInsets.only(top: 2),
                   decoration: BoxDecoration(
                     color: AppColors.marigold,
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(
-                    Icons.person_rounded,
-                    color: AppColors.navy,
-                    size: 16,
+                  child: const Center(
+                    child: Icon(
+                      Icons.person_rounded,
+                      color: AppColors.navy,
+                      size: 18,
+                    ),
                   ),
                 ),
               ],
             ],
           ),
 
-          // Render referenced PGs if any
+          // Referenced PG Recommendation Cards
           if (msg.referencedPGIds.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(left: 36),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
+              padding: const EdgeInsets.only(left: 42),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: msg.referencedPGIds.map((pgId) {
                   final matched = allPGs.where((p) => p.id == pgId).firstOrNull;
                   if (matched == null) return const SizedBox.shrink();
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => PGWebScreen(
-                            pg: matched,
-                            appState: widget.appState,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF0F3934)
-                            : AppColors.tealLight,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.teal),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.apartment_rounded,
-                            size: 14,
-                            color: AppColors.teal,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            '${matched.name} (View →)',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: isDark
-                                  ? const Color(0xFF38BDF8)
-                                  : AppColors.teal,
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(14),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PGWebScreen(
+                              pg: matched,
+                              appState: widget.appState,
                             ),
                           ),
-                        ],
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xFF0F172A)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: const Color(0xFF6366F1).withAlpha(100),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF6366F1).withAlpha(20),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                matched.photos.first,
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Container(
+                                      width: 48,
+                                      height: 48,
+                                      color: AppColors.navy,
+                                      child: const Icon(
+                                        Icons.apartment_rounded,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    matched.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                      color: isDark
+                                          ? Colors.white
+                                          : AppColors.ink,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    '${matched.locality} · ₹${matched.monthlyRent.toInt()}/mo',
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF6366F1),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF6366F1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'View',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(width: 2),
+                                  Icon(
+                                    Icons.arrow_forward_rounded,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -511,43 +842,64 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
 
   Widget _buildLoadingBubble(bool isDark) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 28,
-            height: 28,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
                 colors: [Color(0xFF6366F1), Color(0xFFA855F7)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(
-              Icons.auto_awesome_rounded,
-              color: Colors.white,
-              size: 14,
+            child: const Center(
+              child: Icon(
+                Icons.auto_awesome_rounded,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1E293B) : AppColors.paper,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: context.appBorder),
+              color: isDark ? const Color(0xFF1E293B) : Colors.white,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(4),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              border: Border.all(
+                color: isDark
+                    ? const Color(0xFF334155)
+                    : const Color(0xFFE2E8F0),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(isDark ? 30 : 8),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 14,
                   height: 14,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      isDark ? const Color(0xFF38BDF8) : AppColors.teal,
+                      Color(0xFF6366F1),
                     ),
                   ),
                 ),
@@ -555,9 +907,9 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
                 Text(
                   'Groq AI is thinking...',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.5,
                     fontStyle: FontStyle.italic,
-                    color: isDark ? Colors.white60 : AppColors.inkSoft,
+                    color: isDark ? Colors.white70 : AppColors.inkSoft,
                   ),
                 ),
               ],
@@ -566,5 +918,12 @@ class _PGAiAssistantScreenState extends State<PGAiAssistantScreen> {
         ],
       ),
     );
+  }
+
+  String _formatTime(DateTime dt) {
+    final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+    final minute = dt.minute.toString().padLeft(2, '0');
+    final period = dt.hour >= 12 ? 'PM' : 'AM';
+    return '$hour:$minute $period';
   }
 }

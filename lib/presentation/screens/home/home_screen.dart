@@ -86,27 +86,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: context.appBg,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => PGAiAssistantScreen(appState: state),
+      floatingActionButton: Container(
+        width: 52,
+        height: 52,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: const LinearGradient(
+            colors: [Color(0xFF6366F1), Color(0xFFA855F7), Color(0xFFEC4899)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF6366F1).withAlpha(100),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
-          );
-        },
-        backgroundColor: const Color(0xFF6366F1),
-        icon: const Icon(
-          Icons.auto_awesome_rounded,
-          color: Colors.white,
-          size: 18,
+          ],
         ),
-        label: const Text(
-          'Ask AI',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 13,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(26),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PGAiAssistantScreen(appState: state),
+                ),
+              );
+            },
+            child: const Center(
+              child: Icon(
+                Icons.auto_awesome_rounded,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
           ),
         ),
       ),
