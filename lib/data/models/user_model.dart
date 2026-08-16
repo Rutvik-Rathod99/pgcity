@@ -7,6 +7,18 @@ enum UserGender {
   const UserGender(this.label);
 }
 
+enum AuthProvider {
+  phoneOtp('Phone + OTP'),
+  phonePassword('Phone + Password'),
+  emailPassword('Email + Password'),
+  google('Google Sign-In'),
+  apple('Apple Sign-In'),
+  guest('Guest');
+
+  final String label;
+  const AuthProvider(this.label);
+}
+
 class UserModel {
   final String id;
   final String fullName;
@@ -14,14 +26,14 @@ class UserModel {
   final String email;
   final UserGender gender;
   final int age;
-  final String
-  occupation; // e.g. "XYZ College of Engineering" or "Software Engineer"
+  final String occupation; // e.g. "XYZ College of Engineering" or "Software Engineer"
   final String? profilePhoto;
   final bool isVerified;
   final DateTime? moveInDate;
   final String preferredSharing;
   final String currentCity;
   final String emergencyContact;
+  final AuthProvider authProvider;
   final DateTime createdAt;
 
   const UserModel({
@@ -38,8 +50,12 @@ class UserModel {
     this.preferredSharing = '2 Sharing',
     this.currentCity = 'Ahmedabad',
     this.emergencyContact = '',
+    this.authProvider = AuthProvider.phoneOtp,
     required this.createdAt,
   });
+
+  bool get isAppleUser => authProvider == AuthProvider.apple;
+  bool get isGoogleUser => authProvider == AuthProvider.google;
 
   String get initials {
     final parts = fullName.trim().split(' ');
@@ -63,6 +79,7 @@ class UserModel {
     String? preferredSharing,
     String? currentCity,
     String? emergencyContact,
+    AuthProvider? authProvider,
     DateTime? createdAt,
   }) {
     return UserModel(
@@ -79,6 +96,7 @@ class UserModel {
       preferredSharing: preferredSharing ?? this.preferredSharing,
       currentCity: currentCity ?? this.currentCity,
       emergencyContact: emergencyContact ?? this.emergencyContact,
+      authProvider: authProvider ?? this.authProvider,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -97,6 +115,7 @@ class UserModel {
     'preferredSharing': preferredSharing,
     'currentCity': currentCity,
     'emergencyContact': emergencyContact,
+    'authProvider': authProvider.name,
     'createdAt': createdAt.toIso8601String(),
   };
 
@@ -111,7 +130,7 @@ class UserModel {
         orElse: () => UserGender.male,
       ),
       age: json['age'] as int? ?? 21,
-      occupation: json['occupation'] as String,
+      occupation: json['occupation'] as String? ?? 'Student / Professional',
       profilePhoto: json['profilePhoto'] as String?,
       isVerified: json['isVerified'] as bool? ?? false,
       moveInDate: json['moveInDate'] != null
@@ -120,6 +139,10 @@ class UserModel {
       preferredSharing: json['preferredSharing'] as String? ?? '2 Sharing',
       currentCity: json['currentCity'] as String? ?? 'Ahmedabad',
       emergencyContact: json['emergencyContact'] as String? ?? '',
+      authProvider: AuthProvider.values.firstWhere(
+        (e) => e.name == json['authProvider'],
+        orElse: () => AuthProvider.phoneOtp,
+      ),
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }

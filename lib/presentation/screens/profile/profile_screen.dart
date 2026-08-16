@@ -4,7 +4,9 @@ import 'package:pgcity/core/constants/app_colors.dart';
 import 'package:pgcity/core/constants/app_typography.dart';
 import 'package:pgcity/core/utils/currency_formatter.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
+import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/presentation/controllers/app_state.dart';
+import 'package:pgcity/presentation/screens/auth/login_screen.dart';
 import 'edit_profile_sheet.dart';
 import 'privacy_policy_modal.dart';
 import 'help_support_modal.dart';
@@ -15,7 +17,18 @@ class ProfileScreen extends StatelessWidget {
 
   const ProfileScreen({super.key, required this.appState});
 
+  void _openLoginScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => LoginScreen(appState: appState)),
+    );
+  }
+
   void _openEditProfile(BuildContext context) {
+    if (!appState.isLoggedIn) {
+      _openLoginScreen(context);
+      return;
+    }
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -41,6 +54,114 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  void _confirmLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: AppColors.paper,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          'Log Out from PGCity?',
+          style: AppTypography.titleMedium(color: AppColors.ink),
+        ),
+        content: Text(
+          'You will be signed out on this device. You can explore PGs as a guest or sign in anytime.',
+          style: AppTypography.bodySmall(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await appState.logoutUser();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Logged out successfully.'),
+                    backgroundColor: AppColors.navy,
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.navy,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Log Out'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Apple-Specific Account Deletion (Apple App Store Review Guideline 5.1.1(v))
+  void _confirmDeleteAppleAccount(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: AppColors.paper,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            const Icon(Icons.apple_rounded, color: Colors.black, size: 24),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Delete Apple Account?',
+                style: AppTypography.titleMedium(color: AppColors.error),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Under Apple App Store Guideline 5.1.1(v) and the DPDP Act 2023:',
+              style: AppTypography.titleSmall(color: AppColors.ink),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '• Your Apple Sign-In authorization token will be permanently revoked.\n'
+              '• All profile information, saved bookings, unlocked owner contacts, and enrollment history will be erased from our servers immediately.\n'
+              '• This action is permanent and irreversible.',
+              style: AppTypography.bodySmall(color: AppColors.inkSoft),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await appState.deleteAppleAccount();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Apple ID account & tokens permanently deleted.'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Delete Apple Account'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _confirmDeleteAccount(BuildContext context) {
     showDialog(
       context: context,
@@ -61,15 +182,17 @@ class ProfileScreen extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              appState.logoutUser();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Account and data permanently erased.'),
-                  backgroundColor: AppColors.error,
-                ),
-              );
+              await appState.deleteAccount();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Account and data permanently erased.'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
@@ -85,6 +208,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = appState.currentUser;
+    final isLoggedIn = appState.isLoggedIn;
     final enrollments = appState.enrollments;
 
     return Scaffold(
@@ -117,89 +241,164 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 36),
         children: [
-          // 1. User Header with Initials (Matches Screen 6 in UI spec)
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.paper,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.line),
-              boxShadow: const [AppColors.softShadow],
-            ),
-            child: Row(
-              children: [
-                // Avatar Circle with Marigold Initials on Navy
-                Container(
-                  width: 54,
-                  height: 54,
-                  decoration: const BoxDecoration(
-                    color: AppColors.navy,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      user?.initials ?? 'G',
-                      style: AppTypography.displaySmall(
-                        color: AppColors.marigold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          // 1. User Header with Initials / Guest Banner
+          if (!isLoggedIn)
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: AppColors.navy,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [AppColors.softShadow],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              user?.fullName ?? 'Guest User',
-                              style: AppTypography.titleMedium(
-                                color: AppColors.ink,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          if (user?.isVerified == true) ...[
-                            const SizedBox(width: 6),
-                            const Icon(
-                              Icons.verified_rounded,
-                              size: 16,
-                              color: AppColors.teal,
-                            ),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        user?.mobileNumber ?? 'No phone saved',
-                        style: AppTypography.bodySmall(
-                          color: AppColors.inkSoft,
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.marigold,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.person_outline_rounded,
+                          color: AppColors.navy,
+                          size: 24,
                         ),
                       ),
-                      Text(
-                        user?.occupation ?? 'Student / Professional',
-                        style: AppTypography.bodySmall(color: AppColors.teal),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Guest Account',
+                              style: AppTypography.titleMedium(color: Colors.white),
+                            ),
+                            Text(
+                              'Sign in to save PGs and enroll',
+                              style: AppTypography.bodySmall(color: Colors.white70),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-                IconButton(
-                  onPressed: () => _openEditProfile(context),
-                  icon: const Icon(
-                    Icons.edit_outlined,
-                    size: 20,
-                    color: AppColors.navy,
+                  const SizedBox(height: 14),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => _openLoginScreen(context),
+                      icon: const Icon(Icons.login_rounded, size: 16),
+                      label: const Text('Sign In / Register with Mobile or Social ID'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.marigold,
+                        foregroundColor: AppColors.navy,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
                   ),
-                  tooltip: 'Edit Profile',
-                ),
-              ],
+                ],
+              ),
+            )
+          else
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.paper,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.line),
+                boxShadow: const [AppColors.softShadow],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      // Avatar Circle with Marigold Initials on Navy
+                      Container(
+                        width: 54,
+                        height: 54,
+                        decoration: const BoxDecoration(
+                          color: AppColors.navy,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            user?.initials ?? 'G',
+                            style: AppTypography.displaySmall(
+                              color: AppColors.marigold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    user?.fullName ?? 'Resident',
+                                    style: AppTypography.titleMedium(
+                                      color: AppColors.ink,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                if (user?.isVerified == true) ...[
+                                  const SizedBox(width: 6),
+                                  const Icon(
+                                    Icons.verified_rounded,
+                                    size: 16,
+                                    color: AppColors.teal,
+                                  ),
+                                ],
+                              ],
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              user?.mobileNumber.isNotEmpty == true
+                                  ? user!.mobileNumber
+                                  : (user?.email ?? 'No contact saved'),
+                              style: AppTypography.bodySmall(
+                                color: AppColors.inkSoft,
+                              ),
+                            ),
+                            Text(
+                              user?.occupation ?? 'Student / Professional',
+                              style: AppTypography.bodySmall(
+                                color: AppColors.teal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => _openEditProfile(context),
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                          size: 20,
+                          color: AppColors.navy,
+                        ),
+                        tooltip: 'Edit Profile',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+
+                  // Auth Provider Tag Chip
+                  _buildAuthProviderBadge(user?.authProvider ?? AuthProvider.phoneOtp),
+                ],
+              ),
             ),
-          ),
           const SizedBox(height: 24),
 
-          // 2. My Enrollments Section (Matches Screen 6 in UI spec)
+          // 2. My Enrollments Section
           Text(
             'My Enrollments (${enrollments.length})',
             style: AppTypography.titleLarge(color: AppColors.ink),
@@ -331,7 +530,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           const SizedBox(height: 24),
 
-          // 3. Account Settings List (Matches Screen 6 in UI spec)
+          // 3. Account Settings List
           Text(
             'Account & Settings',
             style: AppTypography.titleLarge(color: AppColors.ink),
@@ -346,11 +545,20 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildAccountTile(
-                  icon: Icons.person_outline_rounded,
-                  title: 'Edit Profile Information',
-                  onTap: () => _openEditProfile(context),
-                ),
+                if (!isLoggedIn)
+                  _buildAccountTile(
+                    icon: Icons.login_rounded,
+                    title: 'Sign In / Register',
+                    titleColor: AppColors.marigoldDark,
+                    iconColor: AppColors.marigoldDark,
+                    onTap: () => _openLoginScreen(context),
+                  )
+                else
+                  _buildAccountTile(
+                    icon: Icons.person_outline_rounded,
+                    title: 'Edit Profile Information',
+                    onTap: () => _openEditProfile(context),
+                  ),
                 const Divider(height: 1, color: AppColors.line),
                 _buildAccountTile(
                   icon: Icons.headset_mic_outlined,
@@ -377,17 +585,43 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                 ),
+
+                // Apple-Only Account Deletion (Apple App Store Guideline 5.1.1(v))
+                if (user?.isAppleUser == true) ...[
+                  const Divider(height: 1, color: AppColors.line),
+                  _buildAccountTile(
+                    icon: Icons.apple_rounded,
+                    title: 'Delete Apple Account (Apple Guideline 5.1.1v)',
+                    titleColor: AppColors.error,
+                    iconColor: Colors.black,
+                    onTap: () => _confirmDeleteAppleAccount(context),
+                  ),
+                ] else if (isLoggedIn) ...[
+                  const Divider(height: 1, color: AppColors.line),
+                  _buildAccountTile(
+                    icon: Icons.delete_outline_rounded,
+                    title: 'Delete Account (Right to Erasure)',
+                    titleColor: AppColors.error,
+                    iconColor: AppColors.error,
+                    onTap: () => _confirmDeleteAccount(context),
+                  ),
+                ],
+
+                // Logout Option
+                if (isLoggedIn) ...[
+                  const Divider(height: 1, color: AppColors.line),
+                  _buildAccountTile(
+                    icon: Icons.logout_rounded,
+                    title: 'Log Out',
+                    titleColor: AppColors.error,
+                    iconColor: AppColors.error,
+                    onTap: () => _confirmLogout(context),
+                  ),
+                ],
+
                 const Divider(height: 1, color: AppColors.line),
                 _buildAccountTile(
-                  icon: Icons.delete_outline_rounded,
-                  title: 'Delete Account (Right to Erasure)',
-                  titleColor: AppColors.error,
-                  iconColor: AppColors.error,
-                  onTap: () => _confirmDeleteAccount(context),
-                ),
-                const Divider(height: 1, color: AppColors.line),
-                _buildAccountTile(
-                  icon: Icons.logout_rounded,
+                  icon: Icons.refresh_rounded,
                   title: 'Reset All Demo Data',
                   onTap: () async {
                     await appState.resetAllData();
@@ -415,6 +649,71 @@ class ProfileScreen extends StatelessWidget {
               style: AppTypography.monoLabel(
                 color: AppColors.inkSoft,
               ).copyWith(fontSize: 10),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAuthProviderBadge(AuthProvider provider) {
+    IconData icon;
+    String label;
+    Color bg;
+    Color fg;
+
+    switch (provider) {
+      case AuthProvider.apple:
+        icon = Icons.apple_rounded;
+        label = 'Signed in with Apple ID';
+        bg = Colors.black;
+        fg = Colors.white;
+        break;
+      case AuthProvider.google:
+        icon = Icons.g_mobiledata_rounded;
+        label = 'Signed in with Google';
+        bg = const Color(0xFF4285F4);
+        fg = Colors.white;
+        break;
+      case AuthProvider.phonePassword:
+        icon = Icons.lock_outline_rounded;
+        label = 'Phone & Password';
+        bg = AppColors.cream;
+        fg = AppColors.navy;
+        break;
+      case AuthProvider.emailPassword:
+        icon = Icons.email_outlined;
+        label = 'Email & Password';
+        bg = AppColors.cream;
+        fg = AppColors.navy;
+        break;
+      case AuthProvider.phoneOtp:
+      default:
+        icon = Icons.sms_outlined;
+        label = 'Mobile & SMS OTP';
+        bg = AppColors.cream;
+        fg = AppColors.teal;
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: fg),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: TextStyle(
+              color: fg,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Inter',
             ),
           ),
         ],

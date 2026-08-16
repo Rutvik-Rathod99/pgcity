@@ -248,9 +248,71 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get isLoggedIn => _userRepository.isLoggedIn() && _currentUser != null;
+
+  Future<void> loginWithPhoneOtp(String phone, String otp) async {
+    _currentUser = await _userRepository.loginWithPhoneOtp(phone, otp);
+    notifyListeners();
+  }
+
+  Future<void> loginWithPhonePassword(String phone, String password) async {
+    _currentUser = await _userRepository.loginWithPhonePassword(phone, password);
+    notifyListeners();
+  }
+
+  Future<void> loginWithEmailPassword(String email, String password) async {
+    _currentUser = await _userRepository.loginWithEmailPassword(email, password);
+    notifyListeners();
+  }
+
+  Future<void> loginWithGoogle({String? name, String? email}) async {
+    _currentUser = await _userRepository.loginWithGoogle(name: name, email: email);
+    notifyListeners();
+  }
+
+  Future<void> loginWithApple({String? appleId, String? email}) async {
+    _currentUser = await _userRepository.loginWithApple(appleId: appleId, email: email);
+    notifyListeners();
+  }
+
+  Future<void> registerUser({
+    required String fullName,
+    required String mobileNumber,
+    required String email,
+    required String occupation,
+    required UserGender gender,
+    required AuthProvider authProvider,
+  }) async {
+    _currentUser = await _userRepository.registerUser(
+      fullName: fullName,
+      mobileNumber: mobileNumber,
+      email: email,
+      occupation: occupation,
+      gender: gender,
+      authProvider: authProvider,
+    );
+    notifyListeners();
+  }
+
   Future<void> logoutUser() async {
+    await _userRepository.logout();
+    _currentUser = null;
+    notifyListeners();
+  }
+
+  Future<void> deleteAppleAccount() async {
+    await _userRepository.deleteAppleAccount();
+    _currentUser = null;
+    await _enrollmentRepository.clearAll();
+    _enrollments = [];
+    notifyListeners();
+  }
+
+  Future<void> deleteAccount() async {
     await _userRepository.clearUser();
     _currentUser = null;
+    await _enrollmentRepository.clearAll();
+    _enrollments = [];
     notifyListeners();
   }
 

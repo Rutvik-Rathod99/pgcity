@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pgcity/data/models/pg_model.dart';
+import 'package:pgcity/data/models/user_model.dart';
 import 'package:pgcity/data/models/enrollment_model.dart';
 import 'package:pgcity/data/repositories/pg_repository.dart';
 import 'package:pgcity/data/repositories/user_repository.dart';
@@ -147,6 +148,55 @@ void main() {
       appState.requestOTP('+91 98765 43210');
       expect(appState.verifyOTP('482100'), true);
       expect(appState.verifyOTP('000000'), false);
+    });
+
+    test('Authentication: Mobile + OTP login and state updates', () async {
+      await appState.loginWithPhoneOtp('9876543210', '482100');
+      expect(appState.isLoggedIn, true);
+      expect(appState.currentUser?.mobileNumber.contains('9876543210'), true);
+      expect(appState.currentUser?.authProvider, AuthProvider.phoneOtp);
+    });
+
+    test('Authentication: Mobile + Password login', () async {
+      await appState.loginWithPhonePassword('9123456780', 'secretpass');
+      expect(appState.isLoggedIn, true);
+      expect(appState.currentUser?.authProvider, AuthProvider.phonePassword);
+    });
+
+    test('Authentication: Email + Password login', () async {
+      await appState.loginWithEmailPassword('resident@pgcity.in', 'securepass');
+      expect(appState.isLoggedIn, true);
+      expect(appState.currentUser?.email, 'resident@pgcity.in');
+      expect(appState.currentUser?.authProvider, AuthProvider.emailPassword);
+    });
+
+    test('Authentication: Google Sign-In simulation', () async {
+      await appState.loginWithGoogle(name: 'Google Student', email: 'student@gmail.com');
+      expect(appState.isLoggedIn, true);
+      expect(appState.currentUser?.fullName, 'Google Student');
+      expect(appState.currentUser?.isGoogleUser, true);
+      expect(appState.currentUser?.authProvider, AuthProvider.google);
+    });
+
+    test('Authentication: Apple Sign-In simulation and Apple account deletion', () async {
+      await appState.loginWithApple(appleId: 'apple_sub_12345', email: 'apple.user@icloud.com');
+      expect(appState.isLoggedIn, true);
+      expect(appState.currentUser?.isAppleUser, true);
+      expect(appState.currentUser?.authProvider, AuthProvider.apple);
+
+      // Test Apple-Specific account deletion (Apple Guideline 5.1.1(v))
+      await appState.deleteAppleAccount();
+      expect(appState.isLoggedIn, false);
+      expect(appState.currentUser, null);
+    });
+
+    test('Authentication: Logout resets session to guest state', () async {
+      await appState.loginWithGoogle();
+      expect(appState.isLoggedIn, true);
+
+      await appState.logoutUser();
+      expect(appState.isLoggedIn, false);
+      expect(appState.currentUser, null);
     });
   });
 }
