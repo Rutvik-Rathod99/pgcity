@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGCity — Product Requirements Document</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#141F29;
+  --navy-2:#1E303D;
+  --cream:#F6F1E6;
+  --paper:#FFFDF8;
+  --marigold:#E2A63B;
+  --marigold-dark:#8A5E13;
+  --teal:#2C6E63;
+  --teal-light:#E4EFEA;
+  --ink:#1A2229;
+  --ink-soft:#5B6672;
+  --line:#E1D8C4;
+  --line-dark:#33475A;
+  --radius:14px;
+  --sans:'Inter',system-ui,sans-serif;
+  --serif:'Fraunces',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --maxw:640px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:var(--teal)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+/* progress bar */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--marigold);z-index:100;width:0%;transition:width .1s linear}
+
+/* top bar */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:var(--navy);
+  color:#fff;
+  border-bottom:1px solid var(--line-dark);
+}
+.topbar-inner{
+  max-width:var(--maxw);margin:0 auto;padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:700;font-size:1.15rem;letter-spacing:.01em;}
+.brand .pin{
+  width:20px;height:20px;border-radius:50% 50% 50% 0;
+  background:var(--marigold);transform:rotate(-45deg);
+  flex:none;
+}
+.menu-btn{
+  background:none;border:1px solid rgba(255,255,255,.25);color:#fff;
+  border-radius:10px;padding:8px 12px;font-family:var(--mono);font-size:.72rem;
+  letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:8px;
+}
+.menu-btn span.bars{display:inline-flex;flex-direction:column;gap:3px;}
+.menu-btn span.bars i{display:block;width:16px;height:2px;background:#fff;border-radius:2px;}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,15,20,.5);z-index:70;opacity:0;pointer-events:none;transition:opacity .25s;}
+.scrim.open{opacity:1;pointer-events:auto;}
+.drawer{
+  position:fixed;top:0;right:0;height:100%;width:88%;max-width:380px;
+  background:var(--navy-2);color:#fff;z-index:80;
+  transform:translateX(100%);transition:transform .3s ease;
+  overflow-y:auto;padding:20px 0 60px;
+  border-left:1px solid var(--line-dark);
+}
+.drawer.open{transform:translateX(0);}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:0 20px 16px;border-bottom:1px solid var(--line-dark);}
+.drawer-head strong{font-family:var(--serif);font-size:1.1rem;}
+.close-btn{background:none;border:none;color:#fff;font-size:1.4rem;line-height:1;padding:4px 8px;}
+.drawer-group{padding:16px 20px 4px;}
+.drawer-group h4{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--marigold);margin:0 0 10px;
+}
+.drawer a.toc-link{
+  display:flex;gap:10px;align-items:flex-start;padding:7px 0;color:#EDEAE0;
+  text-decoration:none;font-size:.92rem;border-left:2px dashed rgba(255,255,255,.18);
+  padding-left:14px;margin-left:5px;
+}
+.drawer a.toc-link .num{
+  font-family:var(--mono);color:var(--marigold);font-size:.75rem;min-width:26px;
+}
+.drawer a.toc-link.active{color:var(--marigold);}
+
+/* hero */
+.hero{padding:34px 0 8px;}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--teal);margin:0 0 10px;
+}
+h1.title{
+  font-family:var(--serif);font-weight:700;font-size:2.15rem;line-height:1.08;margin:0 0 6px;color:var(--ink);
+}
+.subtitle{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.05rem;color:var(--ink-soft);margin:0 0 18px;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.chip{
+  font-family:var(--mono);font-size:.72rem;padding:5px 11px;border-radius:20px;
+  background:var(--paper);border:1px solid var(--line);color:var(--ink-soft);
+}
+.chip.status{background:var(--teal-light);border-color:var(--teal);color:var(--teal);font-weight:600;}
+
+/* pin card - the signature marker-preview component, echoes section 11.2/11.5 of the doc */
+.pin-card{
+  background:var(--navy);color:#fff;border-radius:var(--radius);
+  padding:18px 18px 16px;margin:0 0 26px;position:relative;overflow:hidden;
+}
+.pin-card:before{
+  content:"";position:absolute;top:-30px;right:-30px;width:110px;height:110px;
+  border-radius:50%;background:rgba(226,166,59,.14);
+}
+.pin-card .pin-label{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--marigold);margin-bottom:8px;position:relative;
+}
+.pin-card p{margin:0;font-size:.98rem;line-height:1.55;position:relative;color:#EEEAE0;}
+.pin-card strong{color:#fff;}
+
+/* main content */
+main{padding-bottom:60px;}
+.part-divider{
+  max-width:var(--maxw);margin:52px auto 6px;padding:0 20px;
+  display:flex;align-items:center;gap:12px;
+}
+.part-divider .roman{
+  font-family:var(--serif);font-weight:700;color:var(--marigold-dark);font-size:1rem;
+}
+.part-divider .line{flex:1;height:1px;background:var(--line);}
+.part-divider h3{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0;
+}
+
+.doc-section{
+  max-width:var(--maxw);margin:0 auto;padding:26px 20px 26px 34px;
+  border-left:2px dashed var(--line);position:relative;
+  scroll-margin-top:70px;
+}
+.doc-section:before{
+  content:attr(data-num);
+  position:absolute;left:-15px;top:26px;
+  width:29px;height:29px;border-radius:50% 50% 50% 0;
+  background:var(--paper);border:2px solid var(--marigold);
+  transform:rotate(-45deg);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:600;font-size:.68rem;color:var(--marigold-dark);
+}
+.doc-section:before{
+  content:attr(data-num);
+}
+.doc-section .numwrap span{display:block;transform:rotate(45deg);}
+.sec-head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:12px;}
+.doc-section h2{
+  font-family:var(--serif);font-weight:700;font-size:1.35rem;margin:0;color:var(--ink);
+}
+.badge-new{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;font-weight:600;
+  background:var(--teal);color:#fff;padding:3px 8px;border-radius:5px;text-transform:uppercase;
+}
+.note{
+  font-size:.87rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);
+  border-left:3px solid var(--teal);padding:9px 12px;border-radius:8px;margin:10px 0 16px;
+}
+.doc-section h3{
+  font-family:var(--sans);font-weight:700;font-size:.98rem;margin:20px 0 8px;color:var(--ink);
+}
+.doc-section h4{
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--teal);margin:16px 0 6px;
+}
+.doc-section p{margin:0 0 12px;color:var(--ink);}
+.doc-section ul, .doc-section ol{margin:0 0 14px;padding-left:20px;}
+.doc-section li{margin-bottom:5px;}
+.doc-section blockquote{
+  font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--ink);
+  border-left:3px solid var(--marigold);padding:2px 0 2px 16px;margin:14px 0;
+}
+.callout{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;margin:14px 0;
+}
+.callout.warn{border-color:#C98C2E;background:#FBF2E1;}
+.callout.risk{border-color:#B5482E;background:#FBEBE6;}
+
+/* responsive tables */
+.rtable-wrap{margin:8px 0 18px;}
+table.rtable{
+  width:100%;border-collapse:collapse;background:var(--paper);border-radius:10px;overflow:hidden;
+  border:1px solid var(--line);font-size:.87rem;
+}
+table.rtable th{
+  background:var(--navy);color:#EDEAE0;text-align:left;padding:9px 12px;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;font-weight:500;
+}
+table.rtable td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+table.rtable tr:last-child td{border-bottom:none;}
+table.rtable tr:nth-child(even) td{background:#FBF8F0;}
+
+@media (max-width:640px){
+  table.rtable, table.rtable thead, table.rtable tbody, table.rtable th, table.rtable td, table.rtable tr{display:block;}
+  table.rtable thead{display:none;}
+  table.rtable tr{margin-bottom:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);}
+  table.rtable tr:nth-child(even){background:transparent;}
+  table.rtable td{
+    display:flex;justify-content:space-between;gap:14px;text-align:right;
+    padding:9px 12px;border-bottom:1px solid var(--line);background:transparent !important;
+  }
+  table.rtable td:last-child{border-bottom:none;}
+  table.rtable td:before{
+    content:attr(data-label);font-family:var(--mono);font-size:.66rem;text-transform:uppercase;
+    letter-spacing:.04em;color:var(--ink-soft);text-align:left;font-weight:500;flex:none;
+  }
+}
+
+/* priority pills */
+.prio-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0;}
+.prio-card{border-radius:var(--radius);padding:14px 16px;border:1px solid var(--line);background:var(--paper);}
+.prio-card h4{margin:0 0 8px;font-family:var(--sans);font-size:.85rem;text-transform:none;letter-spacing:0;}
+.prio-card.p0{border-left:4px solid var(--teal);}
+.prio-card.p0 h4{color:var(--teal);}
+.prio-card.p1{border-left:4px solid var(--marigold);}
+.prio-card.p1 h4{color:var(--marigold-dark);}
+.prio-card.p2{border-left:4px solid var(--ink-soft);}
+.prio-card.p2 h4{color:var(--ink-soft);}
+.prio-card ul{columns:2;column-gap:18px;margin:0;padding-left:16px;font-size:.85rem;}
+.prio-card li{break-inside:avoid;}
+
+/* glossary */
+dl.glossary dt{font-family:var(--serif);font-weight:700;color:var(--ink);margin-top:12px;}
+dl.glossary dd{margin:2px 0 0;color:var(--ink-soft);}
+
+/* footer / back to top */
+footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px 50px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.82rem;}
+.top-fab{
+  position:fixed;right:16px;bottom:20px;z-index:50;
+  background:var(--navy);color:#fff;border:none;border-radius:50%;width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  box-shadow:0 4px 14px rgba(20,31,41,.35);opacity:0;transform:translateY(10px);
+  transition:opacity .2s, transform .2s;pointer-events:none;
+}
+.top-fab.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="pin"></span>PGCity PRD</div>
+    <button class="menu-btn" id="menuBtn" aria-label="Open table of contents">
+      <span class="bars"><i></i><i></i><i></i></span> Contents
+    </button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="drawer" aria-label="Table of contents">
+  <div class="drawer-head">
+    <strong>Route through the doc</strong>
+    <button class="close-btn" id="closeBtn" aria-label="Close">&times;</button>
+  </div>
+
+  <div class="drawer-group">
+    <h4>Part I — Foundation</h4>
+    <a class="toc-link" href="#sec-1"><span class="num">01</span>Executive summary</a>
+    <a class="toc-link" href="#sec-2"><span class="num">02</span>Product overview</a>
+    <a class="toc-link" href="#sec-3"><span class="num">03</span>Problem statement</a>
+    <a class="toc-link" href="#sec-4"><span class="num">04</span>Product vision</a>
+    <a class="toc-link" href="#sec-5"><span class="num">05</span>Goals &amp; objectives</a>
+    <a class="toc-link" href="#sec-6"><span class="num">06</span>Target users &amp; personas</a>
+    <a class="toc-link" href="#sec-7"><span class="num">07</span>Competitive landscape</a>
+    <a class="toc-link" href="#sec-8"><span class="num">08</span>Scope</a>
+    <a class="toc-link" href="#sec-9"><span class="num">09</span>Assumptions &amp; constraints</a>
+  </div>
+  <div class="drawer-group">
+    <h4>Part II — Core experience</h4>
+    <a class="toc-link" href="#sec-10"><span class="num">10</span>App navigation</a>
+    <a class="toc-link" href="#sec-11"><span class="num">11</span>Home screen</a>
+    <a class="toc-link" href="#sec-12"><span class="num">12</span>PG Web Screen</a>
+    <a class="toc-link" href="#sec-13"><span class="num">13</span>Profile screen</a>
+  </div>
+  <div class="drawer-group">
+    <h4>Part III — Platform &amp; data</h4>
+    <a class="toc-link" href="#sec-14"><span class="num">14</span>Admin system</a>
+    <a class="toc-link" href="#sec-15"><span class="num">15</span>PG data model</a>
+    <a class="toc-link" href="#sec-16"><span class="num">16</span>Authentication</a>
+    <a class="toc-link" href="#sec-17"><span class="num">17</span>Notifications</a>
+    <a class="toc-link" href="#sec-18"><span class="num">18</span>App permissions</a>
+    <a class="toc-link" href="#sec-19"><span class="num">19</span>Monetization</a>
+    <a class="toc-link" href="#sec-20"><span class="num">20</span>Analytics</a>
+  </div>
+  <div class="drawer-group">
+    <h4>Part IV — Trust &amp; compliance</h4>
+    <a class="toc-link" href="#sec-21"><span class="num">21</span>Security, privacy &amp; compliance</a>
+    <a class="toc-link" href="#sec-22"><span class="num">22</span>Accessibility</a>
+    <a class="toc-link" href="#sec-23"><span class="num">23</span>Localization</a>
+    <a class="toc-link" href="#sec-24"><span class="num">24</span>Non-functional requirements</a>
+    <a class="toc-link" href="#sec-25"><span class="num">25</span>Empty &amp; error states</a>
+    <a class="toc-link" href="#sec-26"><span class="num">26</span>Support &amp; help</a>
+  </div>
+  <div class="drawer-group">
+    <h4>Part V — Delivery &amp; engineering</h4>
+    <a class="toc-link" href="#sec-27"><span class="num">27</span>User flows</a>
+    <a class="toc-link" href="#sec-28"><span class="num">28</span>MVP requirements checklist</a>
+    <a class="toc-link" href="#sec-29"><span class="num">29</span>Backend architecture</a>
+    <a class="toc-link" href="#sec-30"><span class="num">30</span>QA &amp; testing strategy</a>
+    <a class="toc-link" href="#sec-31"><span class="num">31</span>Release plan &amp; milestones</a>
+    <a class="toc-link" href="#sec-32"><span class="num">32</span>Risk register</a>
+  </div>
+  <div class="drawer-group">
+    <h4>Part VI — Vision &amp; reference</h4>
+    <a class="toc-link" href="#sec-33"><span class="num">33</span>Future roadmap</a>
+    <a class="toc-link" href="#sec-34"><span class="num">34</span>Success metrics</a>
+    <a class="toc-link" href="#sec-35"><span class="num">35</span>MVP priority</a>
+    <a class="toc-link" href="#sec-36"><span class="num">36</span>Long-term vision</a>
+    <a class="toc-link" href="#sec-37"><span class="num">37</span>Glossary</a>
+    <a class="toc-link" href="#sec-38"><span class="num">38</span>Appendix</a>
+  </div>
+</nav>
+
+<main>
+<div class="wrap hero" id="top">
+  <p class="eyebrow">Product requirements document</p>
+  <h1 class="title">PGCity</h1>
+  <p class="subtitle">PG Discovery &amp; Enrollment Platform</p>
+  <div class="meta-row">
+    <span class="chip status">v2.0 · Final, reviewed</span>
+    <span class="chip">Ready for engineering &amp; design handoff</span>
+    <span class="chip">16 August 2026</span>
+  </div>
+
+  <div class="pin-card">
+    <div class="pin-label">MVP in one line</div>
+    <p>A user can find a nearby PG on a map, explore it richly, <strong>unlock its contact number</strong> via a rewarded ad, and submit a verified enrollment request — all without re-typing their details after the first time.</p>
+  </div>
+
+  <p>PGCity is a mobile app (Android first, iOS later) that helps students and working professionals discover Paying Guest (PG) accommodation on an interactive map, explore each PG through a dedicated <strong>PG Web Screen</strong> (photos, 360&deg; tour, video, amenities, rules, pricing), and enroll with a saved profile instead of re-entering personal details for every property.</p>
+  <p>The MVP uses a curated model: only the PGCity team can onboard and publish PGs. Contact numbers are monetized through a rewarded-ad unlock; enrollment is a separate, higher-intent conversion path that captures a lead PGCity can later hand to a future PG Owner App.</p>
+
+  <h3>Why now</h3>
+  <ul>
+    <li>PG search today is fragmented across brokers, WhatsApp groups, and generic listing apps with poor, unverified media.</li>
+    <li>A map-first, per-PG "mini website" experience is a differentiated wedge versus flat listing directories.</li>
+    <li>The architecture is intentionally property-agnostic so PGCity can expand into rental homes, flats, and hostels without a rebuild (Section 33, Future Roadmap).</li>
+  </ul>
+
+  <div class="note">This is the original PGCity PRD with gaps closed and structure normalized. Sections tagged <span class="badge-new">NEW</span> were absent from the original draft and were added because they're typically required before a PRD is build-ready — regulatory posture, measurable goals, explicit scope boundaries, and a risk register are the most consequential additions.</div>
+</div>
+
+<div class="part-divider" id="part-1"><span class="roman">I</span><span class="line"></span><h3>Foundation</h3></div>
+
+<section class="doc-section" id="sec-1" data-num="01">
+  <div class="sec-head"><h2>Executive summary</h2><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD had no single-page summary for stakeholders who won't read all 38 sections.</p>
+  <p>See the hero panel above for the executive summary and "why now" framing.</p>
+</section>
+
+<section class="doc-section" id="sec-2" data-num="02">
+  <h2>Product overview</h2>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Field">Product name</td><td data-label="Value">PGCity</td></tr>
+      <tr><td data-label="Field">Product type</td><td data-label="Value">PG Discovery &amp; Enrollment Platform</td></tr>
+      <tr><td data-label="Field">Platforms</td><td data-label="Value">Android at launch; iOS planned</td></tr>
+      <tr><td data-label="Field">Primary users</td><td data-label="Value">Students, working professionals, PG seekers</td></tr>
+      <tr><td data-label="Field">Future users</td><td data-label="Value">PG owners / managers, rental-property owners</td></tr>
+      <tr><td data-label="Field">Current version</td><td data-label="Value">MVP v1.0 (this document also defines Phase 2–4 direction)</td></tr>
+    </tbody>
+  </table></div>
+  <p>PGCity is a location-based accommodation discovery application that helps users find nearby PG accommodations through an interactive map. Unlike a traditional property-listing app, every onboarded PG gets a dedicated PG Web Screen — a mini website inside the app.</p>
+  <h3>Core user capabilities</h3>
+  <ul>
+    <li>Discover nearby PGs on a map</li>
+    <li>Search PGs by name or area</li>
+    <li>Filter PGs by gender and price</li>
+    <li>Open a complete PG profile</li>
+    <li>View 360°/3D tours</li>
+    <li>Watch PG-specific videos/vlogs</li>
+    <li>View PG information, photos and location</li>
+    <li>Like PGs</li>
+    <li>Request/contact the PG</li>
+    <li>Enroll/apply for a PG</li>
+    <li>Share PG listings</li>
+    <li>Maintain a saved profile to avoid repeated data entry</li>
+  </ul>
+  <p>PGCity will initially use a curated listing model, meaning only the PGCity team can onboard and publish PGs. A future version will give PG owners a separate app to manage their PG and view enrollment requests.</p>
+</section>
+
+<section class="doc-section" id="sec-3" data-num="03">
+  <h2>Problem statement</h2>
+  <p>People searching for PG accommodation today typically have to:</p>
+  <ul>
+    <li>Search across multiple platforms</li>
+    <li>Contact multiple PG owners individually</li>
+    <li>Visit properties physically before understanding what they actually offer</li>
+    <li>Depend on incomplete or misleading photographs</li>
+    <li>Ask the same questions repeatedly (rules, deposit, food, sharing)</li>
+    <li>Verify manually whether a PG suits their gender, budget and location</li>
+    <li>Re-enter the same personal information when contacting different PGs</li>
+  </ul>
+  <p>PGCity aims to simplify this by providing a rich, verified, and centralized PG discovery experience.</p>
+</section>
+
+<section class="doc-section" id="sec-4" data-num="04">
+  <h2>Product vision</h2>
+  <blockquote>"Find your perfect PG nearby, explore it virtually, and enroll with confidence."</blockquote>
+  <p>PGCity should make finding a PG feel more like browsing a modern property website than browsing a simple listing directory.</p>
+</section>
+
+<section class="doc-section" id="sec-5" data-num="05">
+  <div class="sec-head"><h2>Goals &amp; objectives</h2><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD had a metrics list but no target numbers or business goals tying the MVP to a launch decision.</p>
+  <h3>Business goals for MVP (first 90 days post-launch)</h3>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Goal</th><th>Target</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Goal">Onboard curated PG supply</td><td data-label="Target">≥ 150 verified PGs across 1 launch city</td><td data-label="Why it matters">Below this, the map feels empty and search results are thin.</td></tr>
+      <tr><td data-label="Goal">Activate discovery</td><td data-label="Target">≥ 40% of installs reach a PG Web Screen</td><td data-label="Why it matters">Confirms map + search + filter funnel isn't leaking users.</td></tr>
+      <tr><td data-label="Goal">Generate leads</td><td data-label="Target">≥ 8% PG-view → enrollment-start rate</td><td data-label="Why it matters">Core monetizable/handoff event for the future Owner App.</td></tr>
+      <tr><td data-label="Goal">Contact monetization</td><td data-label="Target">≥ 25% of contact-unlock attempts complete the rewarded ad</td><td data-label="Why it matters">Validates the ad-unlock model before investing in more ad formats.</td></tr>
+      <tr><td data-label="Goal">Data quality</td><td data-label="Target">100% of published PGs have ≥ 5 photos and complete Quick Details</td><td data-label="Why it matters">Protects the core differentiator — the PG Web Screen — from feeling empty.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Product principle</h3>
+  <p>PGCity should not be positioned as another PG listing application. Its differentiation is: "Every PG has its own digital experience." The combination of map discovery, curated listings, dedicated PG Web Screens, 360° tours, PG-specific videos, verified information, contact unlocking, one-click enrollment, and deep sharing creates a stronger experience than a basic property directory.</p>
+</section>
+
+<section class="doc-section" id="sec-6" data-num="06">
+  <h2>Target users &amp; personas</h2>
+  <h3>6.1 Students</h3>
+  <ul>
+    <li>College students moving to another city</li>
+    <li>Students looking for accommodation near their college</li>
+    <li>Students searching for boys'/girls' PGs</li>
+  </ul>
+  <h3>6.2 Working professionals</h3>
+  <ul>
+    <li>Users searching for PGs near offices</li>
+    <li>Users seeking affordable accommodation</li>
+    <li>Users needing short/medium-term accommodation</li>
+  </ul>
+  <h3>6.3 Future users — PG owners</h3>
+  <p>A future separate application will allow PG owners to receive enrollment requests, view applicant information, manage PG information, update availability, manage photos/videos, and respond to users.</p>
+  <div class="sec-head"><h4 style="margin-top:16px">6.4 Illustrative personas</h4><span class="badge-new">NEW</span></div>
+  <p>Added — concrete personas make the P0/P1 scope decisions in Section 35 easier to defend.</p>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Persona</th><th>Context</th><th>Top priority</th><th>Biggest frustration today</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Persona">Riya, 19, first-year student</td><td data-label="Context">Relocating to a new city alone, parents co-deciding</td><td data-label="Top priority">Verified photos, safety/rules, girls-only filter</td><td data-label="Biggest frustration today">Can't tell if photos are real or match the actual room</td></tr>
+      <tr><td data-label="Persona">Karan, 24, early-career professional</td><td data-label="Context">New job, needs a place within 1–2 weeks</td><td data-label="Top priority">Distance from office, price, fast contact</td><td data-label="Biggest frustration today">Too many calls just to ask "is it still available"</td></tr>
+      <tr><td data-label="Persona">Admin Ops (internal)</td><td data-label="Context">PGCity team onboarding supply</td><td data-label="Top priority">Fast, error-free listing creation</td><td data-label="Biggest frustration today">No structured tool — currently ad-hoc</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="doc-section" id="sec-7" data-num="07">
+  <div class="sec-head"><h2>Competitive landscape</h2><span class="badge-new">NEW</span></div>
+  <p>Added — a PRD that claims differentiation should name what it is differentiating from. PGCity competes with generic property-listing apps/portals and informal channels (brokers, WhatsApp/Telegram groups, college hostel boards). Most incumbents optimize for listing volume, not listing depth.</p>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th></th><th>Generic listing portals</th><th>Informal channels</th><th>PGCity</th></tr></thead>
+    <tbody>
+      <tr><td data-label="">Media depth</td><td data-label="Generic listing portals">Few, often stale photos</td><td data-label="Informal channels">Inconsistent, unverified</td><td data-label="PGCity">Up to 10 curated photos + video + 360° tour</td></tr>
+      <tr><td data-label="">Verification</td><td data-label="Generic listing portals">Self-reported by owner</td><td data-label="Informal channels">None</td><td data-label="PGCity">Admin-curated + verification badge</td></tr>
+      <tr><td data-label="">Repeat data entry</td><td data-label="Generic listing portals">Per-listing forms</td><td data-label="Informal channels">Repeated over calls/chat</td><td data-label="PGCity">Saved profile, one-time entry</td></tr>
+      <tr><td data-label="">Lead visibility for user</td><td data-label="Generic listing portals">Rare</td><td data-label="Informal channels">None (just a call)</td><td data-label="PGCity">Enrollment status tracking</td></tr>
+    </tbody>
+  </table></div>
+  <p>This is not a claim that PGCity is superior on every axis (e.g. informal channels can be faster for a single known PG) — it is the basis for where PGCity should invest first: media richness and enrollment tracking, not raw listing count.</p>
+</section>
+
+<section class="doc-section" id="sec-8" data-num="08">
+  <h2>Scope</h2>
+  <h3>8.1 MVP scope (in)</h3>
+  <p>The first version will contain two primary user-facing screens: Home Screen and PG Web Screen. Supporting functionality includes: user profile, authentication/OTP, enrollment form, likes, contact unlock, PG sharing, deep linking, notifications, backend database, and an admin PG onboarding system.</p>
+  <div class="sec-head"><h3 style="margin-top:16px">8.2 Explicitly out of scope for MVP</h3><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD listed roadmap phases but never stated what is deliberately excluded from v1, which is what actually protects the launch date.</p>
+  <ul>
+    <li>PG Owner App (Phase 2) — owners do not get any login or dashboard in MVP; all onboarding is admin-only.</li>
+    <li>Online booking, payments, or digital agreements (Phase 4).</li>
+    <li>Reviews &amp; ratings (Phase 4).</li>
+    <li>Any property type other than PG (rental homes, flats, hostels, co-living are Phase 3).</li>
+    <li>Advanced filters beyond gender and simple price bucket (AC, food, Wi-Fi, sharing type, etc. — Section 11.4.3).</li>
+    <li>Room-level / bed-level availability.</li>
+    <li>Google/Apple social sign-in (mobile OTP only for MVP).</li>
+    <li>In-app chat between user and PG owner (contact is via phone number unlock only).</li>
+    <li>iOS app (tracked separately, not blocking Android MVP launch).</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-9" data-num="09">
+  <div class="sec-head"><h2>Assumptions &amp; constraints</h2><span class="badge-new">NEW</span></div>
+  <h3>9.1 Assumptions</h3>
+  <ul>
+    <li>PGCity's internal team (not owners) will have the capacity to manually onboard and keep at least 150 PGs updated at launch in the first city.</li>
+    <li>Users are willing to watch a short rewarded ad to unlock a contact number in exchange for free discovery.</li>
+    <li>A single launch city is sufficient to validate the model before multi-city expansion.</li>
+    <li>Mobile number + OTP is an acceptable sole identity mechanism for the target audience (largely true in the Indian market).</li>
+  </ul>
+  <h3>9.2 Constraints</h3>
+  <ul>
+    <li>Curated-only onboarding means supply growth is bounded by admin team capacity, not self-serve owner growth, until Phase 2.</li>
+    <li>No payment processing in MVP — enrollment is a lead-generation event only, not a booking.</li>
+    <li>Android-only at launch limits addressable audience versus iOS-inclusive competitors.</li>
+    <li>PG contact numbers must never be exposed in any public/unauthenticated API response (Section 21, Security).</li>
+  </ul>
+</section>
+
+<div class="part-divider" id="part-2"><span class="roman">II</span><span class="line"></span><h3>Core experience</h3></div>
+
+<section class="doc-section" id="sec-10" data-num="10">
+  <h2>Application navigation</h2>
+  <p>Recommended bottom navigation: <strong>Home | Liked | Profile.</strong></p>
+  <ul>
+    <li><strong>Home</strong> — main PG discovery experience.</li>
+    <li><strong>Liked</strong> — PGs the user previously liked.</li>
+    <li><strong>Profile</strong> — user information and enrollment-related information.</li>
+  </ul>
+  <p>The Liked tab can be omitted from the first MVP if development scope needs to remain minimal.</p>
+</section>
+
+<section class="doc-section" id="sec-11" data-num="11">
+  <h2>Home screen</h2>
+  <h3>11.1 Purpose</h3>
+  <p>The Home Screen is the primary PG discovery interface.</p>
+  <h3>11.2 Map</h3>
+  <p>The main area of the screen should contain an interactive map similar to Google Maps, displaying: the user's current location, nearby PG markers, PG name/short label, optional price information, and the selected PG marker state.</p>
+  <p>Example marker label: <span style="font-family:var(--mono)">₹8,500 — Sunrise PG</span>.</p>
+  <p>When a user taps a PG marker, a small preview card should appear containing: PG name, PG type, starting price, distance, rating/likes, thumbnail, and a "View PG" button.</p>
+  <h3>11.3 Search</h3>
+  <p>A search bar should be displayed prominently above the map. Placeholder: "Search PG name or area."</p>
+  <p>Users should be able to search by PG name, area/locality, landmark, or nearby location — e.g. "Sunrise PG," "Maninagar," "Satellite," "Near XYZ College." Search results should dynamically update the map.</p>
+  <h3>11.4 Filters</h3>
+  <h4>11.4.1 Gender filter</h4>
+  <p>Options: All, Girls PG, Boys PG. Future: Co-living.</p>
+  <h4>11.4.2 Price filter</h4>
+  <p>MVP should provide simple price filtering: Under ₹10,000 and Above ₹10,000. Future versions can introduce finer buckets (Under ₹5,000; ₹5,000–₹10,000; ₹10,000–₹15,000; ₹15,000–₹20,000; ₹20,000+) and eventually a custom price range slider.</p>
+  <h4>11.4.3 Additional filters (post-MVP)</h4>
+  <ul>
+    <li>Distance</li><li>AC / Non-AC</li><li>Food included</li><li>Wi-Fi</li><li>Laundry</li>
+    <li>Attached bathroom</li><li>Furnished</li><li>Parking</li><li>Security</li>
+    <li>Single / double / triple sharing</li><li>Availability</li>
+  </ul>
+  <h3>11.5 PG marker / preview card</h3>
+  <p>Tapping a marker shows: PG name, Girls PG / Boys PG, price (e.g. ₹8,500/month), distance (e.g. 1.2 km away), a thumbnail image, and a "View PG →" control that opens the PG Web Screen.</p>
+</section>
+
+<section class="doc-section" id="sec-12" data-num="12">
+  <h2>PG Web Screen</h2>
+  <p>The PG Web Screen is the most important differentiating feature of PGCity. Each PG should have a dedicated page that feels like a personal website for that PG.</p>
+  <h3>12.1 Structure (recommended order)</h3>
+  <ol>
+    <li>Header</li><li>360° / 3D tour</li><li>PG video/vlog</li><li>Quick information</li>
+    <li>PG description</li><li>Amenities</li><li>Pricing</li><li>Rules</li><li>Location</li>
+    <li>Photos</li><li>Likes</li><li>Contact</li><li>Enroll</li><li>Share</li>
+  </ol>
+  <h3>12.2 PG header</h3>
+  <p>Displays: PG name (large typography, e.g. "Sunrise Girls PG"); below the name — Girls PG, Ahmedabad, ₹8,500/month, Available / Currently Full; optional Verified PG badge.</p>
+  <h3>12.3 360° / 3D virtual tour</h3>
+  <p>A large rounded rectangular card displays the PG's virtual tour ("Explore PG in 360°") with a preview image, 360° icon, and "Explore 360°" button. Clicking opens a full-screen immersive viewer. Users should be able to rotate the view, look around the room, explore different areas, zoom where supported, and move between supported viewpoints.</p>
+  <p>Future enhancement: multiple locations (Entrance, Bedroom, Kitchen, Bathroom, Common area, Terrace, Study area).</p>
+  <h3>12.4 PG video / YouTube vlog</h3>
+  <p>Below the 360° section: a rounded rectangular video card ("Take a Video Tour"). The video may be hosted on YouTube; clicking the card opens it. Ideally PG-specific, e.g. "Complete Sunrise PG Tour | Ahmedabad."</p>
+  <h3>12.5 PG quick details</h3>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Information</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Information">PG type</td><td data-label="Value">Girls PG</td></tr>
+      <tr><td data-label="Information">Monthly rent</td><td data-label="Value">₹8,500</td></tr>
+      <tr><td data-label="Information">Security deposit</td><td data-label="Value">₹10,000</td></tr>
+      <tr><td data-label="Information">Sharing</td><td data-label="Value">2 Sharing</td></tr>
+      <tr><td data-label="Information">Food</td><td data-label="Value">Included</td></tr>
+      <tr><td data-label="Information">Electricity</td><td data-label="Value">Included</td></tr>
+      <tr><td data-label="Information">Availability</td><td data-label="Value">Available</td></tr>
+      <tr><td data-label="Information">Minimum stay</td><td data-label="Value">3 Months</td></tr>
+    </tbody>
+  </table></div>
+  <h3>12.6 PG description</h3>
+  <p>A detailed description should explain the property, e.g.: "Sunrise Girls PG provides fully furnished accommodation with Wi-Fi, food, laundry and 24/7 security. The property is located close to XYZ College and major transportation facilities." The description should support rich but controlled content.</p>
+  <h3>12.7 Amenities</h3>
+  <p>Displayed using icons. Only amenities configured by the PGCity Admin should appear. Possible amenities:</p>
+  <ul>
+    <li>Wi-Fi</li><li>Food</li><li>AC</li><li>Washing machine</li><li>Laundry</li><li>Parking</li>
+    <li>CCTV</li><li>24/7 security</li><li>Power backup</li><li>Hot water</li>
+    <li>Attached bathroom</li><li>Study table</li><li>Refrigerator</li><li>Common room</li>
+  </ul>
+  <h3>12.8 PG rules</h3>
+  <p>Each PG should clearly display rules, for example:</p>
+  <ul>
+    <li>No smoking</li><li>No alcohol</li><li>Entry timing</li><li>Visitor policy</li>
+    <li>Minimum stay</li><li>Deposit requirements</li><li>Notice period</li><li>Other PG-specific rules</li>
+  </ul>
+  <p>This helps users understand requirements before enrollment.</p>
+  <h3>12.9 Location</h3>
+  <p>Includes: map, PG address, nearby landmarks, distance from user, nearby college/office, transportation information. Example "Nearby" list: XYZ College — 1.2 km, Metro Station — 800 m, Main Market — 500 m. A "Get Directions" button can open the user's preferred map application.</p>
+  <h3>12.10 PG photos</h3>
+  <p>Supports a maximum of 10 photos in MVP, covering: exterior, bedroom, bathroom, kitchen, dining area, common area, study area, balcony, building, and other important areas. Users can tap a photo to open a full-screen gallery.</p>
+  <h3>12.11 Like feature</h3>
+  <p>Users should be able to like a PG (e.g. ❤️ 1,284 Likes). Tapping again removes the like. The backend stores the User ↔ PG relationship to prevent one user from artificially inflating the count by repeated tapping.</p>
+  <h3>12.12 Contact feature</h3>
+  <p>The PG Web Screen has a "View Contact" button. The phone number is not immediately visible.</p>
+  <h4>Monetization mechanism</h4>
+  <p>The user must watch a rewarded advertisement before the contact number is revealed. Flow: View Contact → Watch Ad to Unlock Contact → Rewarded Ad → Contact number becomes visible (e.g. 📞 +91 XXXXX XXXXX). Exact ad frequency and eligibility should be controlled from backend configuration.</p>
+  <h4>Contact abuse prevention</h4>
+  <ul>
+    <li>Contact number should not be stored directly in public PG listing data</li>
+    <li>Contact should be revealed only after successful reward validation</li>
+    <li>Backend should record contact unlock events</li>
+    <li>Optional daily unlock limits can be introduced</li>
+    <li>Admin should be able to disable contact visibility for a PG</li>
+  </ul>
+  <h3>12.13 Enrollment feature</h3>
+  <p>The main CTA is "Enroll Now." If the user is not logged in, this opens the enrollment/login flow. If already logged in, it displays saved information.</p>
+  <h4>Enrollment form</h4>
+  <p>Personal information: Full Name, Mobile Number, Email, Gender, Age, Date of Birth (optional). Accommodation information: preferred move-in date, preferred sharing type, expected duration, occupation, college/company name. Optional: current city, emergency contact, additional message. The exact information should be minimized to what is actually required by PG owners.</p>
+  <h4>Mobile number verification</h4>
+  <p>Flow: Enter Mobile Number → Send OTP → Enter OTP → Verify → Account Verified → Complete Enrollment Profile.</p>
+  <h4>Saved user profile</h4>
+  <p>Once the enrollment profile is completed, information is saved. Next time: Enroll Now → show saved information → user confirms/updates details → Submit Enrollment.</p>
+  <h4>Enrollment confirmation</h4>
+  <p>Before submission, display a summary — e.g. "You are enrolling for: Sunrise Girls PG," Applicant: Yuvraj, Move-in Date: 15 September 2026, Sharing: 2 Sharing — then "Submit Enrollment Request."</p>
+  <h4>Enrollment request status</h4>
+  <p>After submission: ✅ Enrollment Request Sent. The user should see PG name, request date, and status. Possible statuses: Submitted, Under Review, Accepted, Rejected, Cancelled. This becomes especially useful once the future PG Owner App launches.</p>
+  <h3>12.14 Share PG</h3>
+  <p>The PG Web Screen should contain a "Share PG" button that generates a universal/deep link such as <span style="font-family:var(--mono);font-size:.85em">pgcity.app/pg/sunrise-girls-pg</span> (final domain TBD).</p>
+  <h4>Deep linking behavior</h4>
+  <p><strong>Case 1 — PGCity installed:</strong> user clicks the shared link → PGCity opens → the specific PG Web Screen opens directly (e.g. "Sunrise Girls PG").</p>
+  <p><strong>Case 2 — PGCity not installed:</strong> user clicks link → website/landing page opens → user is redirected to the appropriate store (Android → Google Play, iPhone → App Store). After installation, the app should ideally open the originally shared PG — this requires deferred deep linking.</p>
+</section>
+
+<section class="doc-section" id="sec-13" data-num="13">
+  <h2>Profile screen</h2>
+  <p>Although the core product contains two primary screens, a Profile screen is recommended because user enrollment information needs to be stored.</p>
+  <h3>User information</h3>
+  <ul>
+    <li>Name</li><li>Profile photo (optional)</li><li>Mobile number</li><li>Email</li>
+    <li>Gender</li><li>Occupation/college</li>
+  </ul>
+  <h3>My enrollments</h3>
+  <p>Example: Sunrise Girls PG — Status: Under Review; Green Residency PG — Status: Accepted.</p>
+  <h3>Account</h3>
+  <ul>
+    <li>Edit profile</li><li>Change phone number</li><li>Privacy policy</li>
+    <li>Terms &amp; conditions</li><li>Delete account</li><li>Logout</li>
+  </ul>
+</section>
+
+<div class="part-divider" id="part-3"><span class="roman">III</span><span class="line"></span><h3>Platform &amp; data</h3></div>
+
+<section class="doc-section" id="sec-14" data-num="14">
+  <h2>PGCity admin system</h2>
+  <p>Because only PGCity can onboard PGs, an internal admin system is required. The admin should be able to manage PGs end-to-end:</p>
+  <ul>
+    <li>Add PG</li><li>Edit PG</li><li>Delete/deactivate PG</li><li>Publish/unpublish PG</li>
+    <li>Mark PG as verified</li><li>Change PG availability</li><li>Update price</li>
+    <li>Update contact number</li><li>Add/remove photos</li><li>Add YouTube video</li>
+    <li>Add 360° tour</li><li>Update amenities</li><li>Update rules</li><li>Update location</li>
+  </ul>
+  <div class="sec-head"><h3 style="margin-top:16px">14.1 Admin onboarding workflow</h3><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD listed admin capabilities but not the day-to-day workflow an ops person follows, or how many people/roles are needed.</p>
+  <ul>
+    <li>Field visit / data collection → Draft listing created in admin → Photos &amp; media uploaded → Quick Details + amenities + rules entered → Pending Verification → Second admin reviews for completeness → Verified → Published.</li>
+    <li>Recommended minimum roles: Admin (full access) and Content Editor (can edit but not publish/delete) to create a lightweight two-person check before anything goes live.</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-15" data-num="15">
+  <h2>PG data model</h2>
+  <h3>Basic</h3>
+  <ul><li>PG ID</li><li>PG name</li><li>Description</li><li>PG type</li><li>Address</li><li>Latitude</li><li>Longitude</li><li>Contact number</li><li>Status</li><li>Verification status</li></ul>
+  <h3>Pricing</h3>
+  <ul><li>Monthly price</li><li>Deposit</li><li>Sharing type</li><li>Other charges</li></ul>
+  <h3>Media</h3>
+  <ul><li>Maximum 10 photos</li><li>YouTube URL</li><li>360° tour URL/data</li></ul>
+  <h3>Amenities</h3>
+  <ul><li>Wi-Fi</li><li>Food</li><li>AC</li><li>Laundry</li><li>Parking</li><li>Security</li><li>etc.</li></ul>
+  <h3>Metadata</h3>
+  <ul><li>Likes</li><li>Views</li><li>Contact unlocks</li><li>Enrollment count</li><li>Created date</li><li>Updated date</li></ul>
+
+  <h3>15.1 PG availability</h3>
+  <p>Every PG should have an availability status: Available, Limited Availability, Full, Temporarily Unavailable. This prevents users from submitting requests for unavailable PGs. Future enhancement: room-level availability, e.g. "2 Sharing — 3 beds available."</p>
+
+  <h3>15.2 PG verification system</h3>
+  <p>Since PGCity controls onboarding, every PG should have an internal status:</p>
+  <ul>
+    <li>Draft — admin is preparing listing</li>
+    <li>Pending Verification — information being checked</li>
+    <li>Verified — PG approved</li>
+    <li>Published — visible to users</li>
+    <li>Suspended — temporarily hidden</li>
+    <li>Archived — permanently removed from discovery</li>
+  </ul>
+  <p>A Verified PG badge can increase user trust.</p>
+
+  <h3>15.3 Suggested database entities</h3>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Entity</th><th>Key fields</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Entity">User</td><td data-label="Key fields">userId, name, phone, email, gender, occupation, college/company, profilePhoto, createdAt, updatedAt</td></tr>
+      <tr><td data-label="Entity">PG</td><td data-label="Key fields">pgId, name, type, description, price, deposit, address, latitude, longitude, phone, photos, youtubeUrl, virtualTour, amenities, rules, availability, likesCount, viewsCount, createdAt, updatedAt</td></tr>
+      <tr><td data-label="Entity">Like</td><td data-label="Key fields">likeId, userId, pgId, createdAt</td></tr>
+      <tr><td data-label="Entity">Enrollment</td><td data-label="Key fields">enrollmentId, userId, pgId, moveInDate, sharingType, duration, message, status, createdAt, updatedAt</td></tr>
+      <tr><td data-label="Entity">ContactUnlock</td><td data-label="Key fields">unlockId, userId, pgId, adCompleted, createdAt</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>15.4 Product decision — contact vs enrollment</h3>
+  <p>PGCity should treat these as two separate conversion actions. Contact: the user wants to quickly speak with the PG — Watch ad → Unlock phone number. Enroll: the user wants to formally submit interest — Verify phone → Fill/confirm profile → Submit enrollment. This separation makes the user journey clearer.</p>
+</section>
+
+<section class="doc-section" id="sec-16" data-num="16">
+  <h2>Authentication</h2>
+  <p>Primary: mobile number + OTP. Optional future: Google Sign-In, Apple Sign-In. The user's mobile number should be uniquely associated with their account.</p>
+</section>
+
+<section class="doc-section" id="sec-17" data-num="17">
+  <h2>Notifications</h2>
+  <p>The application should support push notifications, e.g.:</p>
+  <ul>
+    <li>Enrollment — "Your enrollment request for Sunrise Girls PG has been received."</li>
+    <li>Owner response — "Sunrise Girls PG has accepted your enrollment request."</li>
+    <li>Availability — "A PG you liked now has availability."</li>
+  </ul>
+  <p>Notifications should be opt-in/permission-controlled where required.</p>
+</section>
+
+<section class="doc-section" id="sec-18" data-num="18">
+  <div class="sec-head"><h2>App permissions</h2><span class="badge-new">NEW</span></div>
+  <p>Added — every feature above implies a runtime permission; these should be enumerated so they can be requested with proper just-in-time rationale rather than all at first launch.</p>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Permission</th><th>Used for</th><th>Request timing</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Permission">Location (foreground)</td><td data-label="Used for">Center map on user, compute distance to PGs</td><td data-label="Request timing">When Home Screen map first needs it, with rationale copy</td></tr>
+      <tr><td data-label="Permission">Notifications</td><td data-label="Used for">Enrollment status updates, availability alerts</td><td data-label="Request timing">After first enrollment submission, not at cold start</td></tr>
+      <tr><td data-label="Permission">Camera / photo library</td><td data-label="Used for">Optional profile photo</td><td data-label="Request timing">Only when user taps "add profile photo"</td></tr>
+      <tr><td data-label="Permission">Network state</td><td data-label="Used for">Show clear offline/error messaging</td><td data-label="Request timing">No runtime prompt required on Android</td></tr>
+    </tbody>
+  </table></div>
+  <p>Location should never be a hard gate: if denied, the user should still be able to search by area/PG name (Section 25, Error States).</p>
+</section>
+
+<section class="doc-section" id="sec-19" data-num="19">
+  <h2>Monetization</h2>
+  <p>Initial model: rewarded advertisement — the user watches an ad to unlock the PG contact number. The user should not be forced to watch ads for basic PG discovery.</p>
+  <h3>Potential future monetization</h3>
+  <ul>
+    <li>Featured PG listings</li><li>Sponsored PG placement</li><li>Premium PG profiles</li>
+    <li>Owner subscriptions</li><li>Lead-generation charges</li><li>Promotional listings</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-20" data-num="20">
+  <h2>Analytics</h2>
+  <h3>Discovery</h3>
+  <ul><li>App opened</li><li>Search performed</li><li>Filter applied</li><li>Map PG clicked</li><li>PG page opened</li></ul>
+  <h3>Engagement</h3>
+  <ul><li>360° tour opened</li><li>YouTube video opened</li><li>Photo gallery opened</li><li>PG liked</li><li>PG shared</li></ul>
+  <h3>Conversion</h3>
+  <ul><li>Contact button clicked</li><li>Rewarded ad completed</li><li>Contact unlocked</li><li>Enrollment started</li><li>OTP verified</li><li>Enrollment submitted</li></ul>
+  <p>These metrics help PGCity understand which PGs generate the most interest and leads.</p>
+  <h3>20.1 Admin analytics</h3>
+  <p><strong>Overall:</strong> total users, active users, total PGs, available PGs, total likes, total views, total contact unlocks, total enrollment requests.</p>
+  <h4>PG-level example</h4>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Metric</th><th>Sunrise Girls PG</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Metric">Views</td><td data-label="Sunrise Girls PG">5,240</td></tr>
+      <tr><td data-label="Metric">Likes</td><td data-label="Sunrise Girls PG">1,240</td></tr>
+      <tr><td data-label="Metric">Contact unlocks</td><td data-label="Sunrise Girls PG">430</td></tr>
+      <tr><td data-label="Metric">Enrollment requests</td><td data-label="Sunrise Girls PG">84</td></tr>
+      <tr><td data-label="Metric">Accepted</td><td data-label="Sunrise Girls PG">32</td></tr>
+    </tbody>
+  </table></div>
+  <p>This can eventually become a valuable product for PG owners.</p>
+</section>
+
+<div class="part-divider" id="part-4"><span class="roman">IV</span><span class="line"></span><h3>Trust &amp; compliance</h3></div>
+
+<section class="doc-section" id="sec-21" data-num="21">
+  <h2>Security, privacy &amp; compliance</h2>
+  <h3>21.1 Security requirements</h3>
+  <p>Sensitive information — phone numbers, email, applicant details, enrollment information — must not be publicly exposed. Backend access should use authenticated APIs/database rules.</p>
+  <ul>
+    <li>Role-based access</li><li>User authentication</li><li>Admin authentication</li>
+    <li>Owner authentication (future)</li><li>Secure OTP verification</li><li>Server-side authorization</li>
+    <li>Input validation</li><li>Rate limiting</li><li>Abuse prevention</li>
+  </ul>
+  <h3>21.2 Privacy</h3>
+  <p>Because PGCity collects personal information, the application should provide a Privacy Policy, Terms &amp; Conditions, a data deletion mechanism, account deletion, and consent where appropriate. Users should know why their enrollment information is collected and who receives it.</p>
+  <div class="sec-head"><h3 style="margin-top:16px">21.3 Regulatory compliance</h3><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD covered privacy in principle but did not name the applicable law or specific obligations it creates for an India-first launch.</p>
+  <p>As an India-first product handling personal data (name, phone, email, gender, age, move-in intent), PGCity is a Data Fiduciary under the Digital Personal Data Protection Act, 2023 (DPDP Act). At minimum, the product should:</p>
+  <ul>
+    <li>Present clear notice of what personal data is collected and why, before or at the point of collection (enrollment form, OTP signup).</li>
+    <li>Obtain explicit, itemized consent — not a single bundled checkbox — where feasible, and let users withdraw consent as easily as they gave it.</li>
+    <li>Support a verifiable data-deletion/erasure request from within the app (ties to Profile → Delete Account, Section 13).</li>
+    <li>Avoid sharing enrollment data with a PG/owner until Phase 2's Owner App has its own compliant data-handling flow.</li>
+    <li>Define a data retention period for unlocked-contact and enrollment records rather than retaining indefinitely.</li>
+  </ul>
+  <div class="callout warn">This is not legal advice; legal counsel should review the final consent copy and retention schedule before launch.</div>
+</section>
+
+<section class="doc-section" id="sec-22" data-num="22">
+  <div class="sec-head"><h2>Accessibility</h2><span class="badge-new">NEW</span></div>
+  <p>Added — not covered in the original document.</p>
+  <ul>
+    <li>Support Android system font-scaling up to at least 130% without breaking PG Web Screen layouts.</li>
+    <li>Minimum touch target size of 44x44dp for all interactive elements (Like, Enroll, filter chips, map markers).</li>
+    <li>Sufficient color contrast (WCAG AA, 4.5:1) for price/availability text overlaid on photos or map markers.</li>
+    <li>Content descriptions for TalkBack on all icon-only controls (heart/like, share, 360° icon, filter icons).</li>
+    <li>Captions or a text transcript link is not required for owner-hosted YouTube videos, but the PG description should never be the only source of critical facts (rules, price) that also appear only in a video.</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-23" data-num="23">
+  <div class="sec-head"><h2>Localization &amp; language</h2><span class="badge-new">NEW</span></div>
+  <ul>
+    <li>MVP ships in English only.</li>
+    <li>UI strings should be externalized (not hard-coded) from day one so Hindi and the launch city's regional language can be added post-MVP without a rework.</li>
+    <li>Currency and number formatting should follow Indian numbering conventions (₹8,500 not $8,500 or 8500.00) throughout.</li>
+    <li>Address and location search should tolerate both English and transliterated local-language place names (e.g. "Maninagar" and common alternate spellings).</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-24" data-num="24">
+  <h2>Non-functional requirements</h2>
+  <h3>24.1 Performance</h3>
+  <ul>
+    <li>Home screen should load quickly.</li>
+    <li>Map should avoid loading unnecessary PG data.</li>
+    <li>Images should be optimized.</li>
+    <li>Lazy loading should be used for PG photos.</li>
+    <li>PG details should load progressively.</li>
+  </ul>
+  <h3>24.2 Reliability</h3>
+  <ul>
+    <li>Enrollment requests must not be lost.</li>
+    <li>OTP verification should handle retry scenarios.</li>
+    <li>Network failures should provide clear messages.</li>
+  </ul>
+  <h3>24.3 Security</h3>
+  <ul>
+    <li>Authentication required for personal information.</li>
+    <li>Personal information must not be publicly accessible.</li>
+    <li>Admin APIs must be protected.</li>
+  </ul>
+  <h3>24.4 Scalability</h3>
+  <p>The backend should support expansion from 100 PGs → 1,000 PGs → 10,000+ PGs without requiring a major architecture redesign.</p>
+</section>
+
+<section class="doc-section" id="sec-25" data-num="25">
+  <h2>Empty &amp; error states</h2>
+  <h3>25.1 Empty states</h3>
+  <p>Example: "No PGs Found." Try changing: Location, Price filter, Gender filter, Search area. Button: "Clear Filters."</p>
+  <h3>25.2 Error states</h3>
+  <ul>
+    <li>Location unavailable — "We couldn't access your location." Button: "Enable Location."</li>
+    <li>Network unavailable — "Check your internet connection and try again."</li>
+    <li>PG unavailable — "This PG is currently unavailable."</li>
+    <li>Enrollment failure — "We couldn't submit your enrollment request. Please try again."</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-26" data-num="26">
+  <div class="sec-head"><h2>Support &amp; help</h2><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD had no path for a confused or blocked user to get help.</p>
+  <ul>
+    <li>An in-app "Help / Contact Us" entry point should exist from the Profile screen, at minimum offering a support email or WhatsApp link.</li>
+    <li>A short FAQ should cover the two moments users are most likely to be confused: why a contact number requires watching an ad, and what "Under Review" on an enrollment status means.</li>
+    <li>Enrollment-status screens should not be a dead end — if a request sits in "Submitted" beyond a reasonable window (e.g. 5 business days) with no admin/owner action, the UI should surface a "Need help with this?" prompt rather than leaving the user guessing.</li>
+  </ul>
+</section>
+
+<div class="part-divider" id="part-5"><span class="roman">V</span><span class="line"></span><h3>Delivery &amp; engineering</h3></div>
+
+<section class="doc-section" id="sec-27" data-num="27">
+  <h2>Recommended user flows</h2>
+  <h3>27.1 First-time user</h3>
+  <p>Open PGCity → Home → Allow Location → View Nearby PGs → Search / Filter → Select PG → PG Web Screen → Explore 360° → Watch Video → View Details → Like / Share / Contact / Enroll.</p>
+  <h3>27.2 Enrollment flow</h3>
+  <p>Enroll Now → Mobile number → OTP → User details → Move-in information → Review information → Submit → Enrollment Request Sent → Owner receives request through future Owner App → Owner accepts/rejects → User receives notification.</p>
+  <h3>27.3 Share flow</h3>
+  <p>Share → Generate PG deep link → Share to WhatsApp / Instagram / Telegram / etc. → Recipient opens link. If app installed: PGCity opens directly to the PG. If not installed: landing page → Play Store/App Store → Install → Open shared PG.</p>
+</section>
+
+<section class="doc-section" id="sec-28" data-num="28">
+  <h2>MVP functional requirements checklist</h2>
+  <h3>28.1 Home</h3>
+  <ul>
+    <li>Interactive map</li><li>Current location</li><li>PG markers</li><li>Search PG name</li>
+    <li>Search area</li><li>Girls PG filter</li><li>Boys PG filter</li>
+    <li>Under ₹10,000 filter</li><li>Above ₹10,000 filter</li><li>PG preview card</li><li>Open PG Web Screen</li>
+  </ul>
+  <h3>28.2 PG Web Screen</h3>
+  <ul>
+    <li>PG name</li><li>PG type</li><li>Price</li><li>360°/3D tour</li><li>YouTube video</li>
+    <li>PG description</li><li>Amenities</li><li>Rules</li><li>Location</li><li>Maximum 10 photos</li>
+    <li>Like button</li><li>View Contact</li><li>Rewarded ad</li><li>Enroll button</li>
+    <li>OTP verification</li><li>Saved user profile</li><li>Share button</li><li>Deep linking</li>
+  </ul>
+  <h3>28.3 Profile</h3>
+  <ul>
+    <li>User information</li><li>Edit profile</li><li>Enrollment history</li><li>Enrollment status</li>
+    <li>Privacy Policy</li><li>Terms &amp; Conditions</li><li>Delete account</li><li>Logout</li>
+  </ul>
+  <h3>28.4 Backend / admin</h3>
+  <ul>
+    <li>Admin authentication</li><li>PG creation</li><li>PG editing</li><li>PG deletion/deactivation</li>
+    <li>PG publishing</li><li>Photo management</li><li>360° tour management</li>
+    <li>YouTube URL management</li><li>Amenities management</li><li>Price management</li>
+    <li>Availability management</li><li>Enrollment request management</li><li>Analytics</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-29" data-num="29">
+  <h2>Backend architecture</h2>
+  <p>A scalable architecture could contain: Mobile App (Flutter) → Authentication (OTP) → Backend API (handles PGs, Users, Likes, Enrollment, Contact unlocks, Analytics) → Database (Users, PGs, Enrollments, Likes, Contact unlock records, Admin data) → Storage (PG photos, 360° assets, other media) → External Services (Maps, YouTube, OTP provider, Push notifications, Advertising platform). The exact backend technology can be finalized during technical design.</p>
+  <h3>29.1 Map technology</h3>
+  <p>The map should support: current location, PG markers, marker clustering, map zoom, search movement, selected PG, and distance calculation. The exact map provider can be selected during technical architecture.</p>
+  <h3>29.2 Search and discovery logic</h3>
+  <p>The backend should support PG name search, area search, location-based search, gender filtering, price filtering, and availability filtering. Future: amenity filtering, distance sorting, popularity sorting, recently added, recommended PGs.</p>
+</section>
+
+<section class="doc-section" id="sec-30" data-num="30">
+  <div class="sec-head"><h2>QA &amp; testing strategy</h2><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD had no verification plan before launch.</p>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Area</th><th>What to verify before launch</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Area">Enrollment integrity</td><td data-label="What to verify before launch">No enrollment submission is lost on network drop; OTP retry/resend works within rate limits; duplicate submissions are prevented.</td></tr>
+      <tr><td data-label="Area">Contact unlock</td><td data-label="What to verify before launch">Reward callback is verified server-side (not just client-side ad completion) before the number is revealed.</td></tr>
+      <tr><td data-label="Area">Data privacy</td><td data-label="What to verify before launch">Contact numbers and enrollment data are unreachable via any unauthenticated API endpoint (manual pen-test pass).</td></tr>
+      <tr><td data-label="Area">Map &amp; filters</td><td data-label="What to verify before launch">Filter + search combinations return correct results at supply volumes from 10 to 1,000+ PGs (perf test).</td></tr>
+      <tr><td data-label="Area">Deep links</td><td data-label="What to verify before launch">Both cold-start and deferred deep-link paths (app not installed) resolve to the correct PG.</td></tr>
+      <tr><td data-label="Area">Empty/error states</td><td data-label="What to verify before launch">Every state in Sections 25–26 has been triggered and reviewed, not just designed.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="doc-section" id="sec-31" data-num="31">
+  <div class="sec-head"><h2>Release plan &amp; milestones</h2><span class="badge-new">NEW</span></div>
+  <p>Added — the original PRD had a feature roadmap (Phases 1–4) but no sequencing for how MVP itself gets built and shipped.</p>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Milestone</th><th>Scope</th><th>Exit criteria</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Milestone">M1 — Admin + data model</td><td data-label="Scope">Admin auth, PG CRUD, verification workflow (Section 14)</td><td data-label="Exit criteria">Team can fully onboard a real PG end-to-end internally</td></tr>
+      <tr><td data-label="Milestone">M2 — Discovery core</td><td data-label="Scope">Home map, search, gender/price filters, PG preview card</td><td data-label="Exit criteria">A seeded set of 20+ PGs is browsable and filterable</td></tr>
+      <tr><td data-label="Milestone">M3 — PG Web Screen</td><td data-label="Scope">All 14 subsections in Section 12 except contact/enroll</td><td data-label="Exit criteria">A PG page matches the P0 checklist in Section 28.2</td></tr>
+      <tr><td data-label="Milestone">M4 — Identity &amp; enrollment</td><td data-label="Scope">OTP auth, saved profile, enrollment form + status, notifications</td><td data-label="Exit criteria">A test user can enroll twice without re-entering data</td></tr>
+      <tr><td data-label="Milestone">M5 — Monetization &amp; sharing</td><td data-label="Scope">Rewarded ad contact unlock, share + deep linking</td><td data-label="Exit criteria">Contact reveal is server-verified; shared links open the right PG</td></tr>
+      <tr><td data-label="Milestone">M6 — Hardening &amp; launch</td><td data-label="Scope">QA pass (Section 30), 150+ verified PGs live, analytics wired</td><td data-label="Exit criteria">MVP success criteria in Section 34 are met in a staging city</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="doc-section" id="sec-32" data-num="32">
+  <div class="sec-head"><h2>Risk register</h2><span class="badge-new">NEW</span></div>
+  <p>Added — the single biggest gap in the original document: no articulation of what could make the MVP fail.</p>
+  <div class="rtable-wrap"><table class="rtable">
+    <thead><tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Risk">Curated onboarding can't keep pace with demand</td><td data-label="Impact">Empty map / stale supply damages trust</td><td data-label="Mitigation">Set the 150-PG launch-city floor (Section 5) before public marketing begins</td></tr>
+      <tr><td data-label="Risk">Users abandon at rewarded-ad contact unlock</td><td data-label="Impact">Low lead conversion, core monetization unproven</td><td data-label="Mitigation">A/B test ad frequency; ensure enrollment path never depends on watching an ad</td></tr>
+      <tr><td data-label="Risk">Fake/duplicate likes or enrollment spam</td><td data-label="Impact">Skews PG-level analytics, wastes admin review time</td><td data-label="Mitigation">Unique User↔PG constraint on Likes (Section 12.11); rate limiting on enrollment submissions</td></tr>
+      <tr><td data-label="Risk">Contact number leakage via API</td><td data-label="Impact">Serious privacy breach, regulatory exposure under DPDP Act</td><td data-label="Mitigation">Server-side reward verification only; number never present in any public list/detail payload (Section 21)</td></tr>
+      <tr><td data-label="Risk">Deferred deep linking fails silently</td><td data-label="Impact">Shared PG links feel broken, hurting organic growth loop</td><td data-label="Mitigation">Explicit QA case in Section 30; fallback to Home screen with a toast rather than a dead link</td></tr>
+      <tr><td data-label="Risk">Single launch city underperforms</td><td data-label="Impact">Unclear whether to expand or pivot</td><td data-label="Mitigation">Tie go/no-go decision explicitly to the Section 5 KPI targets, not gut feel</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<div class="part-divider" id="part-6"><span class="roman">VI</span><span class="line"></span><h3>Vision &amp; reference</h3></div>
+
+<section class="doc-section" id="sec-33" data-num="33">
+  <h2>Future roadmap</h2>
+  <h3>Phase 1 — MVP</h3>
+  <p>PG discovery, map, search, filters, PG Web Screen, photos, YouTube, 360° tour, likes, rewarded contact unlock, OTP, enrollment, profile, sharing/deep links, admin PG onboarding.</p>
+  <h3>Phase 2</h3>
+  <p>PG Owner App, enrollment management, owner notifications, availability management, owner dashboard, applicant management.</p>
+  <h3>Phase 3</h3>
+  <p>Rental homes, flats, hostels, co-living, property categories, advanced filters.</p>
+  <h3>Phase 4</h3>
+  <p>Online booking, online payments, digital agreements, rent payments, reviews &amp; ratings, owner verification, property verification, AI recommendations.</p>
+  <h3>33.1 Future rental home expansion</h3>
+  <p>The architecture should not hard-code the product around PGs only. Instead, introduce a generic property concept — Property Type: PG, Rental Home, Flat, Hostel, Co-living — allowing PGCity to evolve into a broader accommodation platform without rebuilding the entire application.</p>
+  <h3>33.2 Recommended future features</h3>
+  <ul>
+    <li>Reviews — users can eventually review PGs.</li>
+    <li>Ratings — e.g. 4.5 ⭐.</li>
+    <li>Saved searches — "Notify me when a Girls PG under ₹10,000 becomes available near XYZ College."</li>
+    <li>Favorites — users can maintain a shortlist.</li>
+    <li>Compare — side-by-side comparison of multiple PGs (price, food, Wi-Fi, distance, etc.).</li>
+    <li>Availability alerts — notify users when a liked PG becomes available.</li>
+  </ul>
+</section>
+
+<section class="doc-section" id="sec-34" data-num="34">
+  <h2>Success metrics &amp; definition of MVP success</h2>
+  <p>The primary goal is not simply app downloads. PGCity should measure:</p>
+  <h3>Discovery</h3>
+  <ul><li>Searches/user</li><li>PG views/user</li><li>Map interactions</li></ul>
+  <h3>Engagement</h3>
+  <ul><li>Likes</li><li>Video views</li><li>360° tour views</li><li>Shares</li></ul>
+  <h3>Lead generation</h3>
+  <ul><li>Contact unlocks</li><li>Enrollment starts</li><li>Completed enrollments</li></ul>
+  <h3>Conversion</h3>
+  <ul><li>PG View → Contact</li><li>PG View → Enrollment</li><li>Enrollment → Accepted</li></ul>
+  <p>These metrics indicate whether PGCity is actually helping users find accommodation. See Section 5 for the specific 90-day launch targets.</p>
+  <h3>34.1 Definition of MVP success</h3>
+  <p>PGCity MVP will be considered successful when a new user can:</p>
+  <ol>
+    <li>Open the application.</li>
+    <li>Discover nearby PGs.</li>
+    <li>Search or filter PGs.</li>
+    <li>Open a PG's dedicated page.</li>
+    <li>Understand the PG's pricing, amenities, rules and location.</li>
+    <li>Explore its media/virtual tour.</li>
+    <li>Like or share the PG.</li>
+    <li>Unlock its contact through the defined ad flow.</li>
+    <li>Verify their phone number.</li>
+    <li>Complete their profile.</li>
+    <li>Submit an enrollment request.</li>
+    <li>View the submitted request in their profile.</li>
+    <li>Allow the PGCity backend/admin system to receive and manage the lead.</li>
+  </ol>
+</section>
+
+<section class="doc-section" id="sec-35" data-num="35">
+  <h2>MVP priority</h2>
+  <div class="prio-grid">
+    <div class="prio-card p0">
+      <h4>P0 — Must have</h4>
+      <ul>
+        <li>Map</li><li>PG listing</li><li>Search</li><li>Gender filter</li><li>Price filter</li>
+        <li>PG Web Screen</li><li>PG details</li><li>Photos</li><li>Location</li><li>Like</li>
+        <li>Contact unlock</li><li>OTP</li><li>Enrollment</li><li>User profile</li>
+        <li>Admin onboarding</li><li>Share/deep link</li>
+      </ul>
+    </div>
+    <div class="prio-card p1">
+      <h4>P1 — Important</h4>
+      <ul>
+        <li>360° tour</li><li>YouTube integration</li><li>Push notifications</li>
+        <li>Enrollment status</li><li>PG verification badge</li><li>Analytics</li>
+      </ul>
+    </div>
+    <div class="prio-card p2">
+      <h4>P2 — Later</h4>
+      <ul>
+        <li>PG Owner App</li><li>Ratings/reviews</li><li>Advanced filters</li>
+        <li>Rental homes</li><li>Online booking</li><li>Payments</li>
+        <li>AI recommendations</li><li>Comparison</li><li>Availability alerts</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section" id="sec-36" data-num="36">
+  <h2>Long-term vision</h2>
+  <p>PGCity can eventually become a complete accommodation discovery and lead-management ecosystem: User App (discover PGs and rental homes) → PG Owner App (manage properties and applicants) → Admin Dashboard (manage the marketplace and verification) → Property Owners (receive qualified leads) → Users (Discover → Explore → Contact → Enroll → Book). The initial PG-only model should therefore be built with a property-agnostic backend architecture, making future rental-home expansion much easier.</p>
+  <h3>36.1 Future PG Owner App integration</h3>
+  <p>PGCity should be designed from the beginning so enrollment requests can be consumed by a separate PG Owner application. Architecture: PGCity User App → Backend → PG Owner App. The owner can eventually see applicant name, phone number, email, move-in date, sharing preference, applicant message, enrollment timestamp, and status, and update Pending → Accepted / Rejected. The user application should receive the status update.</p>
+</section>
+
+<section class="doc-section" id="sec-37" data-num="37">
+  <div class="sec-head"><h2>Glossary</h2><span class="badge-new">NEW</span></div>
+  <dl class="glossary">
+    <dt>PG</dt><dd>Paying Guest accommodation — a room or bed rented out, typically with shared common facilities.</dd>
+    <dt>PG Web Screen</dt><dd>The dedicated, rich in-app profile page for a single PG — PGCity's core differentiator.</dd>
+    <dt>Curated listing model</dt><dd>Only the PGCity internal team can create/publish PG listings; owners cannot self-list in MVP.</dd>
+    <dt>Contact unlock</dt><dd>The rewarded-ad-gated action that reveals a PG's phone number to the user.</dd>
+    <dt>Enrollment</dt><dd>A user's formal application of interest in a specific PG, distinct from simply unlocking contact.</dd>
+    <dt>Deferred deep link</dt><dd>A link that, after app install, still routes the user to the specific content (PG) originally shared.</dd>
+    <dt>Verified PG</dt><dd>A listing that has passed the admin's Pending Verification review step.</dd>
+  </dl>
+</section>
+
+<section class="doc-section" id="sec-38" data-num="38">
+  <h2>Appendix</h2>
+  <p>This PRD intentionally leaves final visual design, exact API contracts, and specific third-party vendor selection (map provider, ad network, OTP provider, storage) to technical and design workstreams. Those decisions should be captured as addenda to this document rather than as edits to the product requirements above.</p>
+</section>
+
+<footer>
+  <p><strong>PGCity — Product Requirements Document</strong><br>
+  Version 2.0 (Final, Reviewed) · Status: Ready for Engineering &amp; Design Handoff · 16 August 2026</p>
+  <p>Version 1.0 was the original MVP PRD draft (core discovery, PG Web Screen, enrollment, admin). Version 2.0 reviewed the draft against a launch-readiness checklist and added goals/KPIs, personas, competitive framing, scope boundaries, assumptions &amp; constraints, permissions, DPDP Act compliance, accessibility, localization, support/FAQ, QA strategy, release plan, risk register, and glossary, then reorganized everything into one numbered PRD.</p>
+</footer>
+</main>
+
+<button class="top-fab" id="topFab" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  var menuBtn=document.getElementById('menuBtn'),
+      closeBtn=document.getElementById('closeBtn'),
+      drawer=document.getElementById('drawer'),
+      scrim=document.getElementById('scrim'),
+      progress=document.getElementById('progress'),
+      topFab=document.getElementById('topFab'),
+      links=document.querySelectorAll('.toc-link'),
+      sections=document.querySelectorAll('.doc-section');
+
+  function openDrawer(){drawer.classList.add('open');scrim.classList.add('open');}
+  function closeDrawer(){drawer.classList.remove('open');scrim.classList.remove('open');}
+  menuBtn.addEventListener('click',openDrawer);
+  closeBtn.addEventListener('click',closeDrawer);
+  scrim.addEventListener('click',closeDrawer);
+  links.forEach(function(a){a.addEventListener('click',function(){closeDrawer();});});
+
+  function onScroll(){
+    var doc=document.documentElement;
+    var scrollTop=window.scrollY||doc.scrollTop;
+    var height=doc.scrollHeight-doc.clientHeight;
+    var pct=height>0?(scrollTop/height)*100:0;
+    progress.style.width=pct+'%';
+
+    if(scrollTop>500){topFab.classList.add('show');}else{topFab.classList.remove('show');}
+
+    var current=null;
+    sections.forEach(function(sec){
+      var rect=sec.getBoundingClientRect();
+      if(rect.top<140){current=sec.id;}
+    });
+    links.forEach(function(a){
+      a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+    });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  topFab.addEventListener('click',function(){
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

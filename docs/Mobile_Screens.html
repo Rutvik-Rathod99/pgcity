@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGCity — Mobile App Screens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#141F29;
+  --navy-2:#1E303D;
+  --cream:#F6F1E6;
+  --paper:#FFFDF8;
+  --marigold:#E2A63B;
+  --marigold-dark:#8A5E13;
+  --teal:#2C6E63;
+  --teal-light:#E4EFEA;
+  --ink:#1A2229;
+  --ink-soft:#5B6672;
+  --line:#E1D8C4;
+  --sans:'Inter',system-ui,sans-serif;
+  --serif:'Fraunces',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:#EDE6D6;color:var(--ink);font-family:var(--sans);
+  padding:40px 16px 80px;
+}
+svg{display:block}
+
+/* page intro */
+.page-head{max-width:1200px;margin:0 auto 36px;text-align:center;}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:0 0 8px;}
+.page-head h1{font-family:var(--serif);font-weight:700;font-size:2rem;margin:0 0 8px;color:var(--ink);}
+.page-head p{color:var(--ink-soft);font-size:.95rem;max-width:520px;margin:0 auto;}
+
+/* gallery */
+.gallery{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:36px;justify-content:center;}
+.slot{width:320px;}
+.slot-label{display:flex;align-items:center;gap:8px;margin:0 0 12px 4px;}
+.slot-num{
+  width:22px;height:22px;border-radius:50% 50% 50% 0;background:var(--marigold);
+  transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;flex:none;
+}
+.slot-num span{transform:rotate(45deg);font-family:var(--mono);font-size:.62rem;font-weight:700;color:var(--navy);}
+.slot-label h2{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin:0;color:var(--ink);}
+.slot-desc{font-size:.78rem;color:var(--ink-soft);margin:2px 0 0 34px;}
+
+/* device frame */
+.phone{
+  width:320px;height:660px;background:#0B0F14;border-radius:38px;padding:10px;
+  box-shadow:0 18px 34px rgba(20,31,41,.28), 0 2px 6px rgba(20,31,41,.15);
+  margin-top:14px;
+}
+.screen{
+  width:100%;height:100%;background:var(--cream);border-radius:28px;overflow:hidden;
+  display:flex;flex-direction:column;position:relative;
+}
+.status{
+  height:34px;flex:none;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--ink);
+}
+.status .icons{display:flex;gap:5px;align-items:center;}
+.body{flex:1;overflow-y:auto;position:relative;}
+.body::-webkit-scrollbar{width:0}
+
+/* shared UI atoms */
+.chip{
+  font-family:var(--sans);font-size:.72rem;font-weight:600;padding:6px 12px;border-radius:20px;
+  border:1px solid var(--line);background:var(--paper);color:var(--ink-soft);white-space:nowrap;
+}
+.chip.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.btn{
+  font-family:var(--sans);font-weight:700;font-size:.82rem;border:none;border-radius:12px;
+  padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;
+}
+.btn-primary{background:var(--marigold);color:var(--navy);}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-teal{background:var(--teal);color:#fff;}
+.icon-btn{
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.85);color:var(--navy);flex:none;
+}
+.badge{
+  font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.03em;padding:3px 8px;
+  border-radius:6px;text-transform:uppercase;
+}
+.badge-teal{background:var(--teal);color:#fff;}
+.badge-marigold{background:var(--marigold);color:var(--navy);}
+.field{margin-bottom:14px;}
+.field label{display:block;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:6px;}
+.field input, .field textarea{
+  width:100%;border:1px solid var(--line);background:var(--paper);border-radius:10px;
+  padding:11px 12px;font-family:var(--sans);font-size:.88rem;color:var(--ink);
+}
+.field textarea{resize:none;min-height:60px;}
+.section-title{font-family:var(--sans);font-weight:700;font-size:.86rem;margin:18px 0 8px;color:var(--ink);}
+
+/* icon defs */
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M8.5 13.5l7-4M8.5 10.5l7 4M9 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0zM19.5 6.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0zM19.5 17.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 0 1 12 0c0 4 1.5 5 1.5 5h-15S6 14 6 10zM10 18a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.8C.7 7.5 2.6 4 6.2 4c2 0 3.4 1.1 4 2.3.6 -1.2 2-2.3 4-2.3 3.6 0 5.5 3.5 3.7 7.2C19 15.65 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-heart-fill" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.8C.7 7.5 2.6 4 6.2 4c2 0 3.4 1.1 4 2.3.6-1.2 2-2.3 4-2.3 3.6 0 5.5 3.5 3.7 7.2C19 15.65 12 20 12 20z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.6 7-11.5A7 7 0 0 0 5 9.5C5 14.4 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.3 4.5-2.1 1.6a12 12 0 0 0 5.7 5.7l1.6-2.1 4.5 1.3v3a2 2 0 0 1-2.1 2C10.7 19.1 4.9 13.3 4.5 5.6a2 2 0 0 1 2-2.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 20c1-4 4-6 7.5-6s6.5 2 7.5 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.2 8.2-7 10-3.8-1.8-7-5-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 7l1.5-2.5h5L16 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="i-nav" viewBox="0 0 24 24"><path d="M12 2 L22 20 L12 15 L2 20 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M4 9a13 13 0 0 1 16 0M7 12.5a8.5 8.5 0 0 1 10 0M10 16a4 4 0 0 1 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/></symbol>
+<symbol id="i-food" viewBox="0 0 24 24"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M9 3v18M15 3c-1.5 0-2 3-2 5s.5 4 2 4v10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="i-park" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 16V8h2.7a2.4 2.4 0 0 1 0 4.8H10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page-head">
+  <p class="eyebrow">PGCity · Android app</p>
+  <h1>Mobile app screens</h1>
+  <p>Core screens for the discovery-to-enrollment journey — from the map to a submitted PG application.</p>
+</div>
+
+<div class="gallery">
+
+<!-- SCREEN 1 — HOME -->
+<div class="slot">
+  <div class="slot-label"><div class="slot-num"><span>01</span></div><h2>Home — discover</h2></div>
+  <p class="slot-desc">Map-first discovery with search, gender/price filters, and a marker preview card.</p>
+  <div class="phone"><div class="screen">
+    <div class="status"><span>9:41</span><span class="icons"><span>4G</span><span>◉</span><span>▮▮▮</span></span></div>
+    <div class="body" style="display:flex;flex-direction:column;">
+      <div style="padding:10px 16px 8px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <div style="width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--marigold);transform:rotate(-45deg)"></div>
+          <span style="font-family:var(--serif);font-weight:700;font-size:1.05rem;">PGCity</span>
+        </div>
+        <div class="icon-btn" style="background:var(--paper);border:1px solid var(--line)"><svg width="17" height="17"><use href="#i-bell"/></svg></div>
+      </div>
+      <div style="padding:0 16px 8px;display:flex;align-items:center;gap:4px;color:var(--ink-soft);font-size:.74rem;">
+        <svg width="13" height="13"><use href="#i-pin"/></svg> Ahmedabad, Gujarat <span style="color:var(--teal);font-weight:600;margin-left:2px;">Change</span>
+      </div>
+      <div style="padding:0 16px 10px;">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px;">
+          <svg width="16" height="16" style="color:var(--ink-soft)"><use href="#i-search"/></svg>
+          <span style="font-size:.82rem;color:var(--ink-soft);">Search PG name or area</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;">
+        <span class="chip active">All</span><span class="chip">Girls PG</span><span class="chip">Boys PG</span>
+        <span class="chip">Under ₹10k</span><span class="chip">Above ₹10k</span>
+      </div>
+      <div style="position:relative;flex:1;margin:0 12px 12px;border-radius:16px;overflow:hidden;background:#DCE7DE;">
+        <svg width="100%" height="100%" viewBox="0 0 280 300" preserveAspectRatio="none" style="position:absolute;inset:0;">
+          <rect width="280" height="300" fill="#E7E1CE"/>
+          <rect x="0" y="40" width="280" height="34" fill="#EFE9D8"/>
+          <rect x="0" y="160" width="280" height="26" fill="#EFE9D8"/>
+          <rect x="60" y="0" width="22" height="300" fill="#EFE9D8"/>
+          <rect x="180" y="0" width="18" height="300" fill="#EFE9D8"/>
+          <rect x="10" y="90" width="40" height="40" rx="4" fill="#D7CFAE"/>
+          <rect x="120" y="200" width="55" height="45" rx="4" fill="#D7CFAE"/>
+          <rect x="210" y="70" width="50" height="60" rx="4" fill="#D7CFAE"/>
+          <circle cx="230" cy="230" r="40" fill="#CFE0D4"/>
+        </svg>
+        <div style="position:absolute;left:34%;top:22%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--marigold);transform:rotate(-45deg);box-shadow:0 2px 4px rgba(0,0,0,.2)"></div>
+        <div style="position:absolute;left:63%;top:52%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--marigold);transform:rotate(-45deg);box-shadow:0 2px 4px rgba(0,0,0,.2)"></div>
+        <div style="position:absolute;left:18%;top:60%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--marigold);transform:rotate(-45deg);box-shadow:0 2px 4px rgba(0,0,0,.2)"></div>
+        <div style="position:absolute;left:47%;top:38%;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;">
+          <span style="background:var(--navy);color:#fff;font-family:var(--mono);font-size:.62rem;padding:3px 7px;border-radius:6px;white-space:nowrap;margin-bottom:2px;">₹8,500 · Sunrise PG</span>
+          <div style="width:22px;height:22px;border-radius:50% 50% 50% 0;background:var(--navy);transform:rotate(-45deg);border:2px solid var(--marigold)"></div>
+        </div>
+        <div style="position:absolute;left:12px;right:12px;bottom:12px;background:var(--paper);border-radius:14px;padding:10px;display:flex;gap:10px;box-shadow:0 6px 14px rgba(20,31,41,.18);">
+          <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#E2A63B,#8A5E13);flex:none;"></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-family:var(--sans);font-weight:700;font-size:.82rem;">Sunrise Girls PG</div>
+            <div style="font-size:.68rem;color:var(--ink-soft);margin:2px 0 4px;">Girls PG · 1.2 km away</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-family:var(--mono);font-weight:700;font-size:.78rem;color:var(--teal);">₹8,500/mo</span>
+              <span style="font-size:.7rem;font-weight:700;color:var(--marigold-dark);display:flex;align-items:center;gap:2px;">View PG <svg width="12" height="12"><use href="#i-chev-r"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-around;padding:10px 0 14px;border-top:1px solid var(--line);background:var(--paper);">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--marigold-dark);"><svg width="20" height="20"><use href="#i-home"/></svg><span style="font-size:.62rem;font-weight:700;">Home</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-soft);"><svg width="20" height="20"><use href="#i-heart"/></svg><span style="font-size:.62rem;">Liked</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-soft);"><svg width="20" height="20"><use href="#i-user"/></svg><span style="font-size:.62rem;">Profile</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 2 — PG WEB SCREEN -->
+<div class="slot">
+  <div class="slot-label"><div class="slot-num"><span>02</span></div><h2>PG Web Screen</h2></div>
+  <p class="slot-desc">The mini-website for a single PG — tour, details, amenities, rules, photos.</p>
+  <div class="phone"><div class="screen">
+    <div class="status"><span>9:41</span><span class="icons"><span>4G</span><span>◉</span><span>▮▮▮</span></span></div>
+    <div class="body">
+      <div style="height:190px;background:linear-gradient(145deg,#2E4457,#141F29);position:relative;">
+        <div style="position:absolute;top:12px;left:14px;" class="icon-btn"><svg width="16" height="16"><use href="#i-back"/></svg></div>
+        <div style="position:absolute;top:12px;right:14px;" class="icon-btn"><svg width="15" height="15"><use href="#i-share"/></svg></div>
+        <div style="position:absolute;left:16px;right:16px;bottom:14px;color:#fff;">
+          <div style="display:flex;gap:6px;margin-bottom:6px;">
+            <span class="badge badge-marigold">Girls PG</span>
+            <span class="badge badge-teal" style="display:flex;align-items:center;gap:3px;"><svg width="10" height="10"><use href="#i-check"/></svg>Verified</span>
+          </div>
+          <div style="font-family:var(--serif);font-weight:700;font-size:1.3rem;">Sunrise Girls PG</div>
+          <div style="font-size:.76rem;color:#D9E0E6;margin-top:2px;">Ahmedabad · ₹8,500/month · <span style="color:#7FD9A6;">● Available</span></div>
+        </div>
+      </div>
+      <div style="padding:14px 16px 90px;">
+        <div style="border-radius:14px;background:var(--navy);padding:16px;position:relative;overflow:hidden;margin-bottom:10px;">
+          <span class="badge badge-marigold" style="position:absolute;top:10px;left:10px;">360°</span>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 0;">
+            <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><svg width="16" height="16" style="color:#fff"><use href="#i-play"/></svg></div>
+            <span style="color:#fff;font-size:.78rem;font-weight:600;">Explore PG in 360°</span>
+          </div>
+        </div>
+        <div style="border-radius:14px;border:1px solid var(--line);background:var(--paper);padding:14px;display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex:none;"><svg width="14" height="14" style="color:var(--teal)"><use href="#i-play"/></svg></div>
+          <div><div style="font-weight:700;font-size:.8rem;">Take a Video Tour</div><div style="font-size:.68rem;color:var(--ink-soft);">Complete Sunrise PG Tour · YouTube</div></div>
+        </div>
+
+        <div class="section-title">Quick details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 11px;"><div style="font-family:var(--mono);font-size:.6rem;color:var(--teal);text-transform:uppercase;">Rent</div><div style="font-weight:700;font-size:.86rem;">₹8,500</div></div>
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 11px;"><div style="font-family:var(--mono);font-size:.6rem;color:var(--teal);text-transform:uppercase;">Deposit</div><div style="font-weight:700;font-size:.86rem;">₹10,000</div></div>
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 11px;"><div style="font-family:var(--mono);font-size:.6rem;color:var(--teal);text-transform:uppercase;">Sharing</div><div style="font-weight:700;font-size:.86rem;">2 Sharing</div></div>
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 11px;"><div style="font-family:var(--mono);font-size:.6rem;color:var(--teal);text-transform:uppercase;">Min stay</div><div style="font-weight:700;font-size:.86rem;">3 Months</div></div>
+        </div>
+
+        <div class="section-title">About</div>
+        <p style="font-size:.8rem;color:var(--ink-soft);line-height:1.55;margin:0 0 16px;">Fully furnished accommodation with Wi-Fi, food, laundry and 24/7 security. Close to XYZ College and major transport.</p>
+
+        <div class="section-title">Amenities</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          <span class="chip" style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13"><use href="#i-wifi"/></svg>Wi-Fi</span>
+          <span class="chip" style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13"><use href="#i-food"/></svg>Food</span>
+          <span class="chip" style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13"><use href="#i-bolt"/></svg>Power backup</span>
+          <span class="chip" style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13"><use href="#i-shield"/></svg>24/7 security</span>
+          <span class="chip" style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13"><use href="#i-park"/></svg>Parking</span>
+        </div>
+
+        <div class="section-title">Rules</div>
+        <ul style="margin:0 0 16px;padding-left:18px;font-size:.79rem;color:var(--ink-soft);line-height:1.7;">
+          <li>No smoking or alcohol</li><li>Entry by 10:00 PM</li><li>Minimum stay: 3 months</li>
+        </ul>
+
+        <div class="section-title">Location</div>
+        <div style="height:90px;border-radius:12px;background:#DCE7DE;margin-bottom:8px;position:relative;overflow:hidden;">
+          <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;border-radius:50% 50% 50% 0;background:var(--marigold);transform:translate(-50%,-90%) rotate(-45deg);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--ink-soft);margin-bottom:16px;">
+          <span>XYZ College — 1.2 km</span>
+          <span style="color:var(--teal);font-weight:700;display:flex;align-items:center;gap:3px;">Directions <svg width="11" height="11"><use href="#i-nav"/></svg></span>
+        </div>
+
+        <div class="section-title">Photos</div>
+        <div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;">
+          <div style="width:64px;height:64px;border-radius:10px;flex:none;background:linear-gradient(135deg,#E2A63B,#8A5E13);"></div>
+          <div style="width:64px;height:64px;border-radius:10px;flex:none;background:linear-gradient(135deg,#2C6E63,#123A33);"></div>
+          <div style="width:64px;height:64px;border-radius:10px;flex:none;background:linear-gradient(135deg,#5B6672,#1A2229);"></div>
+          <div style="width:64px;height:64px;border-radius:10px;flex:none;background:#D7CFAE;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.68rem;color:var(--ink-soft);">+7</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:16px;padding-top:6px;border-top:1px solid var(--line);padding-top:12px;">
+          <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--ink-soft);"><svg width="15" height="15" style="color:#C94B4B"><use href="#i-heart-fill"/></svg>1,284 likes</span>
+        </div>
+      </div>
+      <div style="position:sticky;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:10px 14px;display:flex;gap:10px;">
+        <button class="btn btn-outline" style="flex:1;"><svg width="14" height="14"><use href="#i-phone"/></svg>View Contact</button>
+        <button class="btn btn-primary" style="flex:1;">Enroll Now</button>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 3 — CONTACT UNLOCK -->
+<div class="slot">
+  <div class="slot-label"><div class="slot-num"><span>03</span></div><h2>Contact unlock</h2></div>
+  <p class="slot-desc">Rewarded-ad sheet — the number stays hidden until the ad completes.</p>
+  <div class="phone"><div class="screen">
+    <div class="status"><span>9:41</span><span class="icons"><span>4G</span><span>◉</span><span>▮▮▮</span></span></div>
+    <div class="body" style="background:rgba(20,31,41,.55);display:flex;flex-direction:column;justify-content:flex-end;">
+      <div style="height:120px;background:linear-gradient(145deg,#2E4457,#141F29);opacity:.5;"></div>
+      <div style="background:var(--paper);border-radius:20px 20px 0 0;padding:20px 20px 26px;">
+        <div style="width:36px;height:4px;background:var(--line);border-radius:4px;margin:0 auto 16px;"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:18px;">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;margin-bottom:12px;"><svg width="22" height="22" style="color:var(--teal)"><use href="#i-phone"/></svg></div>
+          <div style="font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:4px;">Unlock Sunrise Girls PG's number</div>
+          <div style="font-size:.78rem;color:var(--ink-soft);max-width:230px;">Watch a short ad to reveal the contact number, free of charge.</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:10px;"><svg width="14" height="14"><use href="#i-play"/></svg>Watch Ad to Unlock</button>
+        <div style="font-size:.68rem;color:var(--ink-soft);text-align:center;margin-bottom:18px;">Ads help keep PGCity free to use.</div>
+
+        <div style="border-top:1px dashed var(--line);padding-top:16px;">
+          <div style="font-family:var(--mono);font-size:.62rem;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">After the ad completes</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;background:var(--teal-light);border-radius:12px;padding:12px 14px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <svg width="16" height="16" style="color:var(--teal)"><use href="#i-phone"/></svg>
+              <span style="font-family:var(--mono);font-weight:700;font-size:.86rem;color:var(--teal);">+91 98765 43210</span>
+            </div>
+            <span class="btn btn-teal" style="padding:7px 12px;font-size:.7rem;">Call</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 4 — ENROLLMENT FORM -->
+<div class="slot">
+  <div class="slot-label"><div class="slot-num"><span>04</span></div><h2>Enrollment form</h2></div>
+  <p class="slot-desc">Minimal fields, prefilled from the saved profile after the first enrollment.</p>
+  <div class="phone"><div class="screen">
+    <div class="status"><span>9:41</span><span class="icons"><span>4G</span><span>◉</span><span>▮▮▮</span></span></div>
+    <div class="body">
+      <div style="padding:14px 16px 6px;display:flex;align-items:center;gap:12px;">
+        <div class="icon-btn" style="background:var(--paper);border:1px solid var(--line);width:30px;height:30px;"><svg width="14" height="14"><use href="#i-back"/></svg></div>
+        <div><div style="font-weight:700;font-size:.9rem;">Enroll — Sunrise Girls PG</div><div style="font-size:.68rem;color:var(--ink-soft);">Step 1 of 2 · Your details</div></div>
+      </div>
+      <div style="padding:14px 16px 90px;">
+        <div class="field"><label>Full name</label><input placeholder="Yuvraj Mehta"></div>
+        <div class="field"><label>Mobile number</label><input placeholder="+91 98765 43210"></div>
+        <div class="field"><label>Email</label><input placeholder="yuvraj@email.com"></div>
+        <div class="field">
+          <label>Gender</label>
+          <div style="display:flex;gap:8px;"><span class="chip active">Male</span><span class="chip">Female</span><span class="chip">Other</span></div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <div class="field" style="flex:1;"><label>Age</label><input placeholder="21"></div>
+          <div class="field" style="flex:1.4;"><label>Move-in date</label><input placeholder="15 Sep 2026"></div>
+        </div>
+        <div class="field">
+          <label>Sharing type</label>
+          <div style="display:flex;gap:8px;"><span class="chip">1 Sharing</span><span class="chip active">2 Sharing</span><span class="chip">3 Sharing</span></div>
+        </div>
+        <div class="field"><label>Occupation / college</label><input placeholder="XYZ College of Engineering"></div>
+        <div class="field"><label>Message (optional)</label><textarea placeholder="Anything you'd like the PG to know?"></textarea></div>
+      </div>
+      <div style="position:sticky;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:12px 16px;">
+        <button class="btn btn-primary" style="width:100%;">Continue</button>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 5 — OTP VERIFICATION -->
+<div class="slot">
+  <div class="slot-label"><div class="slot-num"><span>05</span></div><h2>OTP verification</h2></div>
+  <p class="slot-desc">Mobile-number verification before an enrollment can be submitted.</p>
+  <div class="phone"><div class="screen">
+    <div class="status"><span>9:41</span><span class="icons"><span>4G</span><span>◉</span><span>▮▮▮</span></span></div>
+    <div class="body">
+      <div style="padding:14px 16px 6px;display:flex;align-items:center;gap:12px;">
+        <div class="icon-btn" style="background:var(--paper);border:1px solid var(--line);width:30px;height:30px;"><svg width="14" height="14"><use href="#i-back"/></svg></div>
+        <div style="font-weight:700;font-size:.9rem;">Verify your number</div>
+      </div>
+      <div style="padding:26px 24px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg width="22" height="22" style="color:var(--teal)"><use href="#i-shield"/></svg></div>
+        <div style="font-family:var(--serif);font-weight:700;font-size:1.15rem;margin-bottom:6px;">Enter the 6-digit code</div>
+        <div style="font-size:.8rem;color:var(--ink-soft);margin-bottom:22px;">Sent to <span style="font-family:var(--mono);color:var(--ink);">+91 98765 43210</span></div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div style="width:38px;height:46px;border:1.5px solid var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;">4</div>
+          <div style="width:38px;height:46px;border:1.5px solid var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;">8</div>
+          <div style="width:38px;height:46px;border:1.5px solid var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;">2</div>
+          <div style="width:38px;height:46px;border:1.5px solid var(--marigold);border-radius:10px;display:flex;align-items:center;justify-content:center;"></div>
+          <div style="width:38px;height:46px;border:1px solid var(--line);border-radius:10px;"></div>
+          <div style="width:38px;height:46px;border:1px solid var(--line);border-radius:10px;"></div>
+        </div>
+        <div style="font-size:.76rem;color:var(--ink-soft);margin-bottom:26px;">Resend OTP in <span style="font-family:var(--mono);color:var(--ink);">00:28</span></div>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:24px;">Verify &amp; continue</button>
+
+        <div style="border-top:1px dashed var(--line);padding-top:16px;">
+          <div style="font-family:var(--mono);font-size:.62rem;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">On success</div>
+          <div style="background:var(--teal-light);border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px;">
+            <div style="width:30px;height:30px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;flex:none;"><svg width="14" height="14" style="color:#fff"><use href="#i-check"/></svg></div>
+            <div><div style="font-weight:700;font-size:.8rem;color:var(--teal);">Enrollment request sent</div><div style="font-size:.7rem;color:var(--ink-soft);">Sunrise Girls PG · Status: Submitted</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 6 — PROFILE -->
+<div class="slot">
+  <div class="slot-label"><div class="slot-num"><span>06</span></div><h2>Profile</h2></div>
+  <p class="slot-desc">Saved details, enrollment history with live status, and account controls.</p>
+  <div class="phone"><div class="screen">
+    <div class="status"><span>9:41</span><span class="icons"><span>4G</span><span>◉</span><span>▮▮▮</span></span></div>
+    <div class="body" style="display:flex;flex-direction:column;">
+      <div style="flex:1;overflow-y:auto;padding:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--marigold);font-family:var(--serif);font-weight:700;">YM</div>
+          <div>
+            <div style="font-weight:700;font-size:.98rem;">Yuvraj Mehta</div>
+            <div style="font-size:.74rem;color:var(--ink-soft);">+91 98765 43210</div>
+          </div>
+        </div>
+
+        <div class="section-title">My enrollments</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-weight:700;font-size:.8rem;">Sunrise Girls PG</div><div style="font-size:.68rem;color:var(--ink-soft);">Submitted 12 Aug 2026</div></div>
+            <span class="badge" style="background:var(--marigold);color:var(--navy);">Under review</span>
+          </div>
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-weight:700;font-size:.8rem;">Green Residency PG</div><div style="font-size:.68rem;color:var(--ink-soft);">Submitted 2 Aug 2026</div></div>
+            <span class="badge badge-teal">Accepted</span>
+          </div>
+        </div>
+
+        <div class="section-title">Account</div>
+        <div style="display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper);">
+          <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:.82rem;">Edit profile <svg width="14" height="14" style="color:var(--ink-soft)"><use href="#i-chev-r"/></svg></div>
+          <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:.82rem;">Change phone number <svg width="14" height="14" style="color:var(--ink-soft)"><use href="#i-chev-r"/></svg></div>
+          <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:.82rem;">Privacy policy <svg width="14" height="14" style="color:var(--ink-soft)"><use href="#i-chev-r"/></svg></div>
+          <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:.82rem;">Terms &amp; conditions <svg width="14" height="14" style="color:var(--ink-soft)"><use href="#i-chev-r"/></svg></div>
+          <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:.82rem;color:#B5482E;">Delete account <svg width="14" height="14"><use href="#i-chev-r"/></svg></div>
+          <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-size:.82rem;">Logout <svg width="14" height="14" style="color:var(--ink-soft)"><use href="#i-chev-r"/></svg></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-around;padding:10px 0 14px;border-top:1px solid var(--line);background:var(--paper);">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-soft);"><svg width="20" height="20"><use href="#i-home"/></svg><span style="font-size:.62rem;">Home</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-soft);"><svg width="20" height="20"><use href="#i-heart"/></svg><span style="font-size:.62rem;">Liked</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--marigold-dark);"><svg width="20" height="20"><use href="#i-user"/></svg><span style="font-size:.62rem;font-weight:700;">Profile</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+</div>
+</body>
+</html>
